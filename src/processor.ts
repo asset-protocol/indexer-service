@@ -26,7 +26,7 @@ export const processor = new EvmBatchProcessor()
         // https://docs.subsquid.io/deploy-squid/env-variables/
         url: assertNotNull(process.env.RPC_ENDPOINT),
         // More RPC connection options at https://docs.subsquid.io/evm-indexing/configuration/initialization/#set-data-source
-        // rateLimit: 10
+        // rateLimit: 10,
     })
     .setFinalityConfirmation(75)
     .setFields({
@@ -36,7 +36,7 @@ export const processor = new EvmBatchProcessor()
         },
     })
     .setBlockRange({
-        from: 0,
+        from: assetHubDeployedStartBlock,
     })
     .addLog({
         address: [ASSETHUB_MANAGER],
