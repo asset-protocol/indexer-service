@@ -5,7 +5,7 @@ import { Store } from "@subsquid/typeorm-store";
 import * as assethubManager from '../abi/AssetHubManager';
 import { AssetHub } from "../model";
 
-let _assethubs: Set<string>;
+let _assethubs: Set<string> | undefined;
 
 export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetHubDeployed");
@@ -19,18 +19,18 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
     nftGatedModule: logData.nftGatedModule,
     createAssetModule: logData.assetCreateModule,
     timestamp: BigInt(log.block.timestamp),
-    hash: log.getTransaction().hash
+    hash: log.transaction?.hash
   })
 
   const hubSet = await getAssetHubSet(ctx);
-  hubSet.add(logData.assetHub);
+  hubSet.add(logData.assetHub.toLowerCase());
 
   await ctx.store.save(assetHub);
 }
 
 export const getAssetHubSet = async (ctx: DataHandlerContext<Store>) => {
   if (!_assethubs) {
-    const data = await ctx.store.find(AssetHub)
+    const data = await ctx.store.find(AssetHub,{})
     _assethubs = new Set(data.map((d) => d.id.toLowerCase()))
   }
   return _assethubs;
