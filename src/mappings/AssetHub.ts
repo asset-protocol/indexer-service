@@ -10,6 +10,8 @@ import * as assethubEvents from '../abi/Events'
 import * as assethub from '../abi/AssetHub'
 import * as assethubContract from '../abi/AssetHub'
 import { Asset, AssetHub, AssetMetadataHistory, Collector } from "../model";
+import { getAddress } from "ethers";
+import { Logger } from "@subsquid/logger";
 
 export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
@@ -17,10 +19,10 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
   ctx.log.info("Handling AssetCreated");
   const logData = assethubEvents.events.AssetCreated.decode(log)
 
-  const id = log.address + "-" + logData.assetId.toString();
+  const id = getAddress(getAddress(log.address)) + "-" + logData.assetId.toString();
   const asset = new Asset({
     id: id,
-    hub: log.address,
+    hub: getAddress(log.address),
     assetId: logData.assetId,
     contentUri: logData.contentURI,
     publisher: logData.publisher,
@@ -38,7 +40,7 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
 export async function handleAssetUpdateHubLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetUpdated");
   const logData = assethub.events.AssetUpdated.decode(log)
-  const id = log.address + "-" + logData.assetId.toString();
+  const id = getAddress(log.address) + "-" + logData.assetId.toString();
   const asset = await getAsset(ctx, id);
   if (!asset) {
     return;
@@ -56,7 +58,7 @@ export async function handleAssetUpdateHubLog(ctx: DataHandlerContext<Store>, lo
 //   logger.info("Handling CollectNFTDeployed");
 //   assert(logData, "No log args");
 
-//   const id = log.address + "-" + logData.assetId.toBigInt().toString();
+//   const id = getAddress(log.address) + "-" + logData.assetId.toBigInt().toString();
 //   const asset = await Asset.get(id);
 //   if (!asset) {
 //     logger.error("Asset not found");
@@ -71,7 +73,7 @@ export async function handleCollectedAssetHubLog(ctx: DataHandlerContext<Store>,
   const logData = assethubEvents.events.Collected.decode(log)
   assert(logData, "No log args");
 
-  const id = log.address + "-" + logData.assetId.toString();
+  const id = getAddress(log.address) + "-" + logData.assetId.toString();
   const asset = await getAsset(ctx, id);
   if (!asset) {
     return;
@@ -102,7 +104,7 @@ export async function handleTransferAssetHubLog(ctx: DataHandlerContext<Store>, 
     ctx.log.warn("First create asset before transfer, skipping...")
     return;
   }
-  const id = log.address + "-" + logData.tokenId.toString();
+  const id = getAddress(log.address) + "-" + logData.tokenId.toString();
   const asset = await getAsset(ctx, id)
   if (!asset) {
     return;
@@ -114,7 +116,7 @@ export async function handleTransferAssetHubLog(ctx: DataHandlerContext<Store>, 
 export async function handleAssetMetadataUpdateHubLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetMetadataUpdate");
   const logData = assethub.events.AssetMetadataUpdate.decode(log)
-  const id = log.address + "-" + logData.assetId.toString();
+  const id = getAddress(log.address) + "-" + logData.assetId.toString();
   const asset = await getAsset(ctx, id)
   if (!asset) {
     return;
@@ -128,14 +130,30 @@ export async function handleAssetMetadataUpdateHubLog(ctx: DataHandlerContext<St
 export async function handleAssetHubUpgradedLog(ctx: DataHandlerContext<Store>, log: Log): Promise<void> {
   ctx.log.info("Handling AssetHubUpgraded");
   const logData = assethub.events.AssetUpdated.decode(log)
-  const hub = await ctx.store.get(AssetHub, log.address);
+  const hub = await ctx.store.get(AssetHub, getAddress(log.address));
   if (!hub) {
-    ctx.log.error("AssetHub not found: " + log.address);
+    ctx.log.error("AssetHub not found: " + getAddress(log.address));
     return;
   }
-  const contract = new assethubContract.Contract({ _chain: ctx._chain, block: log.block }, log.address)
+  const contract = new assethubContract.Contract({ _chain: ctx._chain, block: log.block }, getAddress(log.address))
   hub.version = await contract.version();
   await ctx.store.save(hub);
+}
+
+
+export async function parseMetadata(ctx: { log: Logger }, asset: Asset, timestamp?: string) {
+  if (!asset.contentUri) {
+    return
+  }
+  const metadata = await fetchMetadata(ctx, asset.contentUri);
+  if (metadata) {
+    metadata.timestamp = timestamp
+    asset.name = metadata.name;
+    asset.type = metadata.type;
+    asset.metadata = JSON.stringify(metadata);
+    asset.tags = metadata.tags ? JSON.stringify(metadata.tags) : undefined;
+  }
+  asset.metadata = JSON.stringify(metadata);
 }
 
 function saveAssetMetadataHistroy(ctx: DataHandlerContext<Store>, id: string, asset: Asset, timestamp?: bigint | null) {
@@ -157,18 +175,3 @@ async function getAsset(ctx: DataHandlerContext<Store>, id: string) {
   return asset;
 }
 
-
-async function parseMetadata(ctx: DataHandlerContext<Store>, asset: Asset, timestamp?: string) {
-  if (!asset.contentUri) {
-    return
-  }
-  const metadata = await fetchMetadata(ctx, asset.contentUri);
-  if (metadata) {
-    metadata.timestamp = timestamp
-    asset.name = metadata.name;
-    asset.type = metadata.type;
-    asset.metadata = JSON.stringify(metadata);
-    asset.tags = metadata.tags ? JSON.stringify(metadata.tags) : undefined;
-  }
-  asset.metadata = JSON.stringify(metadata);
-}

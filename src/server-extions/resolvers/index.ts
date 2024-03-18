@@ -1,0 +1,1 @@
+export { CustomAssetResolver } from './asset-resolver'

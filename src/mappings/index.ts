@@ -6,6 +6,7 @@ import * as assethub from '../abi/AssetHub'
 import * as assethubManager from '../abi/AssetHubManager';
 import { getAssetHubSet, handleAssetHubDeployedLog } from './AssetManager';
 import { ASSETHUB_MANAGER } from '../config';
+import { getAddress } from 'ethers';
 
 export type HandleLogFunc = (ctx: DataHandlerContext<Store>, log: Log) => Promise<void>;
 
@@ -17,19 +18,19 @@ const handlers = new Map<string, Map<string, HandleLogFunc[]>>([
     [assethubEvents.events.AssetCreated.topic, [handleAssetCreatedAssetHubLog]],
     [assethub.events.Transfer.topic, [handleTransferAssetHubLog]],
     [assethub.events.Upgraded.topic, [handleAssetHubUpgradedLog]],
-    [assethub.events.AssetUpdated.topic, [handleAssetUpdateHubLog]],
     [assethub.events.AssetMetadataUpdate.topic, [handleAssetMetadataUpdateHubLog]],
+    [assethub.events.AssetUpdated.topic, [handleAssetUpdateHubLog]],
     [assethubEvents.events.Collected.topic, [handleCollectedAssetHubLog]]
   ])]
 ]);
 
 export const getLogHandler = async (ctx: DataHandlerContext<Store>, log: Log) => {
-  const hd = handlers.get(log.address)
+  const hd = handlers.get(getAddress(log.address))
   if (hd) {
     return hd.get(log.topics[0])
   }
   const hubSet = await getAssetHubSet(ctx);
-  if (hubSet.has(log.address.toLowerCase())) {
+  if (hubSet.has(getAddress(log.address).toLowerCase())) {
     return (handlers.get("_AssetHub")?.get(log.topics[0])) ?? [];
   }
 }

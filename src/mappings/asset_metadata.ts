@@ -1,4 +1,5 @@
 import { DataHandlerContext } from "@subsquid/evm-processor";
+import { Logger } from "@subsquid/logger";
 import { Store } from "@subsquid/typeorm-store";
 
 const _importDynamic = new Function('modulePath', 'return import(modulePath)')
@@ -21,7 +22,7 @@ export type AssetMetaData = {
 
 const ipfsEndpoint = process.env.IPFS_GATEWAY + "/";
 
-export async function fetchMetadata(ctx: DataHandlerContext<Store>, uri: string): Promise<AssetMetaData | undefined> {
+export async function fetchMetadata(ctx: { log: Logger }, uri: string): Promise<AssetMetaData | undefined> {
   if (!uri) {
     return;
   }
