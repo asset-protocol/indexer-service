@@ -6,6 +6,8 @@ services:
     environment:
       POSTGRES_DB: assethub
       POSTGRES_PASSWORD: postgres
+    volumes:
+      - .data/postgres:/var/lib/postgresql/data
     ports:
       - "${DB_PORT}:5432"
       # command: ["postgres", "-c", "log_statement=all"]
@@ -14,7 +16,7 @@ services:
   api:
     image: assethub
     environment:
-      - DB_NAME=app
+      - DB_NAME=assethub
       - DB_PORT=5432
       - DB_HOST=db
       - DB_PASS=postgres
@@ -29,7 +31,7 @@ services:
   processor:
     image: assethub
     environment:
-      - DB_NAME=app
+      - DB_NAME=assethub
       - DB_PORT=5432
       - DB_HOST=db
       - DB_PASS=postgres
