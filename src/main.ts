@@ -6,7 +6,7 @@ import { getLogHandler } from './mappings'
 processor.run(new TypeormDatabase({ supportHotBlocks: true }), async (ctx) => {
     for (let c of ctx.blocks) {
         for (let log of c.logs) {
-            handleLog(ctx, log)
+            await handleLog(ctx, log)
         }
     }
 })

@@ -22,8 +22,8 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
     hash: log.transaction?.hash
   })
 
-  // const hubSet = await getAssetHubSet(ctx);
-  // hubSet.add(logData.assetHub.toLowerCase());
+  const hubSet = await getAssetHubSet(ctx);
+  hubSet.add(logData.assetHub.toLowerCase());
 
   await ctx.store.save(assetHub);
 }
