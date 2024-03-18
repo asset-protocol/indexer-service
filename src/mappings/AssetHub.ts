@@ -6,7 +6,8 @@ import assert from "assert";
 import { fetchMetadata } from "./asset_metadata";
 import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
-import * as assethub from '../abi/IAssetHubEvents'
+import * as assethubEvents from '../abi/Events'
+import * as assethub from '../abi/AssetHub'
 import * as assethubContract from '../abi/AssetHub'
 import { Asset, AssetHub, AssetMetadataHistory, Collector } from "../model";
 
@@ -14,7 +15,7 @@ export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
 export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetCreated");
-  const logData = assethub.events.AssetCreated.decode(log)
+  const logData = assethubEvents.events.AssetCreated.decode(log)
 
   const id = log.address + "-" + logData.assetId.toString();
   const asset = new Asset({
@@ -67,7 +68,7 @@ export async function handleAssetUpdateHubLog(ctx: DataHandlerContext<Store>, lo
 
 export async function handleCollectedAssetHubLog(ctx: DataHandlerContext<Store>, log: Log): Promise<void> {
   ctx.log.info("Handling Collected");
-  const logData = assethub.events.Collected.decode(log)
+  const logData = assethubEvents.events.Collected.decode(log)
   assert(logData, "No log args");
 
   const id = log.address + "-" + logData.assetId.toString();

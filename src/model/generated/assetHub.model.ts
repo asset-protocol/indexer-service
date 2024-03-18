@@ -33,8 +33,8 @@ export class AssetHub {
     @Column_("text", {nullable: true})
     implementation!: string | undefined | null
 
-    @Column_("int4", {nullable: true})
-    version!: number | undefined | null
+    @Column_("text", {nullable: true})
+    version!: string | undefined | null
 
     @Column_("text", {nullable: true})
     hash!: string | undefined | null

@@ -66,6 +66,6 @@ type AssetHub @entity {
   createAssetModule: String
   timestamp: BigInt @index
   implementation: String
-  version: Int
+  version: String
   hash: String
 }
