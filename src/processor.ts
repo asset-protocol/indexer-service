@@ -41,7 +41,8 @@ export const processor = new EvmBatchProcessor()
     .addLog({
         address: [ASSETHUB_MANAGER],
         topic0: [assethubManager.events.AssetHubDeployed.topic],
-        range: { from: assetHubDeployedStartBlock }
+        range: { from: assetHubDeployedStartBlock },
+        transaction: true
     })
     .addLog({
         topic0: [
@@ -51,7 +52,8 @@ export const processor = new EvmBatchProcessor()
             assethub.events.AssetMetadataUpdate.topic,
             assethub.events.Upgraded.topic,
         ],
-        range: { from: assetHubDeployedStartBlock }
+        range: { from: assetHubDeployedStartBlock },
+        transaction: true
     })
 
 export type Fields = EvmBatchProcessorFields<typeof processor>
