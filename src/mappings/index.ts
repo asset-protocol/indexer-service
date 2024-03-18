@@ -28,11 +28,13 @@ export const getLogHandler = async (ctx: DataHandlerContext<Store>, log: Log) =>
   if (hd) {
     return hd.get(log.topics[0])
   }
-  if(log.topics[0] !== assethub.events.Transfer.topic){
-    console.log(`No handler for log ${log.address} : ${log.topics[0]}`);
-  }
+
   const hubSet = await getAssetHubSet(ctx);
-  if (hubSet.has(log.address.toLocaleLowerCase())) {
+  if (log.topics[0] !== assethub.events.Transfer.topic) {
+    console.log(`No handler for log ${log.address} : ${log.topics[0]}`);
+    console.log(`HubSet: ${hubSet.size}, has: ${hubSet.has(log.address.toLowerCase())}, has2: ${hubSet.has(log.address.toLocaleLowerCase())}`);
+  }
+  if (hubSet.has(log.address.toLowerCase())) {
     return handlers.get("_AssetHub")?.get(log.topics[0]) ?? [];
   }
 }
