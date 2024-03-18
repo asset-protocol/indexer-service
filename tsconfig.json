@@ -10,7 +10,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "sourceMap": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]
