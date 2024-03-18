@@ -1,5 +1,5 @@
 import { getAddress } from 'ethers'
-import { Arg, Mutation, Resolver } from 'type-graphql'
+import { Arg, Query, Resolver } from 'type-graphql'
 import type { EntityManager } from 'typeorm'
 import { Asset } from '../../model'
 import { parseMetadata } from '../../mappings/AssetHub'
@@ -9,7 +9,7 @@ import { createLogger } from '@subsquid/logger'
 export class CustomAssetResolver {
   constructor(private tx: () => Promise<EntityManager>) { }
 
-  @Mutation(() => Boolean)
+  @Query(() => Boolean)
   async refreshMetatData(
     @Arg('assetId', { nullable: false }) assetId: string,
     @Arg('hub', { nullable: false }) hub: string,
