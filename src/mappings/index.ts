@@ -33,8 +33,10 @@ export const getLogHandler = async (ctx: DataHandlerContext<Store>, log: Log) =>
   if (log.topics[0] !== assethub.events.Transfer.topic) {
     console.log(`No handler for log ${log.address} : ${log.topics[0]}`);
     console.log(`HubSet: ${hubSet.size}, has: ${hubSet.has(log.address.toLowerCase())}, has2: ${hubSet.has(log.address.toLocaleLowerCase())}`);
+    console.log(`topics equals: ${log.topics[0] === assethub.events.MetadataUpdate.topic}`);
+    console.log(`hanlders: ${handlers.get("_AssetHub")?.get(log.topics[0])?.length}`)
   }
   if (hubSet.has(log.address.toLowerCase())) {
-    return handlers.get("_AssetHub")?.get(log.topics[0]) ?? [];
+    return (handlers.get("_AssetHub")?.get(log.topics[0])) ?? [];
   }
 }
