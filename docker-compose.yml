@@ -20,7 +20,9 @@ services:
       - DB_PORT=5432
       - DB_HOST=db
       - DB_PASS=postgres
-      - GQL_PORT=4350
+      - GQL_PORT=3000
+      - IPFS_GATEWAY=https://ipfs.io/ipfs
+      - ARWAVE_GATEWAY=https://arweave.net
     ports:
       # GraphQL endpoint at port 4350
       - "3000:3000"
