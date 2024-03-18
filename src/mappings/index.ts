@@ -28,6 +28,7 @@ export const getLogHandler = async (ctx: DataHandlerContext<Store>, log: Log) =>
   if (hd) {
     return hd.get(log.topics[0])
   }
+  console.log(`No handler for log ${log.address} : ${log.topics[0]}`);
   const hubSet = await getAssetHubSet(ctx);
   if (hubSet.has(log.address.toLocaleLowerCase())) {
     return handlers.get("_AssetHub")?.get(log.topics[0]) ?? [];
