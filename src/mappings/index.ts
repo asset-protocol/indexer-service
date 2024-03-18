@@ -23,9 +23,9 @@ const handlers = new Map<string, Map<string, HandleLogFunc[]>>([
 ]);
 
 export const getLogHandler = async (ctx: DataHandlerContext<Store>, log: Log) => {
-  const hd = handlers.get(log.address)?.get(log.topics[0])
+  const hd = handlers.get(log.address)
   if (hd) {
-    return hd
+    return hd.get(log.topics[0])
   }
   const hubSet = await getAssetHubSet(ctx);
   if (hubSet.has(log.address)) {

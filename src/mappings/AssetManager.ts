@@ -8,8 +8,6 @@ import { AssetHub } from "../model";
 let _assethubs: Set<string>;
 
 export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, log: Log) {
-  if (log.topics[0] !== assethubManager.events.AssetHubDeployed.topic) return
-
   ctx.log.info("Handling AssetHubDeployed");
   const logData = assethubManager.events.AssetHubDeployed.decode(log)
   assert(logData, "No log args");
