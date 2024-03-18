@@ -27,6 +27,9 @@ export const getLogHandler = async (ctx: DataHandlerContext<Store>, log: Log) =>
   if (hd) {
     return hd.get(log.topics[0])
   }
+  if (log.topics[0] === assethub.events.MetadataUpdate.topic) {
+    ctx.log.info("----MetadataUpdate event:" + log.topics[0]);
+  }
   const hubSet = await getAssetHubSet(ctx);
   if (hubSet.has(log.address.toLocaleLowerCase())) {
     return handlers.get("_AssetHub")?.get(log.topics[0]) ?? [];
