@@ -23,7 +23,7 @@ services:
       - GQL_PORT=4350
     ports:
       # GraphQL endpoint at port 4350
-      - "4350:4350"
+      - "3000:3000"
     command: ["sqd", "serve:prod"]
     depends_on:
       - db
@@ -36,12 +36,12 @@ services:
       - DB_HOST=db
       - DB_PASS=postgres
       - RPC_ENDPOINT=https://rpc-mumbai.polygon.technology
-      - ASSETHUB_DEPLOYED_START_BLOCK=46908386
+      - ASSETHUB_DEPLOYED_START_BLOCK=47191328
       - IPFS_GATEWAY=https://ipfs.io/ipfs
       - ARWAVE_GATEWAY=https://arweave.net
     ports:
       # prometheus metrics exposed at port 3000
-      - "3000:3000"
+      - "4350:4350"
     command: ["sqd", "process:prod"]
     depends_on:
       - db
