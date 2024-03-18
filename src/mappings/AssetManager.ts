@@ -10,7 +10,6 @@ let _assethubs: Set<string>;
 export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetHubDeployed");
   const logData = assethubManager.events.AssetHubDeployed.decode(log)
-  assert(logData, "No log args");
 
   let assetHub = new AssetHub({
     id: logData.assetHub,
@@ -22,17 +21,17 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
     timestamp: BigInt(log.block.timestamp),
     hash: log.getTransaction().hash
   })
-  
+
   const hubSet = await getAssetHubSet(ctx);
   hubSet.add(logData.assetHub);
 
-  await ctx.store.insert(assetHub);
+  await ctx.store.save(assetHub);
 }
 
 export const getAssetHubSet = async (ctx: DataHandlerContext<Store>) => {
   if (!_assethubs) {
     const data = await ctx.store.find(AssetHub)
-    _assethubs = new Set(data.map((d) => d.id))
+    _assethubs = new Set(data.map((d) => d.id.toLowerCase()))
   }
   return _assethubs;
 }
