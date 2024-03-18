@@ -11,6 +11,7 @@ ADD assets assets
 ADD db db
 # remove if needed
 ADD schema.graphql .
+ADD commands.json .
 RUN npm ci
 ADD tsconfig.json .
 ADD src src

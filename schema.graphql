@@ -30,7 +30,7 @@ type Asset @entity {
 
 type AssetMetadataHistory @entity {
   id: ID! # Transaction hash
-  assetId: Asset
+  asset: Asset
   timestamp: BigInt @index
   metadata: String
 }
