@@ -1197,19 +1197,6 @@
         "type": "address"
       }
     ],
-    "name": "transferHubOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -1292,9 +1279,9 @@
     "name": "version",
     "outputs": [
       {
-        "internalType": "uint8",
+        "internalType": "string",
         "name": "",
-        "type": "uint8"
+        "type": "string"
       }
     ],
     "stateMutability": "view",

@@ -149,9 +149,6 @@ export const functions = {
     transferFrom: new Func<[from: string, to: string, tokenId: bigint], {from: string, to: string, tokenId: bigint}, []>(
         abi, '0x23b872dd'
     ),
-    transferHubOwnership: new Func<[newOwner: string], {newOwner: string}, []>(
-        abi, '0x1b754702'
-    ),
     transferOwnership: new Func<[newOwner: string], {newOwner: string}, []>(
         abi, '0xf2fde38b'
     ),
@@ -164,7 +161,7 @@ export const functions = {
     userCollectCount: new Func<[assetId: bigint, collector: string], {assetId: bigint, collector: string}, bigint>(
         abi, '0x0f3e7928'
     ),
-    version: new Func<[], {}, number>(
+    version: new Func<[], {}, string>(
         abi, '0x54fd4d50'
     ),
 }
@@ -255,7 +252,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.userCollectCount, [assetId, collector])
     }
 
-    version(): Promise<number> {
+    version(): Promise<string> {
         return this.eth_call(functions.version, [])
     }
 }

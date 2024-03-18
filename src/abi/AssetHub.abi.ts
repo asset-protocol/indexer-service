@@ -1118,19 +1118,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "transferHubOwnership",
-        "constant": false,
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address",
-                "name": "newOwner"
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "type": "function",
         "name": "transferOwnership",
         "constant": false,
         "payable": false,
@@ -1219,7 +1206,7 @@ export const ABI_JSON = [
         "inputs": [],
         "outputs": [
             {
-                "type": "uint8",
+                "type": "string",
                 "name": ""
             }
         ]

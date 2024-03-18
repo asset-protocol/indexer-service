@@ -10,7 +10,8 @@ import {
 } from '@subsquid/evm-processor'
 import { ASSETHUB_MANAGER } from './config'
 import * as assethubManager from './abi/AssetHubManager'
-import * as assethub from './abi/IAssetHubEvents'
+import * as assethubEvents from './abi/Events'
+import * as assethub from './abi/AssetHub'
 
 const assetHubDeployedStartBlock = Number.parseInt(process.env.ASSETHUB_DEPLOYED_START_BLOCK ?? "0")
 
@@ -46,8 +47,8 @@ export const processor = new EvmBatchProcessor()
     })
     .addLog({
         topic0: [
-            assethub.events.AssetCreated.topic,
-            assethub.events.Collected.topic,
+            assethubEvents.events.AssetCreated.topic,
+            assethubEvents.events.Collected.topic,
             assethub.events.Transfer.topic,
             assethub.events.AssetMetadataUpdate.topic,
             assethub.events.Upgraded.topic,

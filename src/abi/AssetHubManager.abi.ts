@@ -628,7 +628,7 @@ export const ABI_JSON = [
         "inputs": [],
         "outputs": [
             {
-                "type": "uint8",
+                "type": "string",
                 "name": ""
             }
         ]

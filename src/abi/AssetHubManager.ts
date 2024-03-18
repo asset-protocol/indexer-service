@@ -77,7 +77,7 @@ export const functions = {
     upgradeToAndCall: new Func<[newImplementation: string, data: string], {newImplementation: string, data: string}, []>(
         abi, '0x4f1ef286'
     ),
-    version: new Func<[], {}, number>(
+    version: new Func<[], {}, string>(
         abi, '0x54fd4d50'
     ),
     whitelisted: new Func<[account: string], {account: string}, boolean>(
@@ -115,7 +115,7 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.proxiableUUID, [])
     }
 
-    version(): Promise<number> {
+    version(): Promise<string> {
         return this.eth_call(functions.version, [])
     }
 

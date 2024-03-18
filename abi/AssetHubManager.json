@@ -676,9 +676,9 @@
     "name": "version",
     "outputs": [
       {
-        "internalType": "uint8",
+        "internalType": "string",
         "name": "",
-        "type": "uint8"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
