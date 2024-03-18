@@ -1,7 +1,6 @@
 {
   "name": "squid-evm-template",
   "type": "module",
-  "private": true,
   "scripts": {
     "build": "rm -rf lib && tsc"
   },
