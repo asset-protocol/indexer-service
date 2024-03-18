@@ -150,10 +150,9 @@ export async function parseMetadata(ctx: { log: Logger }, asset: Asset, timestam
     metadata.timestamp = timestamp
     asset.name = metadata.name;
     asset.type = metadata.type;
-    asset.metadata = JSON.stringify(metadata);
     asset.tags = metadata.tags ? JSON.stringify(metadata.tags) : undefined;
+    asset.metadata = JSON.stringify(metadata);
   }
-  asset.metadata = JSON.stringify(metadata);
 }
 
 function saveAssetMetadataHistroy(ctx: DataHandlerContext<Store>, id: string, asset: Asset, timestamp?: bigint | null) {
