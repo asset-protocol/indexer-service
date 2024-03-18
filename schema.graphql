@@ -1,0 +1,71 @@
+# To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
+# Add the `@index` or `@index(unique: true)` annotation after any non-key field
+# https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
+
+type Asset @entity {
+  id: ID! # hub Address+assetId
+  assetId: BigInt @index
+  hub: String @index
+  publisher: String @index
+  contentUri: String
+  timestamp: BigInt @index
+  hash: String
+
+  # metadata
+  name: String
+  type: String
+  tags: String
+  metadata: String
+  metadataHistories: [AssetMetadataHistory!] @derivedFrom(field: "asset")
+
+  # collect
+  collectModule: String
+  collectNft: String
+  collectCount: BigInt
+  collectors: [Collector!] @derivedFrom(field: "asset")
+
+  # gated
+  gatedModule: String
+}
+
+type AssetMetadataHistory @entity {
+  id: ID! # Transaction hash
+  assetId: Asset
+  timestamp: BigInt @index
+  metadata: String
+}
+
+type Collector @entity {
+  id: ID! # Transaction hash
+  asset: Asset
+  collector: String @index
+  tokenId: BigInt
+  collectModule: String
+  collectModuleData: String
+  timestamp: BigInt @index
+}
+
+type ContractInfo @entity {
+  id: ID! # contractAddress
+  name: String
+  symbol: String
+  description: String
+  image: String
+  bannerImage: String
+  featuredImage: String
+  externalLink: String
+  collaborators: String
+}
+
+type AssetHub @entity {
+  id: ID! # hub address
+  admin: String
+  name: String @index(unique: true)
+  feeCollectModule: String
+  nftGatedModule: String
+  createAssetModule: String
+  timestamp: BigInt @index
+  implementation: String
+  version: Int
+  hash: String
+}
