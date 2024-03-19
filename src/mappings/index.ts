@@ -1,8 +1,7 @@
 import { DataHandlerContext, Log } from '@subsquid/evm-processor'
 import { Store } from '@subsquid/typeorm-store'
-import { handleAssetCreatedAssetHubLog, handleAssetHubUpgradedLog, handleAssetUpdatedLog, handleAssetUpdatedLog, handleCollectedAssetHubLog, handleTransferAssetHubLog } from './AssetHub';
-import * as assethubEvents from '../abi/Events'
-import * as assethub from '../abi/AssetHub'
+import { handleAssetCreatedAssetHubLog, handleAssetHubUpgradedLog, handleAssetUpdatedLog, handleCollectedAssetHubLog, handleTransferAssetHubLog } from './AssetHub';
+import * as assethub from '../abi/IAssetHubEvents'
 import * as assethubManager from '../abi/AssetHubManager';
 import { getAssetHubSet, handleAssetHubDeployedLog } from './AssetManager';
 import { ASSETHUB_MANAGER } from '../config';
@@ -15,12 +14,11 @@ const handlers = new Map<string, Map<string, HandleLogFunc[]>>([
     [assethubManager.events.AssetHubDeployed.topic, [handleAssetHubDeployedLog]]
   ])],
   ["_AssetHub", new Map([
-    [assethubEvents.events.AssetCreated.topic, [handleAssetCreatedAssetHubLog]],
+    [assethub.events.AssetCreated.topic, [handleAssetCreatedAssetHubLog]],
     [assethub.events.Transfer.topic, [handleTransferAssetHubLog]],
     [assethub.events.Upgraded.topic, [handleAssetHubUpgradedLog]],
-    [assethub.events.AssetMetadataUpdate.topic, [handleAssetUpdatedLog]],
     [assethub.events.AssetUpdated.topic, [handleAssetUpdatedLog]],
-    [assethubEvents.events.Collected.topic, [handleCollectedAssetHubLog]]
+    [assethub.events.Collected.topic, [handleCollectedAssetHubLog]]
   ])]
 ]);
 

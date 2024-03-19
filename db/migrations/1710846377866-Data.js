@@ -1,5 +1,5 @@
-module.exports = class Data1710811476456 {
-    name = 'Data1710811476456'
+module.exports = class Data1710846377866 {
+    name = 'Data1710846377866'
 
     async up(db) {
         await db.query(`CREATE TABLE "asset_metadata_history" ("id" character varying NOT NULL, "timestamp" numeric, "metadata" text, "asset_id" character varying, CONSTRAINT "PK_94cab17983a7cc063b3c9ffb88b" PRIMARY KEY ("id"))`)
@@ -9,7 +9,7 @@ module.exports = class Data1710811476456 {
         await db.query(`CREATE INDEX "IDX_e235ae1707cf7e637e9353a51b" ON "collector" ("asset_id") `)
         await db.query(`CREATE INDEX "IDX_a8122903753f245d5aa3f2c7dd" ON "collector" ("collector") `)
         await db.query(`CREATE INDEX "IDX_11049fc3d3cabc159ee2fd3bd2" ON "collector" ("timestamp") `)
-        await db.query(`CREATE TABLE "asset" ("id" character varying NOT NULL, "asset_id" numeric, "hub" text, "publisher" text, "content_uri" text, "timestamp" numeric, "hash" text, "name" text, "type" text, "tags" text, "metadata" text, "collect_module" text, "collect_nft" text, "collect_count" numeric, "gated_module" text, CONSTRAINT "PK_1209d107fe21482beaea51b745e" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "asset" ("id" character varying NOT NULL, "asset_id" numeric, "hub" text, "publisher" text, "content_uri" text, "timestamp" numeric, "hash" text, "name" text, "type" text, "tags" text, "metadata" text, "collect_module" text, "collect_module_data" text, "collect_nft" text, "collect_count" numeric, "gated_module" text, "gated_module_data" text, CONSTRAINT "PK_1209d107fe21482beaea51b745e" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_2a48e81afa7729ed31c2c7b18e" ON "asset" ("asset_id") `)
         await db.query(`CREATE INDEX "IDX_d439f59d73cbe9ba229c136375" ON "asset" ("hub") `)
         await db.query(`CREATE INDEX "IDX_da5414205913c272959745b45f" ON "asset" ("publisher") `)

@@ -6,8 +6,7 @@ import assert from "assert";
 import { fetchMetadata } from "./asset_metadata";
 import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
-import * as assethubEvents from '../abi/Events'
-import * as assethub from '../abi/AssetHub'
+import * as assethub from '../abi/IAssetHubEvents'
 import * as assethubContract from '../abi/AssetHub'
 import { Asset, AssetHub, AssetMetadataHistory, Collector } from "../model";
 import { ZeroAddress, getAddress } from "ethers";
@@ -15,24 +14,24 @@ import { Logger } from "@subsquid/logger";
 
 export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetCreated");
-  const logData = assethubEvents.events.AssetCreated.decode(log)
+  const logData = assethub.events.AssetCreated.decode(log)
 
   const id = getAddress(getAddress(log.address)) + "-" + logData.assetId.toString();
   const asset = new Asset({
     id: id,
     hub: getAddress(log.address),
     assetId: logData.assetId,
-    contentUri: logData.contentURI,
+    contentUri: logData.data.contentURI,
     publisher: logData.publisher,
-    collectModule: logData.collectModule,
-    collectNft: logData.collectNFT,
-    timestamp: logData.timestamp,
+    collectModule: logData.data.collectModule,
+    collectNft: logData.data.collectNFT,
+    timestamp: BigInt(log.block.timestamp),
     hash: log.getTransaction().hash,
   });
 
-  await parseMetadata(ctx, asset, logData.timestamp.toString())
+  await parseMetadata(ctx, asset, asset.timestamp?.toString())
   await ctx.store.save(asset)
-  await saveAssetMetadataHistroy(ctx, log.getTransaction().hash, asset, logData.timestamp)
+  await saveAssetMetadataHistroy(ctx, log.getTransaction().hash, asset, asset.timestamp)
 }
 
 // export async function handleCollectNFTDeployedAssetHubLog(log: CollectNFTDeployedLog): Promise<void> {
@@ -51,7 +50,7 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
 
 export async function handleCollectedAssetHubLog(ctx: DataHandlerContext<Store>, log: Log): Promise<void> {
   ctx.log.info("Handling Collected");
-  const logData = assethubEvents.events.Collected.decode(log)
+  const logData = assethub.events.Collected.decode(log)
   assert(logData, "No log args");
 
   const id = getAddress(log.address) + "-" + logData.assetId.toString();
@@ -106,6 +105,7 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
   if (logData.data.contentURI != "") {
     asset.contentUri = logData.data.contentURI;
     await parseMetadata(ctx, asset, log.block.timestamp.toString())
+    await saveAssetMetadataHistroy(ctx, id, asset, asset.timestamp)
   }
   if (logData.data.collectModule != ZeroAddress) {
     asset.collectModule = logData.data.collectModule;
@@ -116,7 +116,6 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
     asset.gatedModuleData = logData.data.gatedModuleInitData;
   }
   await ctx.store.save(asset)
-  await saveAssetMetadataHistroy(ctx, id, asset, asset.timestamp)
 }
 
 export async function handleAssetHubUpgradedLog(ctx: DataHandlerContext<Store>, log: Log): Promise<void> {
