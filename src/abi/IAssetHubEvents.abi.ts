@@ -76,51 +76,39 @@ export const ABI_JSON = [
                 "indexed": true
             },
             {
-                "type": "string",
-                "name": "contentURI",
-                "indexed": false
-            },
-            {
-                "type": "address",
-                "name": "collectNFT",
-                "indexed": false
-            },
-            {
-                "type": "address",
-                "name": "collectModule",
-                "indexed": false
-            },
-            {
-                "type": "address",
-                "name": "gatedModule",
-                "indexed": false
-            },
-            {
-                "type": "uint256",
-                "name": "timestamp",
-                "indexed": false
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
-        "name": "AssetMetadataUpdate",
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "assetId",
-                "indexed": true
-            },
-            {
-                "type": "string",
-                "name": "contentURI",
-                "indexed": false
-            },
-            {
-                "type": "uint256",
-                "name": "timestamp",
-                "indexed": false
+                "type": "tuple",
+                "name": "data",
+                "indexed": false,
+                "components": [
+                    {
+                        "type": "string",
+                        "name": "contentURI"
+                    },
+                    {
+                        "type": "bytes",
+                        "name": "assetCreateModuleData"
+                    },
+                    {
+                        "type": "address",
+                        "name": "collectModule"
+                    },
+                    {
+                        "type": "bytes",
+                        "name": "collectModuleInitData"
+                    },
+                    {
+                        "type": "address",
+                        "name": "collectNFT"
+                    },
+                    {
+                        "type": "address",
+                        "name": "gatedModule"
+                    },
+                    {
+                        "type": "bytes",
+                        "name": "gatedModuleInitData"
+                    }
+                ]
             }
         ]
     },
@@ -144,15 +132,22 @@ export const ABI_JSON = [
                         "name": "collectModule"
                     },
                     {
+                        "type": "bytes",
+                        "name": "collectModuleInitData"
+                    },
+                    {
                         "type": "address",
                         "name": "gatedModule"
+                    },
+                    {
+                        "type": "bytes",
+                        "name": "gatedModuleInitData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "contentURI"
                     }
                 ]
-            },
-            {
-                "type": "uint256",
-                "name": "timestamp",
-                "indexed": false
             }
         ]
     },

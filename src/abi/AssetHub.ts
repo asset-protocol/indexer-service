@@ -11,11 +11,8 @@ export const events = {
     ApprovalForAll: new LogEvent<([owner: string, operator: string, approved: boolean] & {owner: string, operator: string, approved: boolean})>(
         abi, '0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31'
     ),
-    AssetMetadataUpdate: new LogEvent<([assetId: bigint, contentURI: string, timestamp: bigint] & {assetId: bigint, contentURI: string, timestamp: bigint})>(
-        abi, '0x11ab6dd3fcd9fa27d6494e9dbe102367b34d49443db985e1d525cfed66f3935d'
-    ),
-    AssetUpdated: new LogEvent<([assetId: bigint, data: ([collectModule: string, gatedModule: string] & {collectModule: string, gatedModule: string}), timestamp: bigint] & {assetId: bigint, data: ([collectModule: string, gatedModule: string] & {collectModule: string, gatedModule: string}), timestamp: bigint})>(
-        abi, '0xd5e3b2dd66cda5d7895c235e983834b22e13a4e6ed49c2cffdd261fdf9ac02c0'
+    AssetUpdated: new LogEvent<([assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})] & {assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})})>(
+        abi, '0x7aeee9d30ee7c79f441ef04b78036801e4cccc30a2f943c72d88b060ed39d59c'
     ),
     BatchMetadataUpdate: new LogEvent<([_fromTokenId: bigint, _toTokenId: bigint] & {_fromTokenId: bigint, _toTokenId: bigint})>(
         abi, '0x6bd5c950a8d8df17f772f5af37cb3655737899cbf903264b9795592da439661c'
@@ -95,8 +92,8 @@ export const functions = {
     hubOwner: new Func<[], {}, string>(
         abi, '0x9c7eb413'
     ),
-    initialize: new Func<[name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string], {name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string}, []>(
-        abi, '0xdb0ed6a0'
+    initialize: new Func<[name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModule: string], {name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModule: string}, []>(
+        abi, '0xe56f2fe4'
     ),
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
@@ -152,8 +149,8 @@ export const functions = {
     transferOwnership: new Func<[newOwner: string], {newOwner: string}, []>(
         abi, '0xf2fde38b'
     ),
-    update: new Func<[assetId: bigint, data: ([collectModule: string, gatedModule: string] & {collectModule: string, gatedModule: string})], {assetId: bigint, data: ([collectModule: string, gatedModule: string] & {collectModule: string, gatedModule: string})}, []>(
-        abi, '0xa26a1490'
+    update: new Func<[assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})], {assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})}, []>(
+        abi, '0x40ec269b'
     ),
     upgradeToAndCall: new Func<[newImplementation: string, data: string], {newImplementation: string, data: string}, []>(
         abi, '0x4f1ef286'

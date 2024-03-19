@@ -10,10 +10,8 @@ import * as assethubEvents from '../abi/Events'
 import * as assethub from '../abi/AssetHub'
 import * as assethubContract from '../abi/AssetHub'
 import { Asset, AssetHub, AssetMetadataHistory, Collector } from "../model";
-import { getAddress } from "ethers";
+import { ZeroAddress, getAddress } from "ethers";
 import { Logger } from "@subsquid/logger";
-
-export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
 export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetCreated");
@@ -35,23 +33,6 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
   await parseMetadata(ctx, asset, logData.timestamp.toString())
   await ctx.store.save(asset)
   await saveAssetMetadataHistroy(ctx, log.getTransaction().hash, asset, logData.timestamp)
-}
-
-export async function handleAssetUpdateHubLog(ctx: DataHandlerContext<Store>, log: Log) {
-  ctx.log.info("Handling AssetUpdated");
-  const logData = assethub.events.AssetUpdated.decode(log)
-  const id = getAddress(log.address) + "-" + logData.assetId.toString();
-  const asset = await getAsset(ctx, id);
-  if (!asset) {
-    return;
-  }
-  if (asset.collectModule != logData.data.collectModule) {
-    asset.collectModule = logData.data.collectModule;
-  }
-  if (asset.collectNft != logData.data.gatedModule) {
-    asset.collectNft = logData.data.gatedModule;
-  }
-  await ctx.store.save(asset)
 }
 
 // export async function handleCollectNFTDeployedAssetHubLog(log: CollectNFTDeployedLog): Promise<void> {
@@ -100,7 +81,7 @@ export async function handleCollectedAssetHubLog(ctx: DataHandlerContext<Store>,
 export async function handleTransferAssetHubLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling TransferAsset");
   const logData = assethub.events.Transfer.decode(log)
-  if (logData.from == ZeroAddress) {
+  if (logData.from === ZeroAddress) {
     ctx.log.warn("First create asset before transfer, skipping...")
     return;
   }
@@ -113,16 +94,27 @@ export async function handleTransferAssetHubLog(ctx: DataHandlerContext<Store>, 
   await ctx.store.save(asset);
 }
 
-export async function handleAssetMetadataUpdateHubLog(ctx: DataHandlerContext<Store>, log: Log) {
+export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetMetadataUpdate");
-  const logData = assethub.events.AssetMetadataUpdate.decode(log)
+  const logData = assethub.events.AssetUpdated.decode(log)
   const id = getAddress(log.address) + "-" + logData.assetId.toString();
   const asset = await getAsset(ctx, id)
   if (!asset) {
+    ctx.log.error("asset not found: " + id)
     return;
   }
-  asset.contentUri = logData.contentURI;
-  await parseMetadata(ctx, asset, logData.timestamp.toString())
+  if (logData.data.contentURI != "") {
+    asset.contentUri = logData.data.contentURI;
+    await parseMetadata(ctx, asset, log.block.timestamp.toString())
+  }
+  if (logData.data.collectModule != ZeroAddress) {
+    asset.collectModule = logData.data.collectModule;
+    asset.collectModuleData = logData.data.collectModuleInitData;
+  }
+  if (logData.data.gatedModule !== ZeroAddress) {
+    asset.gatedModule = logData.data.gatedModule;
+    asset.gatedModuleData = logData.data.gatedModuleInitData;
+  }
   await ctx.store.save(asset)
   await saveAssetMetadataHistroy(ctx, id, asset, asset.timestamp)
 }

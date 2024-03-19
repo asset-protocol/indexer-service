@@ -153,11 +153,6 @@ export const ABI_JSON = [
     },
     {
         "type": "error",
-        "name": "InvalidGatedModule",
-        "inputs": []
-    },
-    {
-        "type": "error",
         "name": "InvalidInitialization",
         "inputs": []
     },
@@ -258,28 +253,6 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
-        "name": "AssetMetadataUpdate",
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "assetId",
-                "indexed": true
-            },
-            {
-                "type": "string",
-                "name": "contentURI",
-                "indexed": false
-            },
-            {
-                "type": "uint256",
-                "name": "timestamp",
-                "indexed": false
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
         "name": "AssetUpdated",
         "inputs": [
             {
@@ -297,15 +270,22 @@ export const ABI_JSON = [
                         "name": "collectModule"
                     },
                     {
+                        "type": "bytes",
+                        "name": "collectModuleInitData"
+                    },
+                    {
                         "type": "address",
                         "name": "gatedModule"
+                    },
+                    {
+                        "type": "bytes",
+                        "name": "gatedModuleInitData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "contentURI"
                     }
                 ]
-            },
-            {
-                "type": "uint256",
-                "name": "timestamp",
-                "indexed": false
             }
         ]
     },
@@ -821,6 +801,10 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "createAssetModule"
+            },
+            {
+                "type": "address",
+                "name": "whitelistedCollectModule"
             }
         ],
         "outputs": []
@@ -1148,8 +1132,20 @@ export const ABI_JSON = [
                         "name": "collectModule"
                     },
                     {
+                        "type": "bytes",
+                        "name": "collectModuleInitData"
+                    },
+                    {
                         "type": "address",
                         "name": "gatedModule"
+                    },
+                    {
+                        "type": "bytes",
+                        "name": "gatedModuleInitData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "contentURI"
                     }
                 ]
             }

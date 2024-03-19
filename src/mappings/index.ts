@@ -1,6 +1,6 @@
 import { DataHandlerContext, Log } from '@subsquid/evm-processor'
 import { Store } from '@subsquid/typeorm-store'
-import { handleAssetCreatedAssetHubLog, handleAssetHubUpgradedLog, handleAssetMetadataUpdateHubLog, handleAssetUpdateHubLog, handleCollectedAssetHubLog, handleTransferAssetHubLog } from './AssetHub';
+import { handleAssetCreatedAssetHubLog, handleAssetHubUpgradedLog, handleAssetUpdatedLog, handleAssetUpdatedLog, handleCollectedAssetHubLog, handleTransferAssetHubLog } from './AssetHub';
 import * as assethubEvents from '../abi/Events'
 import * as assethub from '../abi/AssetHub'
 import * as assethubManager from '../abi/AssetHubManager';
@@ -18,8 +18,8 @@ const handlers = new Map<string, Map<string, HandleLogFunc[]>>([
     [assethubEvents.events.AssetCreated.topic, [handleAssetCreatedAssetHubLog]],
     [assethub.events.Transfer.topic, [handleTransferAssetHubLog]],
     [assethub.events.Upgraded.topic, [handleAssetHubUpgradedLog]],
-    [assethub.events.AssetMetadataUpdate.topic, [handleAssetMetadataUpdateHubLog]],
-    [assethub.events.AssetUpdated.topic, [handleAssetUpdateHubLog]],
+    [assethub.events.AssetMetadataUpdate.topic, [handleAssetUpdatedLog]],
+    [assethub.events.AssetUpdated.topic, [handleAssetUpdatedLog]],
     [assethubEvents.events.Collected.topic, [handleCollectedAssetHubLog]]
   ])]
 ]);

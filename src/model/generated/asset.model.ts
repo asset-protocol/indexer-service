@@ -53,6 +53,9 @@ export class Asset {
     collectModule!: string | undefined | null
 
     @Column_("text", {nullable: true})
+    collectModuleData!: string | undefined | null
+
+    @Column_("text", {nullable: true})
     collectNft!: string | undefined | null
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
@@ -63,4 +66,7 @@ export class Asset {
 
     @Column_("text", {nullable: true})
     gatedModule!: string | undefined | null
+
+    @Column_("text", {nullable: true})
+    gatedModuleData!: string | undefined | null
 }

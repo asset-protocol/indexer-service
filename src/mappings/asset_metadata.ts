@@ -1,6 +1,4 @@
-import { DataHandlerContext } from "@subsquid/evm-processor";
 import { Logger } from "@subsquid/logger";
-import { Store } from "@subsquid/typeorm-store";
 
 const _importDynamic = new Function('modulePath', 'return import(modulePath)')
 

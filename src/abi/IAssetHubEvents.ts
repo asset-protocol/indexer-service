@@ -14,14 +14,11 @@ export const events = {
     ApprovalForAll: new LogEvent<([owner: string, operator: string, approved: boolean] & {owner: string, operator: string, approved: boolean})>(
         abi, '0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31'
     ),
-    AssetCreated: new LogEvent<([publisher: string, assetId: bigint, contentURI: string, collectNFT: string, collectModule: string, gatedModule: string, timestamp: bigint] & {publisher: string, assetId: bigint, contentURI: string, collectNFT: string, collectModule: string, gatedModule: string, timestamp: bigint})>(
-        abi, '0xdf057044abeb7c56e7927e1ed8c6ed4a5242bbf960f82f74e05ba886975b41ad'
+    AssetCreated: new LogEvent<([publisher: string, assetId: bigint, data: ([contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, collectNFT: string, gatedModule: string, gatedModuleInitData: string] & {contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, collectNFT: string, gatedModule: string, gatedModuleInitData: string})] & {publisher: string, assetId: bigint, data: ([contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, collectNFT: string, gatedModule: string, gatedModuleInitData: string] & {contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, collectNFT: string, gatedModule: string, gatedModuleInitData: string})})>(
+        abi, '0x94f2dcff2640fe7490103a1df94590ade351db0e0b88ec0d14fef2c81aa26cab'
     ),
-    AssetMetadataUpdate: new LogEvent<([assetId: bigint, contentURI: string, timestamp: bigint] & {assetId: bigint, contentURI: string, timestamp: bigint})>(
-        abi, '0x11ab6dd3fcd9fa27d6494e9dbe102367b34d49443db985e1d525cfed66f3935d'
-    ),
-    AssetUpdated: new LogEvent<([assetId: bigint, data: ([collectModule: string, gatedModule: string] & {collectModule: string, gatedModule: string}), timestamp: bigint] & {assetId: bigint, data: ([collectModule: string, gatedModule: string] & {collectModule: string, gatedModule: string}), timestamp: bigint})>(
-        abi, '0xd5e3b2dd66cda5d7895c235e983834b22e13a4e6ed49c2cffdd261fdf9ac02c0'
+    AssetUpdated: new LogEvent<([assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})] & {assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})})>(
+        abi, '0x7aeee9d30ee7c79f441ef04b78036801e4cccc30a2f943c72d88b060ed39d59c'
     ),
     BatchMetadataUpdate: new LogEvent<([_fromTokenId: bigint, _toTokenId: bigint] & {_fromTokenId: bigint, _toTokenId: bigint})>(
         abi, '0x6bd5c950a8d8df17f772f5af37cb3655737899cbf903264b9795592da439661c'

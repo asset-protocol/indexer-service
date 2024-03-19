@@ -50,7 +50,7 @@ export const processor = new EvmBatchProcessor()
             assethubEvents.events.AssetCreated.topic,
             assethubEvents.events.Collected.topic,
             assethub.events.Transfer.topic,
-            assethub.events.AssetMetadataUpdate.topic,
+            assethub.events.AssetUpdated.topic,
             assethub.events.Upgraded.topic,
         ],
         range: { from: assetHubDeployedStartBlock },
