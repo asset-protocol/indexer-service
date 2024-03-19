@@ -4,21 +4,25 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: assethub
       POSTGRES_PASSWORD: postgres
     volumes:
       - .data/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
       # command: ["postgres", "-c", "log_statement=all"]
-    shm_size: 1gb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     image: asset-protocol/indexer-service:latest
     environment:
-      - DB_NAME=assethub
       - DB_PORT=5432
       - DB_HOST=db
+      - DB_USER=postgres
+      - DB_DATABASE=postgres
       - DB_PASS=postgres
       - GQL_PORT=3000
       - IPFS_GATEWAY=https://ipfs.io/ipfs
@@ -28,14 +32,17 @@ services:
       - "3000:3000"
     command: ["sqd", "serve:prod"]
     depends_on:
-      - db
+      "db":
+        condition: service_healthy
+    restart: always
 
   processor:
     image: asset-protocol/indexer-service:latest
     environment:
-      - DB_NAME=assethub
       - DB_PORT=5432
       - DB_HOST=db
+      - DB_USER=postgres
+      - DB_DATABASE=postgres
       - DB_PASS=postgres
       - RPC_ENDPOINT=https://rpc-mumbai.polygon.technology
       - ASSETHUB_DEPLOYED_START_BLOCK=47191328
@@ -46,4 +53,5 @@ services:
       - "4350:4350"
     command: ["sqd", "process:prod"]
     depends_on:
-      - db
+      "db":
+        condition: service_healthy
