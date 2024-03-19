@@ -53,7 +53,7 @@ export class Asset {
     collectModule!: string | undefined | null
 
     @Column_("text", {nullable: true})
-    collectModuleData!: string | undefined | null
+    collectModuleInitData!: string | undefined | null
 
     @Column_("text", {nullable: true})
     collectNft!: string | undefined | null
@@ -68,5 +68,5 @@ export class Asset {
     gatedModule!: string | undefined | null
 
     @Column_("text", {nullable: true})
-    gatedModuleData!: string | undefined | null
+    gatedModuleInitData!: string | undefined | null
 }

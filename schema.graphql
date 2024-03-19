@@ -20,14 +20,14 @@ type Asset @entity {
 
   # collect
   collectModule: String
-  collectModuleData: String
+  collectModuleInitData: String
   collectNft: String
   collectCount: BigInt
   collectors: [Collector!] @derivedFrom(field: "asset")
 
   # gated
   gatedModule: String
-  gatedModuleData: String
+  gatedModuleInitData: String
 }
 
 type AssetMetadataHistory @entity {

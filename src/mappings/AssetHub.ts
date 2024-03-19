@@ -24,6 +24,9 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
     contentUri: logData.data.contentURI,
     publisher: logData.publisher,
     collectModule: logData.data.collectModule,
+    collectModuleInitData: logData.data.collectModuleInitData,
+    gatedModule: logData.data.gatedModule,
+    gatedModuleInitData: logData.data.gatedModuleInitData,
     collectNft: logData.data.collectNFT,
     timestamp: BigInt(log.block.timestamp),
     hash: log.getTransaction().hash,
@@ -109,11 +112,11 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
   }
   if (logData.data.collectModule != ZeroAddress) {
     asset.collectModule = logData.data.collectModule;
-    asset.collectModuleData = logData.data.collectModuleInitData;
+    asset.collectModuleInitData = logData.data.collectModuleInitData;
   }
   if (logData.data.gatedModule !== ZeroAddress) {
     asset.gatedModule = logData.data.gatedModule;
-    asset.gatedModuleData = logData.data.gatedModuleInitData;
+    asset.gatedModuleInitData = logData.data.gatedModuleInitData;
   }
   await ctx.store.save(asset)
 }

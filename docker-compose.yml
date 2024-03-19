@@ -43,7 +43,7 @@ services:
       - DB_DATABASE=postgres
       - DB_PASS=postgres
       - RPC_ENDPOINT=https://rpc-mumbai.polygon.technology
-      - ASSETHUB_DEPLOYED_START_BLOCK=47191328
+      - ASSETHUB_DEPLOYED_START_BLOCK=47229932
       - IPFS_GATEWAY=https://ipfs.io/ipfs
       - ARWAVE_GATEWAY=https://arweave.net
     ports:
