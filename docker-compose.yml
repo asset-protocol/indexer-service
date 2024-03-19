@@ -4,7 +4,6 @@ services:
   db:
     image: postgres:15
     environment:
-      DB_NAME: assethub
       POSTGRES_PASSWORD: postgres
     volumes:
       - .data/postgres:/var/lib/postgresql/data
@@ -22,7 +21,6 @@ services:
     environment:
       - DB_PORT=5432
       - DB_HOST=db
-      - DB_NAME=assethub
       - DB_DATABASE=postgres
       - DB_PASS=postgres
       - GQL_PORT=3000
@@ -42,7 +40,6 @@ services:
     environment:
       - DB_PORT=5432
       - DB_HOST=db
-      - DB_NAME=assethub
       - DB_DATABASE=postgres
       - DB_PASS=postgres
       - RPC_ENDPOINT=https://rpc-mumbai.polygon.technology
