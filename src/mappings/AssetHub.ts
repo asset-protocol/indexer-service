@@ -123,13 +123,14 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
 
 export async function handleAssetHubUpgradedLog(ctx: DataHandlerContext<Store>, log: Log): Promise<void> {
   ctx.log.info("Handling AssetHubUpgraded");
-  const logData = assethub.events.AssetUpdated.decode(log)
+  const logData = assethub.events.Upgraded.decode(log)
   const hub = await ctx.store.get(AssetHub, getAddress(log.address));
   if (!hub) {
     ctx.log.error("AssetHub not found: " + getAddress(log.address));
     return;
   }
-  const contract = new assethubContract.Contract({ _chain: ctx._chain, block: log.block }, getAddress(log.address))
+  hub.implementation = logData.implementation;
+  const contract = new assethubContract.Contract({ _chain: ctx._chain, block: log.block }, getAddress(log.address));
   hub.version = await contract.version();
   await ctx.store.save(hub);
 }
