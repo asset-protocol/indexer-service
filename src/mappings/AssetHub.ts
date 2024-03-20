@@ -130,8 +130,6 @@ export async function handleAssetHubUpgradedLog(ctx: DataHandlerContext<Store>, 
     return;
   }
   hub.implementation = logData.implementation;
-  const contract = new assethubContract.Contract({ _chain: ctx._chain, block: log.block }, getAddress(log.address));
-  hub.version = await contract.version();
   await ctx.store.save(hub);
 }
 
