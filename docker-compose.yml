@@ -24,7 +24,7 @@ services:
       - DB_DATABASE=postgres
       - DB_PASS=postgres
       - GQL_PORT=3000
-      - IPFS_GATEWAY=https://ipfs.io/ipfs
+      - IPFS_GATEWAY=https://lavender-okay-xerinae-416.mypinata.cloud/ipfs
       - ARWAVE_GATEWAY=https://arweave.net
     ports:
       # GraphQL endpoint at port 4350
@@ -44,7 +44,7 @@ services:
       - DB_PASS=postgres
       - RPC_ENDPOINT=https://rpc-mumbai.polygon.technology
       - ASSETHUB_DEPLOYED_START_BLOCK=47229932
-      - IPFS_GATEWAY=https://ipfs.io/ipfs
+      - IPFS_GATEWAY=https://lavender-okay-xerinae-416.mypinata.cloud/ipfs
       - ARWAVE_GATEWAY=https://arweave.net
     ports:
       # prometheus metrics exposed at port 3000
