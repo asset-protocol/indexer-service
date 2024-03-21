@@ -7,7 +7,6 @@ import { fetchMetadata } from "./asset_metadata";
 import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
 import * as assethub from '../abi/IAssetHubEvents'
-import * as assethubContract from '../abi/AssetHub'
 import { Asset, AssetHub, AssetMetadataHistory, Collector } from "../model";
 import { ZeroAddress, getAddress } from "ethers";
 import { Logger } from "@subsquid/logger";
@@ -28,6 +27,7 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
     gatedModule: logData.data.gatedModule,
     gatedModuleInitData: logData.data.gatedModuleInitData,
     collectNft: logData.data.collectNFT,
+    collectCount: BigInt(0),
     timestamp: BigInt(log.block.timestamp),
     hash: log.getTransaction().hash,
   });
