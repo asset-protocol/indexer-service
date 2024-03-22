@@ -1,0 +1,41 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "scripts/**"
+      - "test/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build and push docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: assetprotocol/indexer:latest
+          build-args: |
+            GH_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+            GH_PASSWORD=${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Remote SSH Commands
+        # You may pin to the exact commit or the version.
+        # uses: fifsky/ssh-action@58b3c484be9c20cf118fd3b939a6d2cb3c769512
+        uses: fifsky/ssh-action@v0.0.6
+        with:
+          # Command to execute on the remote server.
+          command: |
+            sudo docker compose -f ${{ secrets.SERVER_SSH_FILEPATH }} pull
+            sudo docker compose -f ${{ secrets.SERVER_SSH_FILEPATH }} up -d api
+            sudo docker image prune -f
+          # Hostname or IP address of the server.
+          host: ${{ secrets.SERVER_SSH_HOST }}
+          # Username for authentication.
+          user: ${{ secrets.SERVER_SSH_USERNAME }}
+          # String that contains a private key for either key-based or hostbased user authentication (OpenSSH format)
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}

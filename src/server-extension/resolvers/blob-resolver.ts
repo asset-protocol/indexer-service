@@ -25,7 +25,7 @@ export class BlobResolver {
           throw new Error(res.statusText);
         }
       }).then((blob) => {
-        const b64 = blob.toString('base64');
+        const b64 = blob.toString('binary');
         resolve(b64);
       }).catch((e: any) => {
         logger.error(`fetch ${url} blob failed: ${e.message}`);
