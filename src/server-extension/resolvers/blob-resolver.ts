@@ -16,10 +16,11 @@ export class BlobResolver {
     return new Promise((resolve, reject) => {
       fetch(url).then((res: any) => {
         if (res.ok) {
+          logger.info("fetched blob size: " + res.size)
           if (res.size > 200 * 1024 * 1024) {
             throw new Error("body is limmited to 200mb")
           }
-          return res.blob();
+          return res.arrayBuffer();
         } else {
           throw new Error(res.statusText);
         }
