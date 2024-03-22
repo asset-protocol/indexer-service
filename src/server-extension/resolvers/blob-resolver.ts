@@ -7,10 +7,10 @@ import { fetch } from '../../common/fetch';
 export class BlobResolver {
   constructor(private tx: () => Promise<EntityManager>) { }
 
-  @Query(() => Blob, { description: "fetch url blob" })
+  @Query(() => String, { description: "fetch url blob" })
   fetchBlob(
     @Arg('url', { nullable: false, description: "original url" }) url: string,
-  ): Promise<Blob | null> {
+  ): Promise<string> {
     const logger = createLogger('sqd:graphql-server:blob-resolver');
     return new Promise((resolve, reject) => {
       fetch(url).then((res) => {
@@ -19,16 +19,16 @@ export class BlobResolver {
           if (res.size > 200 * 1024 * 1024) {
             throw new Error("body is limmited to 200mb")
           }
-          return res.blob();
+          return res.arrayBuffer();
         } else {
           throw new Error(res.statusText);
         }
       }).then((blob) => {
-        // const bb = Buffer.from(blob).toString("binary");
-        resolve(blob);
+        const bb = Buffer.from(blob).toString("binary");
+        resolve(bb);
       }).catch((e: any) => {
         logger.error(`fetch ${url} blob failed: ${e.message}`);
-        resolve(null);
+        resolve("");
       });
     });
   }
