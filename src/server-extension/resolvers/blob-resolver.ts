@@ -8,7 +8,7 @@ const _importDynamic = new Function('modulePath', 'return import(modulePath)')
 export class BlobResolver {
   constructor(private tx: () => Promise<EntityManager>) { }
 
-  @Query(() => Boolean, { description: "fetch url blob" })
+  @Query(() => String, { description: "fetch url blob" })
   fetchBlob(
     @Arg('url', { nullable: false, description: "original url" }) url: string,
   ): Promise<string> {
