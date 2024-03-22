@@ -24,15 +24,9 @@ export class BlobResolver {
           throw new Error(res.statusText);
         }
       }).then((blob: any) => {
-        const fr = new FileReader();
-        fr.readAsBinaryString(blob);
-        fr.onloadend = text => {
-          if (fr.result) {
-            resolve(fr.result as string);
-          } else {
-            resolve("");
-          }
-        }
+        const fr = new TextDecoder();
+        const str = fr.decode(blob);
+        resolve(str);
       }).catch((e: any) => {
         logger.error(`fetch ${url} blob failed: ${e.message}`);
         resolve("");
