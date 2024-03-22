@@ -8,12 +8,12 @@ export class BlobResolver {
   constructor(private tx: () => Promise<EntityManager>) { }
 
   @Query(() => Boolean, { description: "fetch url blob" })
-  async fetchBlob(
+  fetchBlob(
     @Arg('url', { nullable: false, description: "original url" }) url: string,
-  ): Promise<Blob | undefined> {
+  ): Promise<string | null> {
     const logger = createLogger('sqd:graphql-server:blob-resolver');
-    try {
-      return await fetch(url).then(res => {
+    return new Promise((resolve, reject) => {
+      fetch(url).then(res => {
         if (res.ok) {
           if (res.size > 200 * 1024 * 1024) {
             throw new Error("body is limmited to 200mb")
@@ -22,10 +22,20 @@ export class BlobResolver {
         } else {
           throw new Error(res.statusText);
         }
+      }).then(blob => {
+        const fr = new FileReader();
+        fr.readAsBinaryString(blob);
+        fr.onloadend = text => {
+          if (fr.result) {
+            resolve(fr.result as string);
+          } else {
+            resolve(null);
+          }
+        }
+      }).catch(e => {
+        logger.error(`fetch ${url} blob failed: ${e.message}`);
+        resolve(null);
       });
-    }
-    catch (e: any) {
-      logger.error(`fetch ${url} blob failed: ${e.message}`)
-    }
+    });
   }
-} 
+}
