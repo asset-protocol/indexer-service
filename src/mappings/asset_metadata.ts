@@ -1,5 +1,5 @@
 import { Logger } from "@subsquid/logger";
-import '../common/fetch';
+import { fetch } from '../common/fetch';
 
 export type AssetMetaData = {
   type?: string;
