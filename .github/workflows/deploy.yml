@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -25,7 +25,6 @@ jobs:
           context: .
           push: true
           tags: assetprotocol/indexer:latest
-
 
       - name: Remote SSH Commands
         # You may pin to the exact commit or the version.
