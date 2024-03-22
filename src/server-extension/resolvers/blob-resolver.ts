@@ -2,7 +2,9 @@ import fetch from "node-fetch";
 import { Arg, Query, Resolver } from "type-graphql";
 import { EntityManager } from "typeorm";
 import { createLogger } from '@subsquid/logger'
+import '../common/fetch';
 
+const _importDynamic = new Function('modulePath', 'return import(modulePath)')
 @Resolver()
 export class BlobResolver {
   constructor(private tx: () => Promise<EntityManager>) { }
@@ -10,7 +12,7 @@ export class BlobResolver {
   @Query(() => Boolean, { description: "fetch url blob" })
   fetchBlob(
     @Arg('url', { nullable: false, description: "original url" }) url: string,
-  ): Promise<string | null> {
+  ): Promise<string> {
     const logger = createLogger('sqd:graphql-server:blob-resolver');
     return new Promise((resolve, reject) => {
       fetch(url).then(res => {
@@ -29,12 +31,12 @@ export class BlobResolver {
           if (fr.result) {
             resolve(fr.result as string);
           } else {
-            resolve(null);
+            resolve("");
           }
         }
       }).catch(e => {
         logger.error(`fetch ${url} blob failed: ${e.message}`);
-        resolve(null);
+        resolve("");
       });
     });
   }
