@@ -143,6 +143,10 @@ export async function parseMetadata(ctx: { log: Logger }, asset: Asset, timestam
     metadata.timestamp = timestamp
     asset.name = metadata.name;
     asset.type = metadata.type;
+    asset.image = metadata.image;
+    asset.description = metadata.description;
+    asset.content = metadata.content;
+    asset.extra = metadata.extra ? JSON.stringify(metadata.extra) : undefined;
     asset.tags = metadata.tags ? JSON.stringify(metadata.tags) : undefined;
     asset.metadata = JSON.stringify(metadata);
   }

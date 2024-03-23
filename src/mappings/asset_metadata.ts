@@ -2,11 +2,11 @@ import { Logger } from "@subsquid/logger";
 import { fetch } from '../common/fetch';
 
 export type AssetMetaData = {
-  type?: string;
-  name?: string;
-  description?: string;
+  type: string;
+  name: string;
+  content: string;
   image?: string;
-  content?: string;
+  description?: string;
   tags?: string[];
   extra?: any;
   timestamp?: string;

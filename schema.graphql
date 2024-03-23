@@ -14,8 +14,12 @@ type Asset @entity {
   # metadata
   name: String
   type: String
+  image: String
+  description: String
   tags: String
+  extra: String
   metadata: String
+  content: String
   metadataHistories: [AssetMetadataHistory!] @derivedFrom(field: "asset")
 
   # collect

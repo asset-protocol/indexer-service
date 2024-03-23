@@ -41,10 +41,22 @@ export class Asset {
     type!: string | undefined | null
 
     @Column_("text", {nullable: true})
+    image!: string | undefined | null
+
+    @Column_("text", {nullable: true})
+    description!: string | undefined | null
+
+    @Column_("text", {nullable: true})
     tags!: string | undefined | null
 
     @Column_("text", {nullable: true})
+    extra!: string | undefined | null
+
+    @Column_("text", {nullable: true})
     metadata!: string | undefined | null
+
+    @Column_("text", {nullable: true})
+    content!: string | undefined | null
 
     @OneToMany_(() => AssetMetadataHistory, e => e.asset)
     metadataHistories!: AssetMetadataHistory[]
