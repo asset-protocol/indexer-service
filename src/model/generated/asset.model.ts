@@ -34,6 +34,18 @@ export class Asset {
     @Column_("text", {nullable: true})
     hash!: string | undefined | null
 
+    @Index_()
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    lastUpdatedAt!: bigint | undefined | null
+
+    @Index_()
+    @Column_("text", {nullable: true})
+    query1!: string | undefined | null
+
+    @Index_()
+    @Column_("text", {nullable: true})
+    query2!: string | undefined | null
+
     @Column_("text", {nullable: true})
     name!: string | undefined | null
 

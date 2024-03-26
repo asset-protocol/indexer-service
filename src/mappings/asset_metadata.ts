@@ -8,6 +8,8 @@ export type AssetMetaData = {
   image?: string;
   description?: string;
   tags?: string[];
+  query1?: string;
+  query2?: string;
   extra?: any;
   timestamp?: string;
 }

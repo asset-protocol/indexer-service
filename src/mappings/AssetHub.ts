@@ -29,6 +29,7 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
     collectNft: logData.data.collectNFT,
     collectCount: BigInt(0),
     timestamp: BigInt(log.block.timestamp),
+    lastUpdatedAt: BigInt(log.block.timestamp),
     hash: log.getTransaction().hash,
   });
 
@@ -107,8 +108,9 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
   }
   if (logData.data.contentURI != "") {
     asset.contentUri = logData.data.contentURI;
-    await parseMetadata(ctx, asset, log.block.timestamp.toString())
-    await saveAssetMetadataHistroy(ctx, id, asset, asset.timestamp)
+    await parseMetadata(ctx, asset, log.block.timestamp.toString());
+    await saveAssetMetadataHistroy(ctx, id, asset, asset.timestamp);
+    asset.lastUpdatedAt = BigInt(log.block.timestamp);
   }
   if (logData.data.collectModule != ZeroAddress) {
     asset.collectModule = logData.data.collectModule;
@@ -149,6 +151,8 @@ export async function parseMetadata(ctx: { log: Logger }, asset: Asset, timestam
     asset.extra = metadata.extra ? JSON.stringify(metadata.extra) : undefined;
     asset.tags = metadata.tags ? JSON.stringify(metadata.tags) : undefined;
     asset.metadata = JSON.stringify(metadata);
+    asset.query1 = metadata.query1;
+    asset.query2 = metadata.query2;
   }
 }
 

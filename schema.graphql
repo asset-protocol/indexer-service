@@ -10,6 +10,9 @@ type Asset @entity {
   contentUri: String
   timestamp: BigInt @index
   hash: String
+  lastUpdatedAt: BigInt @index
+  query1: String @index # query1 and query2 are used for searching
+  query2: String @index
 
   # metadata
   name: String
