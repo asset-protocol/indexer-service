@@ -4,7 +4,6 @@ import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
 import * as assethubManager from '../abi/AssetHubManager';
 import { AssetHub } from "../model";
-import { decodeBytes32String } from "ethers";
 
 let _assethubs: Set<string> | undefined;
 
@@ -15,7 +14,7 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
   let assetHub = new AssetHub({
     id: logData.assetHub,
     admin: logData.admin,
-    name: decodeBytes32String(logData.name.substring(2)),
+    name: logData.name,
     feeCollectModule: logData.data.feeCollectModule,
     tokenCollectModule: logData.data.tokenCollectModule,
     nftGatedModule: logData.data.nftGatedModule,

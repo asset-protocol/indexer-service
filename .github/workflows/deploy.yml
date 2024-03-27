@@ -34,7 +34,7 @@ jobs:
           # Command to execute on the remote server.
           command: |
             sudo docker compose -f ${{ secrets.SERVER_SSH_FILEPATH }} pull
-            sudo docker compose -f ${{ secrets.SERVER_SSH_FILEPATH }} up -d api
+            sudo docker compose -f ${{ secrets.SERVER_SSH_FILEPATH }} up -d
             sudo docker image prune -f
           # Hostname or IP address of the server.
           host: ${{ secrets.SERVER_SSH_HOST }}

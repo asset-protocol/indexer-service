@@ -116,13 +116,13 @@
         "type": "address"
       },
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "string",
         "name": "name",
         "type": "string"
       },
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "address",
         "name": "assetHub",
         "type": "address"

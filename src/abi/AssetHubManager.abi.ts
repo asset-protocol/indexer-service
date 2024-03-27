@@ -112,12 +112,12 @@ export const ABI_JSON = [
             {
                 "type": "string",
                 "name": "name",
-                "indexed": true
+                "indexed": false
             },
             {
                 "type": "address",
                 "name": "assetHub",
-                "indexed": true
+                "indexed": false
             },
             {
                 "type": "tuple",
