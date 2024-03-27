@@ -14,6 +14,10 @@ import * as assethub from './abi/IAssetHubEvents'
 
 const assetHubDeployedStartBlock = Number.parseInt(process.env.ASSETHUB_DEPLOYED_START_BLOCK ?? "0")
 
+if (!ASSETHUB_MANAGER) {
+    throw new Error("ASSETHUB_MANAGER is not set")
+}
+
 export const processor = new EvmBatchProcessor()
     // Lookup archive by the network name in Subsquid registry
     // See https://docs.subsquid.io/evm-indexing/supported-networks/

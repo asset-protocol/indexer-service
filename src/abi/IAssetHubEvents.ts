@@ -14,8 +14,8 @@ export const events = {
     ApprovalForAll: new LogEvent<([owner: string, operator: string, approved: boolean] & {owner: string, operator: string, approved: boolean})>(
         abi, '0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31'
     ),
-    AssetCreated: new LogEvent<([publisher: string, assetId: bigint, data: ([contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, collectNFT: string, gatedModule: string, gatedModuleInitData: string] & {contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, collectNFT: string, gatedModule: string, gatedModuleInitData: string})] & {publisher: string, assetId: bigint, data: ([contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, collectNFT: string, gatedModule: string, gatedModuleInitData: string] & {contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, collectNFT: string, gatedModule: string, gatedModuleInitData: string})})>(
-        abi, '0x94f2dcff2640fe7490103a1df94590ade351db0e0b88ec0d14fef2c81aa26cab'
+    AssetCreated: new LogEvent<([assetId: bigint, publisher: string, collectNFT: string, createModuleData: string] & {assetId: bigint, publisher: string, collectNFT: string, createModuleData: string})>(
+        abi, '0x2e9bf1ec7ad60e6432a25ef1e6b7f292cca5768b33eea2aedf1827ca6749af24'
     ),
     AssetUpdated: new LogEvent<([assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})] & {assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})})>(
         abi, '0x7aeee9d30ee7c79f441ef04b78036801e4cccc30a2f943c72d88b060ed39d59c'

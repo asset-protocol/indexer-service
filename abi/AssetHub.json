@@ -666,7 +666,7 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -868,9 +868,9 @@
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "whitelistedCollectModule",
-        "type": "address"
+        "internalType": "address[]",
+        "name": "whitelistedCollectModules",
+        "type": "address[]"
       }
     ],
     "name": "initialize",

@@ -112,27 +112,39 @@ export const ABI_JSON = [
             {
                 "type": "string",
                 "name": "name",
-                "indexed": false
+                "indexed": true
             },
             {
                 "type": "address",
                 "name": "assetHub",
-                "indexed": false
+                "indexed": true
             },
             {
-                "type": "address",
-                "name": "feeCollectModule",
-                "indexed": false
-            },
-            {
-                "type": "address",
-                "name": "nftGatedModule",
-                "indexed": false
-            },
-            {
-                "type": "address",
-                "name": "assetCreateModule",
-                "indexed": false
+                "type": "tuple",
+                "name": "data",
+                "indexed": false,
+                "components": [
+                    {
+                        "type": "address",
+                        "name": "collectNFT"
+                    },
+                    {
+                        "type": "address",
+                        "name": "nftGatedModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "assetCreateModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "tokenCollectModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "feeCollectModule"
+                    }
+                ]
             }
         ]
     },
@@ -227,11 +239,7 @@ export const ABI_JSON = [
                 "components": [
                     {
                         "type": "address",
-                        "name": "assetHub"
-                    },
-                    {
-                        "type": "address",
-                        "name": "feeCollectModule"
+                        "name": "collectNFT"
                     },
                     {
                         "type": "address",
@@ -243,7 +251,11 @@ export const ABI_JSON = [
                     },
                     {
                         "type": "address",
-                        "name": "collectNFT"
+                        "name": "tokenCollectModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "feeCollectModule"
                     }
                 ]
             }
@@ -268,11 +280,7 @@ export const ABI_JSON = [
                 "components": [
                     {
                         "type": "address",
-                        "name": "assetHub"
-                    },
-                    {
-                        "type": "address",
-                        "name": "feeCollectModule"
+                        "name": "collectNFT"
                     },
                     {
                         "type": "address",
@@ -284,31 +292,13 @@ export const ABI_JSON = [
                     },
                     {
                         "type": "address",
-                        "name": "collectNFT"
+                        "name": "tokenCollectModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "feeCollectModule"
                     }
                 ]
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "createFeeAssetCreateModule",
-        "constant": false,
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address",
-                "name": "hub"
-            },
-            {
-                "type": "bytes",
-                "name": "initData"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "address",
-                "name": ""
             }
         ]
     },
@@ -355,6 +345,50 @@ export const ABI_JSON = [
     {
         "type": "function",
         "name": "createNftAssetGatedModuleImpl",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "hub"
+            },
+            {
+                "type": "bytes",
+                "name": "initData"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "address",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "createTokenAssetCreateModule",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "hub"
+            },
+            {
+                "type": "bytes",
+                "name": "initData"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "address",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "createTokenCollectModuleImpl",
         "constant": false,
         "payable": false,
         "inputs": [
@@ -447,7 +481,7 @@ export const ABI_JSON = [
                     },
                     {
                         "type": "address",
-                        "name": "feeCollectModuleFactory"
+                        "name": "tokenCollectModuleFactory"
                     },
                     {
                         "type": "address",
@@ -455,11 +489,15 @@ export const ABI_JSON = [
                     },
                     {
                         "type": "address",
-                        "name": "feeCreateAssetModuleFactory"
+                        "name": "tokenAssetCreateModuleFactory"
                     },
                     {
                         "type": "address",
                         "name": "collectNFTFactory"
+                    },
+                    {
+                        "type": "address",
+                        "name": "feeCollectModuleFactory"
                     }
                 ]
             }
@@ -481,7 +519,7 @@ export const ABI_JSON = [
                     },
                     {
                         "type": "address",
-                        "name": "feeCollectModuleFactory"
+                        "name": "tokenCollectModuleFactory"
                     },
                     {
                         "type": "address",
@@ -489,11 +527,15 @@ export const ABI_JSON = [
                     },
                     {
                         "type": "address",
-                        "name": "feeCreateAssetModuleFactory"
+                        "name": "tokenAssetCreateModuleFactory"
                     },
                     {
                         "type": "address",
                         "name": "collectNFTFactory"
+                    },
+                    {
+                        "type": "address",
+                        "name": "feeCollectModuleFactory"
                     }
                 ]
             }
@@ -552,7 +594,7 @@ export const ABI_JSON = [
                     },
                     {
                         "type": "address",
-                        "name": "feeCollectModuleFactory"
+                        "name": "tokenCollectModuleFactory"
                     },
                     {
                         "type": "address",
@@ -560,11 +602,15 @@ export const ABI_JSON = [
                     },
                     {
                         "type": "address",
-                        "name": "feeCreateAssetModuleFactory"
+                        "name": "tokenAssetCreateModuleFactory"
                     },
                     {
                         "type": "address",
                         "name": "collectNFTFactory"
+                    },
+                    {
+                        "type": "address",
+                        "name": "feeCollectModuleFactory"
                     }
                 ]
             }

@@ -116,34 +116,49 @@
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "string",
         "name": "name",
         "type": "string"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "assetHub",
         "type": "address"
       },
       {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "collectNFT",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "nftGatedModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "assetCreateModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenCollectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModule",
+            "type": "address"
+          }
+        ],
         "indexed": false,
-        "internalType": "address",
-        "name": "feeCollectModule",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "nftGatedModule",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "assetCreateModule",
-        "type": "address"
+        "internalType": "struct AssetHubInfo",
+        "name": "data",
+        "type": "tuple"
       }
     ],
     "name": "AssetHubDeployed",
@@ -240,12 +255,7 @@
         "components": [
           {
             "internalType": "address",
-            "name": "assetHub",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "feeCollectModule",
+            "name": "collectNFT",
             "type": "address"
           },
           {
@@ -260,7 +270,12 @@
           },
           {
             "internalType": "address",
-            "name": "collectNFT",
+            "name": "tokenCollectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModule",
             "type": "address"
           }
         ],
@@ -286,12 +301,7 @@
         "components": [
           {
             "internalType": "address",
-            "name": "assetHub",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "feeCollectModule",
+            "name": "collectNFT",
             "type": "address"
           },
           {
@@ -306,7 +316,12 @@
           },
           {
             "internalType": "address",
-            "name": "collectNFT",
+            "name": "tokenCollectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModule",
             "type": "address"
           }
         ],
@@ -316,30 +331,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "hub",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "initData",
-        "type": "bytes"
-      }
-    ],
-    "name": "createFeeAssetCreateModule",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -399,6 +390,54 @@
       }
     ],
     "name": "createNftAssetGatedModuleImpl",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "hub",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "initData",
+        "type": "bytes"
+      }
+    ],
+    "name": "createTokenAssetCreateModule",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "hub",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "initData",
+        "type": "bytes"
+      }
+    ],
+    "name": "createTokenCollectModuleImpl",
     "outputs": [
       {
         "internalType": "address",
@@ -482,7 +521,7 @@
           },
           {
             "internalType": "address",
-            "name": "feeCollectModuleFactory",
+            "name": "tokenCollectModuleFactory",
             "type": "address"
           },
           {
@@ -492,12 +531,17 @@
           },
           {
             "internalType": "address",
-            "name": "feeCreateAssetModuleFactory",
+            "name": "tokenAssetCreateModuleFactory",
             "type": "address"
           },
           {
             "internalType": "address",
             "name": "collectNFTFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModuleFactory",
             "type": "address"
           }
         ],
@@ -520,7 +564,7 @@
           },
           {
             "internalType": "address",
-            "name": "feeCollectModuleFactory",
+            "name": "tokenCollectModuleFactory",
             "type": "address"
           },
           {
@@ -530,12 +574,17 @@
           },
           {
             "internalType": "address",
-            "name": "feeCreateAssetModuleFactory",
+            "name": "tokenAssetCreateModuleFactory",
             "type": "address"
           },
           {
             "internalType": "address",
             "name": "collectNFTFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModuleFactory",
             "type": "address"
           }
         ],
@@ -593,7 +642,7 @@
           },
           {
             "internalType": "address",
-            "name": "feeCollectModuleFactory",
+            "name": "tokenCollectModuleFactory",
             "type": "address"
           },
           {
@@ -603,12 +652,17 @@
           },
           {
             "internalType": "address",
-            "name": "feeCreateAssetModuleFactory",
+            "name": "tokenAssetCreateModuleFactory",
             "type": "address"
           },
           {
             "internalType": "address",
             "name": "collectNFTFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModuleFactory",
             "type": "address"
           }
         ],

@@ -73,58 +73,27 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "publisher",
-        "type": "address"
-      },
-      {
-        "indexed": true,
         "internalType": "uint256",
         "name": "assetId",
         "type": "uint256"
       },
       {
-        "components": [
-          {
-            "internalType": "string",
-            "name": "contentURI",
-            "type": "string"
-          },
-          {
-            "internalType": "bytes",
-            "name": "assetCreateModuleData",
-            "type": "bytes"
-          },
-          {
-            "internalType": "address",
-            "name": "collectModule",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "collectModuleInitData",
-            "type": "bytes"
-          },
-          {
-            "internalType": "address",
-            "name": "collectNFT",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "gatedModule",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "gatedModuleInitData",
-            "type": "bytes"
-          }
-        ],
+        "indexed": true,
+        "internalType": "address",
+        "name": "publisher",
+        "type": "address"
+      },
+      {
         "indexed": false,
-        "internalType": "struct DataTypes.AssetCreateEventData",
-        "name": "data",
-        "type": "tuple"
+        "internalType": "address",
+        "name": "collectNFT",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "createModuleData",
+        "type": "bytes"
       }
     ],
     "name": "AssetCreated",

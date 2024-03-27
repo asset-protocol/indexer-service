@@ -11,6 +11,8 @@ import { Asset, AssetHub, AssetMetadataHistory, Collector } from "../model";
 import { ZeroAddress, getAddress } from "ethers";
 import { Logger } from "@subsquid/logger";
 
+export const INGORED_ADDRESSES = "0x0000000000000000000000000000000000000001";
+
 export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetCreated");
   const logData = assethub.events.AssetCreated.decode(log)
@@ -20,22 +22,14 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
     id: id,
     hub: getAddress(log.address),
     assetId: logData.assetId,
-    contentUri: logData.data.contentURI,
     publisher: logData.publisher,
-    collectModule: logData.data.collectModule,
-    collectModuleInitData: logData.data.collectModuleInitData,
-    gatedModule: logData.data.gatedModule,
-    gatedModuleInitData: logData.data.gatedModuleInitData,
-    collectNft: logData.data.collectNFT,
+    collectNft: logData.collectNFT,
     collectCount: BigInt(0),
     timestamp: BigInt(log.block.timestamp),
     lastUpdatedAt: BigInt(log.block.timestamp),
     hash: log.getTransaction().hash,
   });
-
-  await parseMetadata(ctx, asset, asset.timestamp?.toString())
   await ctx.store.save(asset)
-  await saveAssetMetadataHistroy(ctx, log.getTransaction().hash, asset, asset.timestamp)
 }
 
 // export async function handleCollectNFTDeployedAssetHubLog(log: CollectNFTDeployedLog): Promise<void> {
@@ -106,20 +100,16 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
     ctx.log.error("asset not found: " + id)
     return;
   }
-  if (logData.data.contentURI != "") {
+  if (asset.contentUri !== logData.data.contentURI) {
     asset.contentUri = logData.data.contentURI;
     await parseMetadata(ctx, asset, log.block.timestamp.toString());
     await saveAssetMetadataHistroy(ctx, id, asset, asset.timestamp);
     asset.lastUpdatedAt = BigInt(log.block.timestamp);
   }
-  if (logData.data.collectModule != ZeroAddress) {
-    asset.collectModule = logData.data.collectModule;
-    asset.collectModuleInitData = logData.data.collectModuleInitData;
-  }
-  if (logData.data.gatedModule !== ZeroAddress) {
-    asset.gatedModule = logData.data.gatedModule;
-    asset.gatedModuleInitData = logData.data.gatedModuleInitData;
-  }
+  asset.collectModule = logData.data.collectModule;
+  asset.collectModuleInitData = logData.data.collectModuleInitData;
+  asset.gatedModule = logData.data.gatedModule;
+  asset.gatedModuleInitData = logData.data.gatedModuleInitData;
   await ctx.store.save(asset)
 }
 

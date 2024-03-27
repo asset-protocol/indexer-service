@@ -92,8 +92,8 @@ export const functions = {
     hubOwner: new Func<[], {}, string>(
         abi, '0x9c7eb413'
     ),
-    initialize: new Func<[name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModule: string], {name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModule: string}, []>(
-        abi, '0xe56f2fe4'
+    initialize: new Func<[name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>], {name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>}, []>(
+        abi, '0x1c69e867'
     ),
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'

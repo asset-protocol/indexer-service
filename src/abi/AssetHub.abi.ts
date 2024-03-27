@@ -598,7 +598,8 @@ export const ABI_JSON = [
         "type": "function",
         "name": "collect",
         "constant": false,
-        "payable": false,
+        "stateMutability": "payable",
+        "payable": true,
         "inputs": [
             {
                 "type": "uint256",
@@ -803,8 +804,8 @@ export const ABI_JSON = [
                 "name": "createAssetModule"
             },
             {
-                "type": "address",
-                "name": "whitelistedCollectModule"
+                "type": "address[]",
+                "name": "whitelistedCollectModules"
             }
         ],
         "outputs": []

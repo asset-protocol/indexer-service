@@ -43,7 +43,8 @@ services:
       - DB_DATABASE=postgres
       - DB_PASS=postgres
       - RPC_ENDPOINT=https://rpc-mumbai.polygon.technology
-      - ASSETHUB_DEPLOYED_START_BLOCK=47229932
+      - ASSETHUB_MANAGER=0xA6AbB61B8f5c9D278cA6857365279E937f9c4180
+      - ASSETHUB_DEPLOYED_START_BLOCK=47530885
       - IPFS_GATEWAY=https://lavender-okay-xerinae-416.mypinata.cloud/ipfs
       - ARWAVE_GATEWAY=https://arweave.net
     ports:

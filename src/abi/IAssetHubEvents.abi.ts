@@ -66,49 +66,24 @@ export const ABI_JSON = [
         "name": "AssetCreated",
         "inputs": [
             {
-                "type": "address",
-                "name": "publisher",
-                "indexed": true
-            },
-            {
                 "type": "uint256",
                 "name": "assetId",
                 "indexed": true
             },
             {
-                "type": "tuple",
-                "name": "data",
-                "indexed": false,
-                "components": [
-                    {
-                        "type": "string",
-                        "name": "contentURI"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "assetCreateModuleData"
-                    },
-                    {
-                        "type": "address",
-                        "name": "collectModule"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "collectModuleInitData"
-                    },
-                    {
-                        "type": "address",
-                        "name": "collectNFT"
-                    },
-                    {
-                        "type": "address",
-                        "name": "gatedModule"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "gatedModuleInitData"
-                    }
-                ]
+                "type": "address",
+                "name": "publisher",
+                "indexed": true
+            },
+            {
+                "type": "address",
+                "name": "collectNFT",
+                "indexed": false
+            },
+            {
+                "type": "bytes",
+                "name": "createModuleData",
+                "indexed": false
             }
         ]
     },
