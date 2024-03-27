@@ -15,9 +15,10 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
     id: logData.assetHub,
     admin: logData.admin,
     name: logData.name,
-    feeCollectModule: logData.feeCollectModule,
-    nftGatedModule: logData.nftGatedModule,
-    createAssetModule: logData.assetCreateModule,
+    feeCollectModule: logData.data.feeCollectModule,
+    tokenCollectModule: logData.data.tokenCollectModule,
+    nftGatedModule: logData.data.nftGatedModule,
+    createAssetModule: logData.data.assetCreateModule,
     timestamp: BigInt(log.block.timestamp),
     hash: log.transaction?.hash
   })
@@ -30,7 +31,7 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
 
 export const getAssetHubSet = async (ctx: DataHandlerContext<Store>) => {
   if (!_assethubs) {
-    const data = await ctx.store.find(AssetHub,{})
+    const data = await ctx.store.find(AssetHub, {})
     _assethubs = new Set(data.map((d) => d.id.toLowerCase()))
   }
   return _assethubs;

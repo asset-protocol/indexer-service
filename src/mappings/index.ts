@@ -10,7 +10,7 @@ import { getAddress } from 'ethers';
 export type HandleLogFunc = (ctx: DataHandlerContext<Store>, log: Log) => Promise<void>;
 
 const handlers = new Map<string, Map<string, HandleLogFunc[]>>([
-  [ASSETHUB_MANAGER, new Map([
+  [ASSETHUB_MANAGER!, new Map([
     [assethubManager.events.AssetHubDeployed.topic, [handleAssetHubDeployedLog]]
   ])],
   ["_AssetHub", new Map([

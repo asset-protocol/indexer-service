@@ -18,6 +18,9 @@ export class AssetHub {
     name!: string | undefined | null
 
     @Column_("text", {nullable: true})
+    tokenCollectModule!: string | undefined | null
+
+    @Column_("text", {nullable: true})
     feeCollectModule!: string | undefined | null
 
     @Column_("text", {nullable: true})

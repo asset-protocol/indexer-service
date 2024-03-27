@@ -70,6 +70,7 @@ type AssetHub @entity {
   id: ID! # hub address
   admin: String
   name: String @index(unique: true)
+  tokenCollectModule: String
   feeCollectModule: String
   nftGatedModule: String
   createAssetModule: String
