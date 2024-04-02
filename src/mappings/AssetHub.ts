@@ -106,10 +106,14 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
     await saveAssetMetadataHistroy(ctx, id, asset, asset.timestamp);
     asset.lastUpdatedAt = BigInt(log.block.timestamp);
   }
-  asset.collectModule = logData.data.collectModule;
-  asset.collectModuleInitData = logData.data.collectModuleInitData;
-  asset.gatedModule = logData.data.gatedModule;
-  asset.gatedModuleInitData = logData.data.gatedModuleInitData;
+  if (logData.data.collectModule !== INGORED_ADDRESSES) {
+    asset.collectModule = logData.data.collectModule;
+    asset.collectModuleInitData = logData.data.collectModuleInitData;
+  }
+  if (logData.data.gatedModule !== INGORED_ADDRESSES) {
+    asset.gatedModule = logData.data.gatedModule;
+    asset.gatedModuleInitData = logData.data.gatedModuleInitData;
+  }
   await ctx.store.save(asset)
 }
 
