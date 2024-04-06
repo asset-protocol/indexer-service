@@ -41,6 +41,7 @@ type AssetMetadataHistory @entity {
   id: ID! # Transaction hash
   asset: Asset
   timestamp: BigInt @index
+  contentUri: String
   metadata: String
 }
 

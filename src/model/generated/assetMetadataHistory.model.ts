@@ -20,5 +20,8 @@ export class AssetMetadataHistory {
     timestamp!: bigint | undefined | null
 
     @Column_("text", {nullable: true})
+    contentUri!: string | undefined | null
+
+    @Column_("text", {nullable: true})
     metadata!: string | undefined | null
 }

@@ -155,6 +155,7 @@ function saveAssetMetadataHistroy(ctx: DataHandlerContext<Store>, id: string, as
     id: id,
     asset: asset,
     metadata: asset.metadata,
+    contentUri: asset.contentUri,
     timestamp: timestamp,
   })
   return ctx.store.save(item)
