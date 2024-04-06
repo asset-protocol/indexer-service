@@ -103,7 +103,7 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
   if (asset.contentUri !== logData.data.contentURI) {
     asset.contentUri = logData.data.contentURI;
     await parseMetadata(ctx, asset, log.block.timestamp.toString());
-    await saveAssetMetadataHistroy(ctx, id, asset, asset.timestamp);
+    await saveAssetMetadataHistroy(ctx, log.transaction?.hash ?? log.block.hash, asset, asset.timestamp);
     asset.lastUpdatedAt = BigInt(log.block.timestamp);
   }
   if (logData.data.collectModule !== INGORED_ADDRESSES) {
