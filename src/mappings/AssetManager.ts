@@ -12,6 +12,7 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
 
   let assetHub = new AssetHub({
     id: logData.assetHub,
+    management: log.address,
     admin: logData.admin,
     name: logData.name,
     feeCollectModule: logData.data.feeCollectModule,

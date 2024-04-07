@@ -11,6 +11,9 @@ export class AssetHub {
     id!: string
 
     @Column_("text", {nullable: true})
+    management!: string | undefined | null
+
+    @Column_("text", {nullable: true})
     admin!: string | undefined | null
 
     @Index_({unique: true})

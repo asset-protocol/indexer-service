@@ -69,6 +69,7 @@ type ContractInfo @entity {
 
 type AssetHub @entity {
   id: ID! # hub address
+  management: String
   admin: String
   name: String @index(unique: true)
   tokenCollectModule: String
