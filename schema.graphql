@@ -80,3 +80,9 @@ type AssetHub @entity {
   version: String
   hash: String
 }
+
+type HubManager @entity {
+  id: ID! # manager address
+  timestamp: BigInt
+  globalModule: String
+}

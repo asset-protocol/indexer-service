@@ -8,8 +8,14 @@ export const events = {
     AssetHubDeployed: new LogEvent<([admin: string, name: string, assetHub: string, data: ([collectNFT: string, nftGatedModule: string, assetCreateModule: string, tokenCollectModule: string, feeCollectModule: string] & {collectNFT: string, nftGatedModule: string, assetCreateModule: string, tokenCollectModule: string, feeCollectModule: string})] & {admin: string, name: string, assetHub: string, data: ([collectNFT: string, nftGatedModule: string, assetCreateModule: string, tokenCollectModule: string, feeCollectModule: string] & {collectNFT: string, nftGatedModule: string, assetCreateModule: string, tokenCollectModule: string, feeCollectModule: string})})>(
         abi, '0x3e841e5a7881d0f892d6607296c629857d6eeabd95146532b8c2723fc955f127'
     ),
+    GlobalModuleChanged: new LogEvent<([globalModule: string] & {globalModule: string})>(
+        abi, '0xafee23d90cd213e84d56f0832fe8482b67075587a254c64fd21a62387e619c88'
+    ),
     Initialized: new LogEvent<([version: bigint] & {version: bigint})>(
         abi, '0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2'
+    ),
+    ManagerInitialized: new LogEvent<([globalModule: string] & {globalModule: string})>(
+        abi, '0x7b7eb57c11e148a0448a2767dbe2b797d76017bde464cb845af4c438bc149b43'
     ),
     OwnershipTransferred: new LogEvent<([previousOwner: string, newOwner: string] & {previousOwner: string, newOwner: string})>(
         abi, '0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0'
@@ -56,8 +62,11 @@ export const functions = {
     factories: new Func<[], {}, ([assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string] & {assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string})>(
         abi, '0xfe5b38e4'
     ),
-    initialize: new Func<[data: ([assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string] & {assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string})], {data: ([assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string] & {assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string})}, []>(
-        abi, '0xf5ee070f'
+    globalModule: new Func<[], {}, string>(
+        abi, '0x0c7fc3ed'
+    ),
+    initialize: new Func<[data: ([assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string] & {assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string}), globalModuleFactory: string], {data: ([assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string] & {assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string}), globalModuleFactory: string}, []>(
+        abi, '0xbc3b4b0c'
     ),
     owner: new Func<[], {}, string>(
         abi, '0x8da5cb5b'
@@ -70,6 +79,9 @@ export const functions = {
     ),
     setFactories: new Func<[data: ([assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string] & {assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string})], {data: ([assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string] & {assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string})}, []>(
         abi, '0x3069e480'
+    ),
+    setGolbalModule: new Func<[gm: string], {gm: string}, []>(
+        abi, '0xdb77b726'
     ),
     setWhitelist: new Func<[account: string, whitelist: boolean], {account: string, whitelist: boolean}, []>(
         abi, '0x53d6fd59'
@@ -108,6 +120,10 @@ export class Contract extends ContractBase {
 
     factories(): Promise<([assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string] & {assetHubFactory: string, tokenCollectModuleFactory: string, nftGatedModuleFactory: string, tokenAssetCreateModuleFactory: string, collectNFTFactory: string, feeCollectModuleFactory: string})> {
         return this.eth_call(functions.factories, [])
+    }
+
+    globalModule(): Promise<string> {
+        return this.eth_call(functions.globalModule, [])
     }
 
     owner(): Promise<string> {

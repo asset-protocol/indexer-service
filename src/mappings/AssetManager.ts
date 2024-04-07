@@ -1,9 +1,8 @@
 
-import assert from "assert";
 import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
 import * as assethubManager from '../abi/AssetHubManager';
-import { AssetHub } from "../model";
+import { AssetHub, HubManager } from "../model";
 
 let _assethubs: Set<string> | undefined;
 
@@ -27,6 +26,28 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
   hubSet.add(logData.assetHub.toLowerCase());
 
   await ctx.store.save(assetHub);
+}
+
+export async function handleManagerInitializedLog(ctx: DataHandlerContext<Store>, log: Log) {
+  ctx.log.info("Handling ManagerInitialized");
+  const logData = assethubManager.events.ManagerInitialized.decode(log);
+  let manager = new HubManager({
+    id: log.address,
+    timestamp: BigInt(log.block.timestamp),
+    globalModule: logData.globalModule
+  })
+  await ctx.store.save(manager);
+}
+
+export async function handleManagerGlobalModuleChangedLog(ctx: DataHandlerContext<Store>, log: Log) {
+  ctx.log.info("Handling GlobalModuleChanged");
+  const logData = assethubManager.events.GlobalModuleChanged.decode(log);
+  let manager = new HubManager({
+    id: log.address,
+    timestamp: BigInt(log.block.timestamp),
+    globalModule: logData.globalModule
+  })
+  await ctx.store.save(manager);
 }
 
 export const getAssetHubSet = async (ctx: DataHandlerContext<Store>) => {

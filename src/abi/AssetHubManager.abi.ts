@@ -151,11 +151,35 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
+        "name": "GlobalModuleChanged",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "globalModule",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
         "name": "Initialized",
         "inputs": [
             {
                 "type": "uint64",
                 "name": "version",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "ManagerInitialized",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "globalModule",
                 "indexed": false
             }
         ]
@@ -505,6 +529,20 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "globalModule",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "initialize",
         "constant": false,
         "payable": false,
@@ -538,6 +576,10 @@ export const ABI_JSON = [
                         "name": "feeCollectModuleFactory"
                     }
                 ]
+            },
+            {
+                "type": "address",
+                "name": "globalModuleFactory"
             }
         ],
         "outputs": []
@@ -613,6 +655,19 @@ export const ABI_JSON = [
                         "name": "feeCollectModuleFactory"
                     }
                 ]
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "setGolbalModule",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "gm"
             }
         ],
         "outputs": []

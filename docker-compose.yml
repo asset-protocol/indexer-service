@@ -17,14 +17,14 @@ services:
       retries: 5
 
   api:
-    image: asset-protocol/indexer-service:latest
+    image: assetprotocol/indexer:latest
     environment:
       - DB_PORT=5432
       - DB_HOST=db
       - DB_DATABASE=postgres
       - DB_PASS=postgres
       - GQL_PORT=3000
-      - IPFS_GATEWAY=https://lavender-okay-xerinae-416.mypinata.cloud/ipfs
+      - IPFS_GATEWAY=https://ipfs.io/ipfs
       - ARWAVE_GATEWAY=https://arweave.net
     ports:
       # GraphQL endpoint at port 4350
@@ -36,16 +36,16 @@ services:
     restart: always
 
   processor:
-    image: asset-protocol/indexer-service:latest
+    image: assetprotocol/indexer:latest
     environment:
       - DB_PORT=5432
       - DB_HOST=db
       - DB_DATABASE=postgres
       - DB_PASS=postgres
       - RPC_ENDPOINT=https://rpc-mumbai.polygon.technology
-      - ASSETHUB_MANAGER=0x0470D94415389c7284EB29aD3AA758bF570D858b
-      - ASSETHUB_DEPLOYED_START_BLOCK=47532951
-      - IPFS_GATEWAY=https://lavender-okay-xerinae-416.mypinata.cloud/ipfs
+      - ASSETHUB_MANAGER=0x00000
+      - ASSETHUB_DEPLOYED_START_BLOCK=12345
+      - IPFS_GATEWAY=https://ipfs.io/ipfs
       - ARWAVE_GATEWAY=https://arweave.net
     ports:
       # prometheus metrics exposed at port 3000

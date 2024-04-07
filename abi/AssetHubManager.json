@@ -169,12 +169,38 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "globalModule",
+        "type": "address"
+      }
+    ],
+    "name": "GlobalModuleChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint64",
         "name": "version",
         "type": "uint64"
       }
     ],
     "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "globalModule",
+        "type": "address"
+      }
+    ],
+    "name": "ManagerInitialized",
     "type": "event"
   },
   {
@@ -554,6 +580,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "globalModule",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -591,6 +630,11 @@
         "internalType": "struct AssetHubImplData",
         "name": "data",
         "type": "tuple"
+      },
+      {
+        "internalType": "address",
+        "name": "globalModuleFactory",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -672,6 +716,19 @@
       }
     ],
     "name": "setFactories",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "gm",
+        "type": "address"
+      }
+    ],
+    "name": "setGolbalModule",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

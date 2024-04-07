@@ -44,7 +44,10 @@ export const processor = new EvmBatchProcessor()
     })
     .addLog({
         address: [ASSETHUB_MANAGER],
-        topic0: [assethubManager.events.AssetHubDeployed.topic],
+        topic0: [
+            assethubManager.events.AssetHubDeployed.topic,
+            assethubManager.events.ManagerInitialized.topic
+        ],
         range: { from: assetHubDeployedStartBlock },
         transaction: true
     })
