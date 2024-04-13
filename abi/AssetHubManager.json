@@ -53,19 +53,19 @@
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "NotInitializing",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "account",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "NotWhitelisted",
+    "name": "NotCreator",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotInitializing",
     "type": "error"
   },
   {
@@ -182,6 +182,19 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "creatorNFT",
+        "type": "address"
+      }
+    ],
+    "name": "HubCreatorNFTChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint64",
         "name": "version",
         "type": "uint64"
@@ -196,11 +209,17 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "creatorNFT",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "globalModule",
         "type": "address"
       }
     ],
-    "name": "ManagerInitialized",
+    "name": "ManagerInitialed",
     "type": "event"
   },
   {
@@ -233,25 +252,6 @@
       }
     ],
     "name": "Upgraded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "isWhitelisted",
-        "type": "bool"
-      }
-    ],
-    "name": "Whitelisted",
     "type": "event"
   },
   {
@@ -475,6 +475,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "creatorNFT",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -633,7 +646,12 @@
       },
       {
         "internalType": "address",
-        "name": "globalModuleFactory",
+        "name": "creatorNFT_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "globalModule_",
         "type": "address"
       }
     ],
@@ -728,7 +746,7 @@
         "type": "address"
       }
     ],
-    "name": "setGolbalModule",
+    "name": "setGlobalModule",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -737,16 +755,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "account",
+        "name": "creatorNFT_",
         "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "whitelist",
-        "type": "bool"
       }
     ],
-    "name": "setWhitelist",
+    "name": "setHubCreatorNFT",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -790,25 +803,6 @@
         "internalType": "string",
         "name": "",
         "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "whitelisted",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",

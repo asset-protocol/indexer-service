@@ -21,11 +21,6 @@
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "CollectModuleNotWhitelisted",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -270,52 +265,6 @@
       }
     ],
     "name": "ApprovalForAll",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "collectModule",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "collectModuleInitData",
-            "type": "bytes"
-          },
-          {
-            "internalType": "address",
-            "name": "gatedModule",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "gatedModuleInitData",
-            "type": "bytes"
-          },
-          {
-            "internalType": "string",
-            "name": "contentURI",
-            "type": "string"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct DataTypes.AssetUpdateData",
-        "name": "data",
-        "type": "tuple"
-      }
-    ],
-    "name": "AssetUpdated",
     "type": "event"
   },
   {
@@ -673,18 +622,19 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "collectModule",
+        "name": "followModule",
         "type": "address"
-      },
+      }
+    ],
+    "name": "collectModuleWhitelisted",
+    "outputs": [
       {
         "internalType": "bool",
-        "name": "whitelist",
+        "name": "",
         "type": "bool"
       }
     ],
-    "name": "collectModuleWhitelist",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -829,6 +779,19 @@
   },
   {
     "inputs": [],
+    "name": "globalModule",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "hubOwner",
     "outputs": [
       {
@@ -848,9 +811,9 @@
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "symbol",
-        "type": "string"
+        "internalType": "address",
+        "name": "manager",
+        "type": "address"
       },
       {
         "internalType": "address",
@@ -892,25 +855,6 @@
       }
     ],
     "name": "isApprovedForAll",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "followModule",
-        "type": "address"
-      }
-    ],
-    "name": "isCollectModuleWhitelisted",
     "outputs": [
       {
         "internalType": "bool",
@@ -1072,11 +1016,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "assetModule",
+        "name": "collectModule",
         "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "whitelist",
+        "type": "bool"
       }
     ],
-    "name": "setCreateAssetModule",
+    "name": "setCollectModuleWhitelist",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1084,17 +1033,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "contentURI",
-        "type": "string"
+        "internalType": "address",
+        "name": "assetModule",
+        "type": "address"
       }
     ],
-    "name": "setTokenURI",
+    "name": "setCreateAssetModule",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

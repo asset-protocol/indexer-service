@@ -51,18 +51,18 @@ export const ABI_JSON = [
     },
     {
         "type": "error",
-        "name": "NotInitializing",
-        "inputs": []
-    },
-    {
-        "type": "error",
-        "name": "NotWhitelisted",
+        "name": "NotCreator",
         "inputs": [
             {
                 "type": "address",
-                "name": "account"
+                "name": ""
             }
         ]
+    },
+    {
+        "type": "error",
+        "name": "NotInitializing",
+        "inputs": []
     },
     {
         "type": "error",
@@ -163,6 +163,18 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
+        "name": "HubCreatorNFTChanged",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "creatorNFT",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
         "name": "Initialized",
         "inputs": [
             {
@@ -175,8 +187,13 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
-        "name": "ManagerInitialized",
+        "name": "ManagerInitialed",
         "inputs": [
+            {
+                "type": "address",
+                "name": "creatorNFT",
+                "indexed": false
+            },
             {
                 "type": "address",
                 "name": "globalModule",
@@ -210,23 +227,6 @@ export const ABI_JSON = [
                 "type": "address",
                 "name": "implementation",
                 "indexed": true
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
-        "name": "Whitelisted",
-        "inputs": [
-            {
-                "type": "address",
-                "name": "account",
-                "indexed": true
-            },
-            {
-                "type": "bool",
-                "name": "isWhitelisted",
-                "indexed": false
             }
         ]
     },
@@ -434,6 +434,20 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "creatorNFT",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "deploy",
         "constant": false,
         "payable": false,
@@ -579,7 +593,11 @@ export const ABI_JSON = [
             },
             {
                 "type": "address",
-                "name": "globalModuleFactory"
+                "name": "creatorNFT_"
+            },
+            {
+                "type": "address",
+                "name": "globalModule_"
             }
         ],
         "outputs": []
@@ -661,7 +679,7 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "setGolbalModule",
+        "name": "setGlobalModule",
         "constant": false,
         "payable": false,
         "inputs": [
@@ -674,17 +692,13 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "setWhitelist",
+        "name": "setHubCreatorNFT",
         "constant": false,
         "payable": false,
         "inputs": [
             {
                 "type": "address",
-                "name": "account"
-            },
-            {
-                "type": "bool",
-                "name": "whitelist"
+                "name": "creatorNFT_"
             }
         ],
         "outputs": []
@@ -730,25 +744,6 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "string",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "whitelisted",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address",
-                "name": "account"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "bool",
                 "name": ""
             }
         ]

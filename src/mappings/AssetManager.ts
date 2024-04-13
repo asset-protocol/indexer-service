@@ -31,17 +31,29 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
 
 export async function handleManagerInitializedLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling ManagerInitialized");
-  const logData = assethubManager.events.ManagerInitialized.decode(log);
+  const logData = assethubManager.events.ManagerInitialed.decode(log);
+  let manager = new HubManager({
+    id: log.address,
+    hubCreatorNft: logData.creatorNFT,
+    globalModule: logData.globalModule,
+    timestamp: BigInt(log.block.timestamp),
+  })
+  await ctx.store.save(manager);
+}
+
+export async function handleManagerHubCreatorNFTChangedLog(ctx: DataHandlerContext<Store>, log: Log) {
+  ctx.log.info("Handling ManagerHubCreatorNFTChanged");
+  const logData = assethubManager.events.HubCreatorNFTChanged.decode(log);
   let manager = new HubManager({
     id: log.address,
     timestamp: BigInt(log.block.timestamp),
-    globalModule: logData.globalModule
+    hubCreatorNft: logData.creatorNFT
   })
   await ctx.store.save(manager);
 }
 
 export async function handleManagerGlobalModuleChangedLog(ctx: DataHandlerContext<Store>, log: Log) {
-  ctx.log.info("Handling GlobalModuleChanged");
+  ctx.log.info("Handling ManagerGlobalModuleChanged");
   const logData = assethubManager.events.GlobalModuleChanged.decode(log);
   let manager = new HubManager({
     id: log.address,

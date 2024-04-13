@@ -86,4 +86,5 @@ type HubManager @entity {
   id: ID! # manager address
   timestamp: BigInt
   globalModule: String
+  hubCreatorNft: String
 }

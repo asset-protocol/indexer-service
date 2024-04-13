@@ -15,4 +15,7 @@ export class HubManager {
 
     @Column_("text", {nullable: true})
     globalModule!: string | undefined | null
+
+    @Column_("text", {nullable: true})
+    hubCreatorNft!: string | undefined | null
 }
