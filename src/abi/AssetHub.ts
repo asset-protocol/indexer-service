@@ -11,9 +11,6 @@ export const events = {
     ApprovalForAll: new LogEvent<([owner: string, operator: string, approved: boolean] & {owner: string, operator: string, approved: boolean})>(
         abi, '0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31'
     ),
-    AssetUpdated: new LogEvent<([assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})] & {assetId: bigint, data: ([collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string] & {collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string, contentURI: string})})>(
-        abi, '0x7aeee9d30ee7c79f441ef04b78036801e4cccc30a2f943c72d88b060ed39d59c'
-    ),
     BatchMetadataUpdate: new LogEvent<([_fromTokenId: bigint, _toTokenId: bigint] & {_fromTokenId: bigint, _toTokenId: bigint})>(
         abi, '0x6bd5c950a8d8df17f772f5af37cb3655737899cbf903264b9795592da439661c'
     ),
@@ -71,8 +68,8 @@ export const functions = {
     collect: new Func<[assetId: bigint, collectModuleData: string], {assetId: bigint, collectModuleData: string}, bigint>(
         abi, '0x89439b1c'
     ),
-    collectModuleWhitelist: new Func<[collectModule: string, whitelist: boolean], {collectModule: string, whitelist: boolean}, []>(
-        abi, '0xb7338d17'
+    collectModuleWhitelisted: new Func<[followModule: string], {followModule: string}, boolean>(
+        abi, '0xf8b954db'
     ),
     count: new Func<[publisher: string], {publisher: string}, bigint>(
         abi, '0x05d85eda'
@@ -89,17 +86,17 @@ export const functions = {
     getCreateAssetModule: new Func<[], {}, string>(
         abi, '0x2417d307'
     ),
+    globalModule: new Func<[], {}, string>(
+        abi, '0x0c7fc3ed'
+    ),
     hubOwner: new Func<[], {}, string>(
         abi, '0x9c7eb413'
     ),
-    initialize: new Func<[name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>], {name: string, symbol: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>}, []>(
-        abi, '0x1c69e867'
+    initialize: new Func<[name: string, manager: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>], {name: string, manager: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>}, []>(
+        abi, '0x9f838107'
     ),
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
-    ),
-    isCollectModuleWhitelisted: new Func<[followModule: string], {followModule: string}, boolean>(
-        abi, '0xad3e72bf'
     ),
     name: new Func<[], {}, string>(
         abi, '0x06fdde03'
@@ -128,11 +125,11 @@ export const functions = {
     setApprovalForAll: new Func<[operator: string, approved: boolean], {operator: string, approved: boolean}, []>(
         abi, '0xa22cb465'
     ),
+    setCollectModuleWhitelist: new Func<[collectModule: string, whitelist: boolean], {collectModule: string, whitelist: boolean}, []>(
+        abi, '0x298a96d3'
+    ),
     setCreateAssetModule: new Func<[assetModule: string], {assetModule: string}, []>(
         abi, '0x670e431b'
-    ),
-    setTokenURI: new Func<[assetId: bigint, contentURI: string], {assetId: bigint, contentURI: string}, []>(
-        abi, '0x162094c4'
     ),
     supportsInterface: new Func<[interfaceId: string], {interfaceId: string}, boolean>(
         abi, '0x01ffc9a7'
@@ -189,6 +186,10 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.balanceOf, [owner])
     }
 
+    collectModuleWhitelisted(followModule: string): Promise<boolean> {
+        return this.eth_call(functions.collectModuleWhitelisted, [followModule])
+    }
+
     count(publisher: string): Promise<bigint> {
         return this.eth_call(functions.count, [publisher])
     }
@@ -207,10 +208,6 @@ export class Contract extends ContractBase {
 
     isApprovedForAll(owner: string, operator: string): Promise<boolean> {
         return this.eth_call(functions.isApprovedForAll, [owner, operator])
-    }
-
-    isCollectModuleWhitelisted(followModule: string): Promise<boolean> {
-        return this.eth_call(functions.isCollectModuleWhitelisted, [followModule])
     }
 
     name(): Promise<string> {

@@ -21,11 +21,6 @@ export const ABI_JSON = [
     },
     {
         "type": "error",
-        "name": "CollectModuleNotWhitelisted",
-        "inputs": []
-    },
-    {
-        "type": "error",
         "name": "ERC1967InvalidImplementation",
         "inputs": [
             {
@@ -247,45 +242,6 @@ export const ABI_JSON = [
                 "type": "bool",
                 "name": "approved",
                 "indexed": false
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
-        "name": "AssetUpdated",
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "assetId",
-                "indexed": true
-            },
-            {
-                "type": "tuple",
-                "name": "data",
-                "indexed": false,
-                "components": [
-                    {
-                        "type": "address",
-                        "name": "collectModule"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "collectModuleInitData"
-                    },
-                    {
-                        "type": "address",
-                        "name": "gatedModule"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "gatedModuleInitData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "contentURI"
-                    }
-                ]
             }
         ]
     },
@@ -619,20 +575,22 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "collectModuleWhitelist",
-        "constant": false,
+        "name": "collectModuleWhitelisted",
+        "constant": true,
+        "stateMutability": "view",
         "payable": false,
         "inputs": [
             {
                 "type": "address",
-                "name": "collectModule"
-            },
-            {
-                "type": "bool",
-                "name": "whitelist"
+                "name": "followModule"
             }
         ],
-        "outputs": []
+        "outputs": [
+            {
+                "type": "bool",
+                "name": ""
+            }
+        ]
     },
     {
         "type": "function",
@@ -765,6 +723,19 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "globalModule",
+        "constant": false,
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "hubOwner",
         "constant": true,
         "stateMutability": "view",
@@ -788,8 +759,8 @@ export const ABI_JSON = [
                 "name": "name"
             },
             {
-                "type": "string",
-                "name": "symbol"
+                "type": "address",
+                "name": "manager"
             },
             {
                 "type": "address",
@@ -824,25 +795,6 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "operator"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "bool",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "isCollectModuleWhitelisted",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address",
-                "name": "followModule"
             }
         ],
         "outputs": [
@@ -1000,6 +952,23 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "setCollectModuleWhitelist",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "collectModule"
+            },
+            {
+                "type": "bool",
+                "name": "whitelist"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
         "name": "setCreateAssetModule",
         "constant": false,
         "payable": false,
@@ -1007,23 +976,6 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "assetModule"
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "type": "function",
-        "name": "setTokenURI",
-        "constant": false,
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "assetId"
-            },
-            {
-                "type": "string",
-                "name": "contentURI"
             }
         ],
         "outputs": []

@@ -1,7 +1,7 @@
 
 import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
-import * as assethubManager from '../abi/AssetHubManager';
+import * as assethubManager from '../abi/LiteAssetHubManager';
 import { AssetHub, HubManager } from "../model";
 
 let _assethubs: Set<string> | undefined;
@@ -18,7 +18,7 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
     feeCollectModule: logData.data.feeCollectModule,
     tokenCollectModule: logData.data.tokenCollectModule,
     nftGatedModule: logData.data.nftGatedModule,
-    createAssetModule: logData.data.assetCreateModule,
+    createAssetModule: logData.data.createModule,
     timestamp: BigInt(log.block.timestamp),
     hash: log.transaction?.hash
   })
@@ -34,14 +34,26 @@ export async function handleManagerInitializedLog(ctx: DataHandlerContext<Store>
   const logData = assethubManager.events.ManagerInitialized.decode(log);
   let manager = new HubManager({
     id: log.address,
+    hubCreatorNft: logData.creatorNFT,
+    globalModule: logData.globalModule,
     timestamp: BigInt(log.block.timestamp),
-    globalModule: logData.globalModule
+  })
+  await ctx.store.save(manager);
+}
+
+export async function handleManagerHubCreatorNFTChangedLog(ctx: DataHandlerContext<Store>, log: Log) {
+  ctx.log.info("Handling ManagerHubCreatorNFTChanged");
+  const logData = assethubManager.events.HubCreatorNFTChanged.decode(log);
+  let manager = new HubManager({
+    id: log.address,
+    timestamp: BigInt(log.block.timestamp),
+    hubCreatorNft: logData.creatorNFT
   })
   await ctx.store.save(manager);
 }
 
 export async function handleManagerGlobalModuleChangedLog(ctx: DataHandlerContext<Store>, log: Log) {
-  ctx.log.info("Handling GlobalModuleChanged");
+  ctx.log.info("Handling ManagerGlobalModuleChanged");
   const logData = assethubManager.events.GlobalModuleChanged.decode(log);
   let manager = new HubManager({
     id: log.address,
