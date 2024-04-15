@@ -1,5 +1,5 @@
-module.exports = class Data1712569427582 {
-    name = 'Data1712569427582'
+module.exports = class Data1713169811830 {
+    name = 'Data1713169811830'
 
     async up(db) {
         await db.query(`CREATE TABLE "asset_metadata_history" ("id" character varying NOT NULL, "timestamp" numeric, "content_uri" text, "metadata" text, "asset_id" character varying, CONSTRAINT "PK_94cab17983a7cc063b3c9ffb88b" PRIMARY KEY ("id"))`)
@@ -21,7 +21,7 @@ module.exports = class Data1712569427582 {
         await db.query(`CREATE TABLE "asset_hub" ("id" character varying NOT NULL, "management" text, "admin" text, "name" text, "token_collect_module" text, "fee_collect_module" text, "nft_gated_module" text, "create_asset_module" text, "timestamp" numeric, "implementation" text, "version" text, "hash" text, CONSTRAINT "PK_99771a62f48504f4154931b5819" PRIMARY KEY ("id"))`)
         await db.query(`CREATE UNIQUE INDEX "IDX_02047cd2770a4aca3144fdc342" ON "asset_hub" ("name") `)
         await db.query(`CREATE INDEX "IDX_de83b6baa9c66ff8a598cddb4b" ON "asset_hub" ("timestamp") `)
-        await db.query(`CREATE TABLE "hub_manager" ("id" character varying NOT NULL, "timestamp" numeric, "global_module" text, CONSTRAINT "PK_9c07121c4e2c56ed6dc59bfd7d1" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "hub_manager" ("id" character varying NOT NULL, "timestamp" numeric, "global_module" text, "hub_creator_nft" text, CONSTRAINT "PK_9c07121c4e2c56ed6dc59bfd7d1" PRIMARY KEY ("id"))`)
         await db.query(`ALTER TABLE "asset_metadata_history" ADD CONSTRAINT "FK_8a6618115b581777839b5c52260" FOREIGN KEY ("asset_id") REFERENCES "asset"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
         await db.query(`ALTER TABLE "collector" ADD CONSTRAINT "FK_e235ae1707cf7e637e9353a51b7" FOREIGN KEY ("asset_id") REFERENCES "asset"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
     }

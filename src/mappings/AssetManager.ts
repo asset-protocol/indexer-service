@@ -1,7 +1,7 @@
 
 import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
-import * as assethubManager from '../abi/AssetHubManager';
+import * as assethubManager from '../abi/LiteAssetHubManager';
 import { AssetHub, HubManager } from "../model";
 
 let _assethubs: Set<string> | undefined;
@@ -18,7 +18,7 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
     feeCollectModule: logData.data.feeCollectModule,
     tokenCollectModule: logData.data.tokenCollectModule,
     nftGatedModule: logData.data.nftGatedModule,
-    createAssetModule: logData.data.assetCreateModule,
+    createAssetModule: logData.data.createModule,
     timestamp: BigInt(log.block.timestamp),
     hash: log.transaction?.hash
   })
@@ -31,7 +31,7 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
 
 export async function handleManagerInitializedLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling ManagerInitialized");
-  const logData = assethubManager.events.ManagerInitialed.decode(log);
+  const logData = assethubManager.events.ManagerInitialized.decode(log);
   let manager = new HubManager({
     id: log.address,
     hubCreatorNft: logData.creatorNFT,

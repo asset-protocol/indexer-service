@@ -9,7 +9,7 @@ import {
     Transaction as _Transaction,
 } from '@subsquid/evm-processor'
 import { ASSETHUB_MANAGER } from './config'
-import * as assethubManager from './abi/AssetHubManager'
+import * as assethubManager from './abi/LiteAssetHubManager'
 import * as assethub from './abi/IAssetHubEvents'
 
 const assetHubDeployedStartBlock = Number.parseInt(process.env.ASSETHUB_DEPLOYED_START_BLOCK ?? "0")

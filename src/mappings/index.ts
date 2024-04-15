@@ -2,7 +2,7 @@ import { DataHandlerContext, Log } from '@subsquid/evm-processor'
 import { Store } from '@subsquid/typeorm-store'
 import { handleAssetCreatedAssetHubLog, handleAssetHubUpgradedLog, handleAssetUpdatedLog, handleCollectedAssetHubLog, handleTransferAssetHubLog } from './AssetHub';
 import * as assethub from '../abi/IAssetHubEvents'
-import * as assethubManager from '../abi/AssetHubManager';
+import * as assethubManager from '../abi/LiteAssetHubManager';
 import { getAssetHubSet, handleAssetHubDeployedLog, handleManagerGlobalModuleChangedLog, handleManagerHubCreatorNFTChangedLog, handleManagerInitializedLog } from './AssetManager';
 import { ASSETHUB_MANAGER } from '../config';
 import { getAddress } from 'ethers';
@@ -14,7 +14,7 @@ const handlers = new Map<string, Map<string, HandleLogFunc[]>>([
     [assethubManager.events.AssetHubDeployed.topic, [handleAssetHubDeployedLog]],
     [assethubManager.events.GlobalModuleChanged.topic, [handleManagerGlobalModuleChangedLog]],
     [assethubManager.events.HubCreatorNFTChanged.topic, [handleManagerHubCreatorNFTChangedLog]],
-    [assethubManager.events.ManagerInitialed.topic, [handleManagerInitializedLog]]
+    [assethubManager.events.ManagerInitialized.topic, [handleManagerInitializedLog]]
   ])],
   ["_AssetHub", new Map([
     [assethub.events.AssetCreated.topic, [handleAssetCreatedAssetHubLog]],
