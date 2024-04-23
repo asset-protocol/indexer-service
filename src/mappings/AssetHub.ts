@@ -3,7 +3,7 @@
 // Auto-generated
 
 import assert from "assert";
-import { fetchMetadata } from "./asset_metadata";
+import { AssetMetaData, fetchMetadata } from "./asset_metadata";
 import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
 import * as assethub from '../abi/IAssetHubEvents'
@@ -13,11 +13,15 @@ import { Logger } from "@subsquid/logger";
 
 export const INGORED_ADDRESSES = "0x0000000000000000000000000000000000000001";
 
+export function getAssetId(hub: string, assetId: bigint) {
+  return getAddress(hub) + "-" + assetId.toString()
+}
+
 export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Store>, log: Log) {
   ctx.log.info("Handling AssetCreated");
   const logData = assethub.events.AssetCreated.decode(log)
 
-  const id = getAddress(getAddress(log.address)) + "-" + logData.assetId.toString();
+  const id = getAddress(log.address) + "-" + logData.assetId.toString();
   const asset = new Asset({
     id: id,
     hub: getAddress(log.address),
@@ -103,6 +107,7 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
   if (asset.contentUri !== logData.data.contentURI) {
     asset.contentUri = logData.data.contentURI;
     await parseMetadata(ctx, asset, log.block.timestamp.toString());
+    await ctx.store.save(asset.tags);
     await saveAssetMetadataHistroy(ctx, log.transaction?.hash ?? log.block.hash, asset, asset.timestamp);
     asset.lastUpdatedAt = BigInt(log.block.timestamp);
   }
@@ -129,12 +134,11 @@ export async function handleAssetHubUpgradedLog(ctx: DataHandlerContext<Store>, 
   await ctx.store.save(hub);
 }
 
-
 export async function parseMetadata(ctx: { log: Logger }, asset: Asset, timestamp?: string) {
   if (!asset.contentUri) {
     return
   }
-  const metadata = await fetchMetadata(ctx, asset.contentUri);
+  const metadata = await fetchMetadata<AssetMetaData>(ctx, asset.contentUri);
   if (metadata) {
     metadata.timestamp = timestamp
     asset.name = metadata.name;
@@ -142,9 +146,14 @@ export async function parseMetadata(ctx: { log: Logger }, asset: Asset, timestam
     asset.image = metadata.image;
     asset.description = metadata.description;
     asset.content = metadata.content;
-    asset.extra = metadata.extra ? JSON.stringify(metadata.extra) : undefined;
-    asset.tags = metadata.tags ? JSON.stringify(metadata.tags) : undefined;
-    asset.metadata = JSON.stringify(metadata);
+    asset.properties = metadata.properties;
+    asset.tags = metadata.tags?.map((t) => ({
+      id: t.toLowerCase() + asset.id,
+      name: t,
+      normalizedName: t.toLowerCase(),
+      asset: asset,
+    })) ?? [];
+    asset.metadata = metadata;
     asset.query1 = metadata.query1;
     asset.query2 = metadata.query2;
   }

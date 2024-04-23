@@ -8,6 +8,9 @@ export const events = {
     AssetHubDeployed: new LogEvent<([admin: string, name: string, assetHub: string, data: ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string})] & {admin: string, name: string, assetHub: string, data: ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string})})>(
         abi, '0x3592cd8e5fa76253b0426ee2cfc473c3a520b82cdefa746f920e0c99f67de94a'
     ),
+    CurationUpdated: new LogEvent<([curation: string] & {curation: string})>(
+        abi, '0x359c14567168d51ea26824bfb64c5a45425da6f136dcc10e75c241493a4fbf4e'
+    ),
     GlobalModuleChanged: new LogEvent<([globalModule: string] & {globalModule: string})>(
         abi, '0xafee23d90cd213e84d56f0832fe8482b67075587a254c64fd21a62387e619c88'
     ),
@@ -16,9 +19,6 @@ export const events = {
     ),
     Initialized: new LogEvent<([version: bigint] & {version: bigint})>(
         abi, '0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2'
-    ),
-    ManagerInitialized: new LogEvent<([creatorNFT: string, globalModule: string] & {creatorNFT: string, globalModule: string})>(
-        abi, '0x295802990335482caa4564f3cdfee52662c526a3a08a183cc2d895f64566b7c3'
     ),
     MultipleUpgraded: new LogEvent<([index: bigint, implementation: string] & {index: bigint, implementation: string})>(
         abi, '0x64c8f86d8c97b441906cadbcaf6e07314af95bd0049f7f3356f7703af91c5a6f'
@@ -47,6 +47,9 @@ export const functions = {
     creatorNFT: new Func<[], {}, string>(
         abi, '0x4f6d3f23'
     ),
+    curation: new Func<[], {}, string>(
+        abi, '0xe16b6d5d'
+    ),
     deploy: new Func<[data: ([admin: string, name: string, createModule: string] & {admin: string, name: string, createModule: string})], {data: ([admin: string, name: string, createModule: string] & {admin: string, name: string, createModule: string})}, string>(
         abi, '0x793350c0'
     ),
@@ -56,8 +59,8 @@ export const functions = {
     implementation: new Func<[index: bigint], {index: bigint}, string>(
         abi, '0xac9a0b26'
     ),
-    initialize: new Func<[data: ([assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string] & {assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string}), creatorNFT_: string, globalModule_: string], {data: ([assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string] & {assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string}), creatorNFT_: string, globalModule_: string}, []>(
-        abi, '0xf9396266'
+    initialize: new Func<[data: ([assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string] & {assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string}), creatorNFT_: string, globalModule_: string, curation_: string], {data: ([assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string] & {assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string}), creatorNFT_: string, globalModule_: string, curation_: string}, []>(
+        abi, '0x64abf1fa'
     ),
     isHub: new Func<[hub: string], {hub: string}, boolean>(
         abi, '0x6933059e'
@@ -70,6 +73,9 @@ export const functions = {
     ),
     renounceOwnership: new Func<[], {}, []>(
         abi, '0x715018a6'
+    ),
+    setCuration: new Func<[curation_: string], {curation_: string}, []>(
+        abi, '0xb23eb81b'
     ),
     setGlobalModule: new Func<[gm: string], {gm: string}, []>(
         abi, '0xd7103f96'
@@ -108,6 +114,10 @@ export class Contract extends ContractBase {
 
     creatorNFT(): Promise<string> {
         return this.eth_call(functions.creatorNFT, [])
+    }
+
+    curation(): Promise<string> {
+        return this.eth_call(functions.curation, [])
     }
 
     globalModule(): Promise<string> {

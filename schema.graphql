@@ -2,6 +2,13 @@
 # Add the `@index` or `@index(unique: true)` annotation after any non-key field
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
+type AssetTag @entity {
+  id: ID! # assetId+tagName
+  name: String
+  normalizedName: String
+  asset: Asset
+}
+
 type Asset @entity {
   id: ID! # hub Address+assetId
   assetId: BigInt @index
@@ -19,9 +26,9 @@ type Asset @entity {
   type: String
   image: String
   description: String
-  tags: String
-  extra: String
-  metadata: String
+  tags: [AssetTag!] @derivedFrom(field: "asset")
+  properties: JSON
+  metadata: JSON
   content: String
   metadataHistories: [AssetMetadataHistory!] @derivedFrom(field: "asset")
 
@@ -35,6 +42,8 @@ type Asset @entity {
   # gated
   gatedModule: String
   gatedModuleInitData: String
+
+  curations: [CurationAsset!] @derivedFrom(field: "asset")
 }
 
 type AssetMetadataHistory @entity {
@@ -42,7 +51,7 @@ type AssetMetadataHistory @entity {
   asset: Asset
   timestamp: BigInt @index
   contentUri: String
-  metadata: String
+  metadata: JSON
 }
 
 type Collector @entity {
@@ -87,4 +96,46 @@ type HubManager @entity {
   timestamp: BigInt
   globalModule: String
   hubCreatorNft: String
+  curation: String
+}
+
+enum AssetApproveStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+type CurationAsset @entity {
+  id: ID!
+  curation: Curation
+  asset: Asset
+  order: BigInt
+  status: AssetApproveStatus
+  timestamp: BigInt @index
+  approveAt: BigInt
+}
+type CurationTag @entity {
+  id: ID!
+  curation: Curation
+  name: String
+  normalizedName: String
+}
+
+type Curation @entity {
+  id: ID! # curation address
+  tokenURI: String
+  publisher: String @index
+  hash: String
+  timestamp: BigInt @index
+  lastUpdatedAt: BigInt @index
+  assets: [CurationAsset!] @derivedFrom(field: "curation")
+
+  # metadata
+  name: String
+  description: String
+  image: String
+  bannerImage: String
+  tags: [CurationTag!] @derivedFrom(field: "curation")
+  properties: JSON
+  metadata: JSON
 }

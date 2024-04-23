@@ -202,6 +202,10 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.getCreateAssetModule, [])
     }
 
+    globalModule(): Promise<string> {
+        return this.eth_call(functions.globalModule, [])
+    }
+
     hubOwner(): Promise<string> {
         return this.eth_call(functions.hubOwner, [])
     }

@@ -11,6 +11,7 @@ import {
 import { ASSETHUB_MANAGER } from './config'
 import * as assethubManager from './abi/LiteAssetHubManager'
 import * as assethub from './abi/IAssetHubEvents'
+import * as curation from './abi/Curation'
 
 const assetHubDeployedStartBlock = Number.parseInt(process.env.ASSETHUB_DEPLOYED_START_BLOCK ?? "0")
 
@@ -46,7 +47,9 @@ export const processor = new EvmBatchProcessor()
         address: [ASSETHUB_MANAGER],
         topic0: [
             assethubManager.events.AssetHubDeployed.topic,
-            assethubManager.events.ManagerInitialized.topic
+            assethubManager.events.CurationUpdated.topic,
+            assethubManager.events.GlobalModuleChanged.topic,
+            assethubManager.events.HubCreatorNFTChanged.topic,
         ],
         range: { from: assetHubDeployedStartBlock },
         transaction: true
@@ -58,6 +61,18 @@ export const processor = new EvmBatchProcessor()
             assethub.events.Transfer.topic,
             assethub.events.AssetUpdated.topic,
             assethub.events.Upgraded.topic,
+        ],
+        range: { from: assetHubDeployedStartBlock },
+        transaction: true
+    })
+    .addLog({
+        topic0:[
+            curation.events.Transfer.topic,
+            curation.events.AssetsAdded.topic,
+            curation.events.AssetsRemoved.topic,
+            curation.events.AssetApproved.topic,
+            curation.events.CurationCreated.topic,
+            curation.events.CurationUpdated.topic,
         ],
         range: { from: assetHubDeployedStartBlock },
         transaction: true

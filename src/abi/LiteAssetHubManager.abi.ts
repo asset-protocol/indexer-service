@@ -172,6 +172,18 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
+        "name": "CurationUpdated",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "curation",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
         "name": "GlobalModuleChanged",
         "inputs": [
             {
@@ -201,23 +213,6 @@ export const ABI_JSON = [
             {
                 "type": "uint64",
                 "name": "version",
-                "indexed": false
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
-        "name": "ManagerInitialized",
-        "inputs": [
-            {
-                "type": "address",
-                "name": "creatorNFT",
-                "indexed": false
-            },
-            {
-                "type": "address",
-                "name": "globalModule",
                 "indexed": false
             }
         ]
@@ -386,6 +381,20 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "curation",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "deploy",
         "constant": false,
         "payable": false,
@@ -492,6 +501,10 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "globalModule_"
+            },
+            {
+                "type": "address",
+                "name": "curation_"
             }
         ],
         "outputs": []
@@ -549,6 +562,19 @@ export const ABI_JSON = [
         "constant": false,
         "payable": false,
         "inputs": [],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "setCuration",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "curation_"
+            }
+        ],
         "outputs": []
     },
     {
