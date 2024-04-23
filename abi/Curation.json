@@ -11,16 +11,6 @@
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "AssetDoesNotExist",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "CallerNotCollectNFT",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -141,22 +131,7 @@
   },
   {
     "inputs": [],
-    "name": "EnforcedPause",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ExpectedPause",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "FailedInnerCall",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidCreateAssetModule",
     "type": "error"
   },
   {
@@ -165,18 +140,34 @@
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "NoAssetPublisher",
-    "type": "error"
-  },
-  {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "s",
+        "type": "address"
+      }
+    ],
     "name": "NotAssetPublisher",
     "type": "error"
   },
   {
     "inputs": [],
+    "name": "NotHub",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotHubOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NotInitializing",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotManager",
     "type": "error"
   },
   {
@@ -273,85 +264,169 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_fromTokenId",
+        "name": "curationId",
         "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "_toTokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "BatchMetadataUpdate",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "address",
-        "name": "collectModule",
+        "name": "hub",
         "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "bool",
-        "name": "whitelisted",
-        "type": "bool"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "CollectModuleWhitelisted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "publiser",
-        "type": "address"
-      },
-      {
-        "indexed": true,
         "internalType": "uint256",
         "name": "assetId",
         "type": "uint256"
       },
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "collectNFTTokenId",
-        "type": "uint256"
-      },
-      {
         "indexed": false,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
+        "internalType": "enum AssetApproveStatus",
+        "name": "status",
+        "type": "uint8"
       }
     ],
-    "name": "CollectNFTTransfered",
+    "name": "AssetApproved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "hub",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "assetId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "order",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct CurationAsset[]",
+        "name": "assets",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "AssetsAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "hubs",
+        "type": "address[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "assetIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "AssetsRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "publisher",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "curationURI",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "status",
+        "type": "uint8"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "hub",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "assetId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "order",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct CurationAsset[]",
+        "name": "assets",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "CurationCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "curationURI",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "status",
+        "type": "uint8"
+      }
+    ],
+    "name": "CurationUpdated",
     "type": "event"
   },
   {
@@ -371,19 +446,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "MetadataUpdate",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -397,19 +459,6 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "Paused",
     "type": "event"
   },
   {
@@ -441,19 +490,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "Unpaused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "address",
         "name": "implementation",
@@ -479,6 +515,41 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "hub",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "assetId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "order",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct CurationAsset[]",
+        "name": "assets",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "addAssets",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "to",
         "type": "address"
@@ -498,81 +569,56 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "assetId",
+        "name": "id",
         "type": "uint256"
-      }
-    ],
-    "name": "assetCollectCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      }
-    ],
-    "name": "assetCollectNFT",
-    "outputs": [
+      },
       {
         "internalType": "address",
-        "name": "",
+        "name": "hub",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
+      },
       {
         "internalType": "uint256",
         "name": "assetId",
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
+        "internalType": "enum AssetApproveStatus",
+        "name": "status",
+        "type": "uint8"
       }
     ],
-    "name": "assetGated",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "approveAsset",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "assetId",
+        "name": "id",
         "type": "uint256"
-      }
-    ],
-    "name": "assetPublisher",
-    "outputs": [
+      },
       {
         "internalType": "address",
-        "name": "",
+        "name": "hub",
         "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "assetIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "enum AssetApproveStatus[]",
+        "name": "status",
+        "type": "uint8[]"
       }
     ],
-    "stateMutability": "view",
+    "name": "approveAssetBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -597,108 +643,36 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "curationURI",
+        "type": "string"
       },
       {
-        "internalType": "bytes",
-        "name": "collectModuleData",
-        "type": "bytes"
-      }
-    ],
-    "name": "collect",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "followModule",
-        "type": "address"
-      }
-    ],
-    "name": "collectModuleWhitelisted",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "publisher",
-        "type": "address"
-      }
-    ],
-    "name": "count",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
+        "internalType": "uint8",
+        "name": "status",
+        "type": "uint8"
+      },
       {
         "components": [
           {
             "internalType": "address",
-            "name": "publisher",
+            "name": "hub",
             "type": "address"
           },
           {
-            "internalType": "string",
-            "name": "contentURI",
-            "type": "string"
+            "internalType": "uint256",
+            "name": "assetId",
+            "type": "uint256"
           },
           {
-            "internalType": "bytes",
-            "name": "assetCreateModuleData",
-            "type": "bytes"
-          },
-          {
-            "internalType": "address",
-            "name": "collectModule",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "collectModuleInitData",
-            "type": "bytes"
-          },
-          {
-            "internalType": "address",
-            "name": "gatedModule",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "gatedModuleInitData",
-            "type": "bytes"
+            "internalType": "uint256",
+            "name": "order",
+            "type": "uint256"
           }
         ],
-        "internalType": "struct DataTypes.AssetCreateData",
-        "name": "data",
-        "type": "tuple"
+        "internalType": "struct CurationAsset[]",
+        "name": "assets",
+        "type": "tuple[]"
       }
     ],
     "name": "create",
@@ -715,34 +689,59 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "publiser",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
-        "name": "assetId",
+        "name": "curationId",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "collectNFTId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
       }
     ],
-    "name": "emitCollectNFTTransferEvent",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "curationData",
+    "outputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "hub",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "assetId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "order",
+                "type": "uint256"
+              },
+              {
+                "internalType": "enum AssetApproveStatus",
+                "name": "status",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct AssetInfo[]",
+            "name": "assets",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "string",
+            "name": "tokenURI",
+            "type": "string"
+          },
+          {
+            "internalType": "uint8",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct CurationData",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -765,45 +764,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getCreateAssetModule",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "globalModule",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "hubOwner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "string",
@@ -811,29 +771,14 @@
         "type": "string"
       },
       {
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
         "internalType": "address",
         "name": "manager",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "admin",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "collectNFT",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "createAssetModule",
-        "type": "address"
-      },
-      {
-        "internalType": "address[]",
-        "name": "whitelistedCollectModules",
-        "type": "address[]"
       }
     ],
     "name": "initialize",
@@ -912,19 +857,6 @@
   },
   {
     "inputs": [],
-    "name": "paused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "proxiableUUID",
     "outputs": [
       {
@@ -934,6 +866,29 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address[]",
+        "name": "hubs",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "assetIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "removeAssets",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1015,17 +970,17 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "collectModule",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
       },
       {
-        "internalType": "bool",
-        "name": "whitelist",
-        "type": "bool"
+        "internalType": "string",
+        "name": "curationURI",
+        "type": "string"
       }
     ],
-    "name": "setCollectModuleWhitelist",
+    "name": "setCurationURI",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1033,12 +988,17 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "assetModule",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "status",
+        "type": "uint8"
       }
     ],
-    "name": "setCreateAssetModule",
+    "name": "setStatus",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1133,51 +1093,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "collectModule",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "collectModuleInitData",
-            "type": "bytes"
-          },
-          {
-            "internalType": "address",
-            "name": "gatedModule",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "gatedModuleInitData",
-            "type": "bytes"
-          },
-          {
-            "internalType": "string",
-            "name": "contentURI",
-            "type": "string"
-          }
-        ],
-        "internalType": "struct DataTypes.AssetUpdateData",
-        "name": "data",
-        "type": "tuple"
-      }
-    ],
-    "name": "update",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "newImplementation",
         "type": "address"
@@ -1191,30 +1106,6 @@
     "name": "upgradeToAndCall",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "collector",
-        "type": "address"
-      }
-    ],
-    "name": "userCollectCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

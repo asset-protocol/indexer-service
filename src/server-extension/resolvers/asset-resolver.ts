@@ -24,6 +24,7 @@ export class CustomAssetResolver {
     try {
       await parseMetadata({ log: LOG }, asset, new Date().getTime().toString());
       await manager.save(asset);
+      await manager.save(asset.tags);
       return true;
     } catch (e: any) {
       LOG.error(`Error parsing metadata for asset ${id}: ${e.message}`)

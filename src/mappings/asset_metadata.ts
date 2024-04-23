@@ -10,13 +10,13 @@ export type AssetMetaData = {
   tags?: string[];
   query1?: string;
   query2?: string;
-  extra?: any;
+  properties?: unknown;
   timestamp?: string;
 }
 
 const ipfsEndpoint = process.env.IPFS_GATEWAY + "/";
 
-export async function fetchMetadata(ctx: { log: Logger }, uri: string): Promise<AssetMetaData | undefined> {
+export async function fetchMetadata<T>(ctx: { log: Logger }, uri: string): Promise<T | undefined> {
   if (!uri) {
     return;
   }
@@ -32,7 +32,7 @@ export async function fetchMetadata(ctx: { log: Logger }, uri: string): Promise<
     uri = parseUri(uri);
     ctx.log.info("fetching metadata: " + uri)
     const data = await fetch(uri).then(r => r.json());
-    return data as AssetMetaData;
+    return data as T;
   } catch (e: any) {
     ctx.log.warn("fetch metadata error: " + e?.message);
   }

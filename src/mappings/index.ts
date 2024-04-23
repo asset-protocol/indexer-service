@@ -3,18 +3,18 @@ import { Store } from '@subsquid/typeorm-store'
 import { handleAssetCreatedAssetHubLog, handleAssetHubUpgradedLog, handleAssetUpdatedLog, handleCollectedAssetHubLog, handleTransferAssetHubLog } from './AssetHub';
 import * as assethub from '../abi/IAssetHubEvents'
 import * as assethubManager from '../abi/LiteAssetHubManager';
-import { getAssetHubSet, handleAssetHubDeployedLog, handleManagerGlobalModuleChangedLog, handleManagerHubCreatorNFTChangedLog, handleManagerInitializedLog } from './AssetManager';
+import { getAssetHubSet, handleAssetHubDeployedLog, handleManagerCurationUpdatedLog, handleManagerGlobalModuleChangedLog, handleManagerHubCreatorNFTChangedLog } from './AssetManager';
 import { ASSETHUB_MANAGER } from '../config';
 import { getAddress } from 'ethers';
 
 export type HandleLogFunc = (ctx: DataHandlerContext<Store>, log: Log) => Promise<void>;
 
-const handlers = new Map<string, Map<string, HandleLogFunc[]>>([
+export const handlers = new Map<string, Map<string, HandleLogFunc[]>>([
   [ASSETHUB_MANAGER!, new Map([
     [assethubManager.events.AssetHubDeployed.topic, [handleAssetHubDeployedLog]],
     [assethubManager.events.GlobalModuleChanged.topic, [handleManagerGlobalModuleChangedLog]],
     [assethubManager.events.HubCreatorNFTChanged.topic, [handleManagerHubCreatorNFTChangedLog]],
-    [assethubManager.events.ManagerInitialized.topic, [handleManagerInitializedLog]]
+    [assethubManager.events.CurationUpdated.topic, [handleManagerCurationUpdatedLog]]
   ])],
   ["_AssetHub", new Map([
     [assethub.events.AssetCreated.topic, [handleAssetCreatedAssetHubLog]],
@@ -31,7 +31,7 @@ export const getLogHandler = async (ctx: DataHandlerContext<Store>, log: Log) =>
     return hd.get(log.topics[0])
   }
   const hubSet = await getAssetHubSet(ctx);
-  if (hubSet.has(getAddress(log.address).toLowerCase())) {
+  if (hubSet.has(log.address.toLowerCase())) {
     return (handlers.get("_AssetHub")?.get(log.topics[0])) ?? [];
   }
 }

@@ -11,16 +11,6 @@ export const ABI_JSON = [
     },
     {
         "type": "error",
-        "name": "AssetDoesNotExist",
-        "inputs": []
-    },
-    {
-        "type": "error",
-        "name": "CallerNotCollectNFT",
-        "inputs": []
-    },
-    {
-        "type": "error",
         "name": "ERC1967InvalidImplementation",
         "inputs": [
             {
@@ -128,22 +118,7 @@ export const ABI_JSON = [
     },
     {
         "type": "error",
-        "name": "EnforcedPause",
-        "inputs": []
-    },
-    {
-        "type": "error",
-        "name": "ExpectedPause",
-        "inputs": []
-    },
-    {
-        "type": "error",
         "name": "FailedInnerCall",
-        "inputs": []
-    },
-    {
-        "type": "error",
-        "name": "InvalidCreateAssetModule",
         "inputs": []
     },
     {
@@ -153,17 +128,32 @@ export const ABI_JSON = [
     },
     {
         "type": "error",
-        "name": "NoAssetPublisher",
+        "name": "NotAssetPublisher",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "s"
+            }
+        ]
+    },
+    {
+        "type": "error",
+        "name": "NotHub",
         "inputs": []
     },
     {
         "type": "error",
-        "name": "NotAssetPublisher",
+        "name": "NotHubOwner",
         "inputs": []
     },
     {
         "type": "error",
         "name": "NotInitializing",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "NotManager",
         "inputs": []
     },
     {
@@ -248,75 +238,143 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
-        "name": "BatchMetadataUpdate",
+        "name": "AssetApproved",
         "inputs": [
             {
                 "type": "uint256",
-                "name": "_fromTokenId",
+                "name": "curationId",
                 "indexed": false
             },
-            {
-                "type": "uint256",
-                "name": "_toTokenId",
-                "indexed": false
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
-        "name": "CollectModuleWhitelisted",
-        "inputs": [
             {
                 "type": "address",
-                "name": "collectModule",
-                "indexed": true
-            },
-            {
-                "type": "bool",
-                "name": "whitelisted",
-                "indexed": true
-            },
-            {
-                "type": "uint256",
-                "name": "timestamp",
+                "name": "hub",
                 "indexed": false
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
-        "name": "CollectNFTTransfered",
-        "inputs": [
-            {
-                "type": "address",
-                "name": "publiser",
-                "indexed": true
             },
             {
                 "type": "uint256",
                 "name": "assetId",
+                "indexed": false
+            },
+            {
+                "type": "uint8",
+                "name": "status",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "AssetsAdded",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "curationId",
+                "indexed": true
+            },
+            {
+                "type": "tuple[]",
+                "name": "assets",
+                "components": [
+                    {
+                        "type": "address",
+                        "name": "hub"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "assetId"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "order"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "AssetsRemoved",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "curationId",
+                "indexed": true
+            },
+            {
+                "type": "address[]",
+                "name": "hubs"
+            },
+            {
+                "type": "uint256[]",
+                "name": "assetIds"
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "CurationCreated",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "publisher",
                 "indexed": true
             },
             {
                 "type": "uint256",
-                "name": "collectNFTTokenId",
+                "name": "curationId",
+                "indexed": false
+            },
+            {
+                "type": "string",
+                "name": "curationURI",
+                "indexed": false
+            },
+            {
+                "type": "uint8",
+                "name": "status",
+                "indexed": false
+            },
+            {
+                "type": "tuple[]",
+                "name": "assets",
+                "components": [
+                    {
+                        "type": "address",
+                        "name": "hub"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "assetId"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "order"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "CurationUpdated",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "curationId",
                 "indexed": true
             },
             {
-                "type": "address",
-                "name": "from",
+                "type": "string",
+                "name": "curationURI",
                 "indexed": false
             },
             {
-                "type": "address",
-                "name": "to",
-                "indexed": false
-            },
-            {
-                "type": "uint256",
-                "name": "timestamp",
+                "type": "uint8",
+                "name": "status",
                 "indexed": false
             }
         ]
@@ -329,18 +387,6 @@ export const ABI_JSON = [
             {
                 "type": "uint64",
                 "name": "version",
-                "indexed": false
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
-        "name": "MetadataUpdate",
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "_tokenId",
                 "indexed": false
             }
         ]
@@ -365,18 +411,6 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
-        "name": "Paused",
-        "inputs": [
-            {
-                "type": "address",
-                "name": "account",
-                "indexed": false
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
         "name": "Transfer",
         "inputs": [
             {
@@ -393,18 +427,6 @@ export const ABI_JSON = [
                 "type": "uint256",
                 "name": "tokenId",
                 "indexed": true
-            }
-        ]
-    },
-    {
-        "type": "event",
-        "anonymous": false,
-        "name": "Unpaused",
-        "inputs": [
-            {
-                "type": "address",
-                "name": "account",
-                "indexed": false
             }
         ]
     },
@@ -436,6 +458,37 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "addAssets",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "curationId"
+            },
+            {
+                "type": "tuple[]",
+                "name": "assets",
+                "components": [
+                    {
+                        "type": "address",
+                        "name": "hub"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "assetId"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "order"
+                    }
+                ]
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
         "name": "approve",
         "constant": false,
         "payable": false,
@@ -453,83 +506,53 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "assetCollectCount",
-        "constant": true,
-        "stateMutability": "view",
+        "name": "approveAsset",
+        "constant": false,
         "payable": false,
         "inputs": [
             {
                 "type": "uint256",
-                "name": "assetId"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "assetCollectNFT",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "assetId"
-            }
-        ],
-        "outputs": [
+                "name": "id"
+            },
             {
                 "type": "address",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "assetGated",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
+                "name": "hub"
+            },
             {
                 "type": "uint256",
                 "name": "assetId"
             },
             {
-                "type": "address",
-                "name": "account"
+                "type": "uint8",
+                "name": "status"
             }
         ],
-        "outputs": [
-            {
-                "type": "bool",
-                "name": ""
-            }
-        ]
+        "outputs": []
     },
     {
         "type": "function",
-        "name": "assetPublisher",
-        "constant": true,
-        "stateMutability": "view",
+        "name": "approveAssetBatch",
+        "constant": false,
         "payable": false,
         "inputs": [
             {
                 "type": "uint256",
-                "name": "assetId"
-            }
-        ],
-        "outputs": [
+                "name": "id"
+            },
             {
                 "type": "address",
-                "name": ""
+                "name": "hub"
+            },
+            {
+                "type": "uint256[]",
+                "name": "assetIds"
+            },
+            {
+                "type": "uint8[]",
+                "name": "status"
             }
-        ]
+        ],
+        "outputs": []
     },
     {
         "type": "function",
@@ -552,103 +575,34 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "collect",
-        "constant": false,
-        "stateMutability": "payable",
-        "payable": true,
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "assetId"
-            },
-            {
-                "type": "bytes",
-                "name": "collectModuleData"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "collectModuleWhitelisted",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address",
-                "name": "followModule"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "bool",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "count",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "address",
-                "name": "publisher"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "create",
         "constant": false,
         "stateMutability": "payable",
         "payable": true,
         "inputs": [
             {
-                "type": "tuple",
-                "name": "data",
+                "type": "string",
+                "name": "curationURI"
+            },
+            {
+                "type": "uint8",
+                "name": "status"
+            },
+            {
+                "type": "tuple[]",
+                "name": "assets",
                 "components": [
                     {
                         "type": "address",
-                        "name": "publisher"
+                        "name": "hub"
                     },
                     {
-                        "type": "string",
-                        "name": "contentURI"
+                        "type": "uint256",
+                        "name": "assetId"
                     },
                     {
-                        "type": "bytes",
-                        "name": "assetCreateModuleData"
-                    },
-                    {
-                        "type": "address",
-                        "name": "collectModule"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "collectModuleInitData"
-                    },
-                    {
-                        "type": "address",
-                        "name": "gatedModule"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "gatedModuleInitData"
+                        "type": "uint256",
+                        "name": "order"
                     }
                 ]
             }
@@ -662,32 +616,54 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "emitCollectNFTTransferEvent",
-        "constant": false,
+        "name": "curationData",
+        "constant": true,
+        "stateMutability": "view",
         "payable": false,
         "inputs": [
             {
-                "type": "address",
-                "name": "publiser"
-            },
-            {
                 "type": "uint256",
-                "name": "assetId"
-            },
-            {
-                "type": "uint256",
-                "name": "collectNFTId"
-            },
-            {
-                "type": "address",
-                "name": "from"
-            },
-            {
-                "type": "address",
-                "name": "to"
+                "name": "curationId"
             }
         ],
-        "outputs": []
+        "outputs": [
+            {
+                "type": "tuple",
+                "name": "",
+                "components": [
+                    {
+                        "type": "tuple[]",
+                        "name": "assets",
+                        "components": [
+                            {
+                                "type": "address",
+                                "name": "hub"
+                            },
+                            {
+                                "type": "uint256",
+                                "name": "assetId"
+                            },
+                            {
+                                "type": "uint256",
+                                "name": "order"
+                            },
+                            {
+                                "type": "uint8",
+                                "name": "status"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "string",
+                        "name": "tokenURI"
+                    },
+                    {
+                        "type": "uint8",
+                        "name": "status"
+                    }
+                ]
+            }
+        ]
     },
     {
         "type": "function",
@@ -710,48 +686,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "getCreateAssetModule",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "globalModule",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
-        "name": "hubOwner",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "address",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "initialize",
         "constant": false,
         "payable": false,
@@ -761,24 +695,12 @@ export const ABI_JSON = [
                 "name": "name"
             },
             {
+                "type": "string",
+                "name": "symbol"
+            },
+            {
                 "type": "address",
                 "name": "manager"
-            },
-            {
-                "type": "address",
-                "name": "admin"
-            },
-            {
-                "type": "address",
-                "name": "collectNFT"
-            },
-            {
-                "type": "address",
-                "name": "createAssetModule"
-            },
-            {
-                "type": "address[]",
-                "name": "whitelistedCollectModules"
             }
         ],
         "outputs": []
@@ -855,20 +777,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "paused",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [],
-        "outputs": [
-            {
-                "type": "bool",
-                "name": ""
-            }
-        ]
-    },
-    {
-        "type": "function",
         "name": "proxiableUUID",
         "constant": true,
         "stateMutability": "view",
@@ -880,6 +788,27 @@ export const ABI_JSON = [
                 "name": ""
             }
         ]
+    },
+    {
+        "type": "function",
+        "name": "removeAssets",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "curationId"
+            },
+            {
+                "type": "address[]",
+                "name": "hubs"
+            },
+            {
+                "type": "uint256[]",
+                "name": "assetIds"
+            }
+        ],
+        "outputs": []
     },
     {
         "type": "function",
@@ -954,30 +883,34 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "setCollectModuleWhitelist",
+        "name": "setCurationURI",
         "constant": false,
         "payable": false,
         "inputs": [
             {
-                "type": "address",
-                "name": "collectModule"
+                "type": "uint256",
+                "name": "curationId"
             },
             {
-                "type": "bool",
-                "name": "whitelist"
+                "type": "string",
+                "name": "curationURI"
             }
         ],
         "outputs": []
     },
     {
         "type": "function",
-        "name": "setCreateAssetModule",
+        "name": "setStatus",
         "constant": false,
         "payable": false,
         "inputs": [
             {
-                "type": "address",
-                "name": "assetModule"
+                "type": "uint256",
+                "name": "curationId"
+            },
+            {
+                "type": "uint8",
+                "name": "status"
             }
         ],
         "outputs": []
@@ -1070,46 +1003,6 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
-        "name": "update",
-        "constant": false,
-        "stateMutability": "payable",
-        "payable": true,
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "assetId"
-            },
-            {
-                "type": "tuple",
-                "name": "data",
-                "components": [
-                    {
-                        "type": "address",
-                        "name": "collectModule"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "collectModuleInitData"
-                    },
-                    {
-                        "type": "address",
-                        "name": "gatedModule"
-                    },
-                    {
-                        "type": "bytes",
-                        "name": "gatedModuleInitData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "contentURI"
-                    }
-                ]
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "type": "function",
         "name": "upgradeToAndCall",
         "constant": false,
         "stateMutability": "payable",
@@ -1125,29 +1018,6 @@ export const ABI_JSON = [
             }
         ],
         "outputs": []
-    },
-    {
-        "type": "function",
-        "name": "userCollectCount",
-        "constant": true,
-        "stateMutability": "view",
-        "payable": false,
-        "inputs": [
-            {
-                "type": "uint256",
-                "name": "assetId"
-            },
-            {
-                "type": "address",
-                "name": "collector"
-            }
-        ],
-        "outputs": [
-            {
-                "type": "uint256",
-                "name": ""
-            }
-        ]
     },
     {
         "type": "function",

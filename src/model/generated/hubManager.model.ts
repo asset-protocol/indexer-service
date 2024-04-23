@@ -18,4 +18,7 @@ export class HubManager {
 
     @Column_("text", {nullable: true})
     hubCreatorNft!: string | undefined | null
+
+    @Column_("text", {nullable: true})
+    curation!: string | undefined | null
 }

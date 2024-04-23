@@ -1,7 +1,9 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, OneToMany as OneToMany_} from "typeorm"
 import * as marshal from "./marshal"
+import {AssetTag} from "./assetTag.model"
 import {AssetMetadataHistory} from "./assetMetadataHistory.model"
 import {Collector} from "./collector.model"
+import {CurationAsset} from "./curationAsset.model"
 
 @Entity_()
 export class Asset {
@@ -58,14 +60,14 @@ export class Asset {
     @Column_("text", {nullable: true})
     description!: string | undefined | null
 
-    @Column_("text", {nullable: true})
-    tags!: string | undefined | null
+    @OneToMany_(() => AssetTag, e => e.asset)
+    tags!: AssetTag[]
 
-    @Column_("text", {nullable: true})
-    extra!: string | undefined | null
+    @Column_("jsonb", {nullable: true})
+    properties!: unknown | undefined | null
 
-    @Column_("text", {nullable: true})
-    metadata!: string | undefined | null
+    @Column_("jsonb", {nullable: true})
+    metadata!: unknown | undefined | null
 
     @Column_("text", {nullable: true})
     content!: string | undefined | null
@@ -93,4 +95,7 @@ export class Asset {
 
     @Column_("text", {nullable: true})
     gatedModuleInitData!: string | undefined | null
+
+    @OneToMany_(() => CurationAsset, e => e.asset)
+    curations!: CurationAsset[]
 }

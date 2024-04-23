@@ -192,6 +192,19 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "curation",
+        "type": "address"
+      }
+    ],
+    "name": "CurationUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "globalModule",
         "type": "address"
       }
@@ -223,25 +236,6 @@
       }
     ],
     "name": "Initialized",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "creatorNFT",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "globalModule",
-        "type": "address"
-      }
-    ],
-    "name": "ManagerInitialized",
     "type": "event"
   },
   {
@@ -417,6 +411,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "curation",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -532,6 +539,11 @@
         "internalType": "address",
         "name": "globalModule_",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "curation_",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -587,6 +599,19 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "curation_",
+        "type": "address"
+      }
+    ],
+    "name": "setCuration",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -3,6 +3,8 @@ import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
 import * as assethubManager from '../abi/LiteAssetHubManager';
 import { AssetHub, HubManager } from "../model";
+import { setCurationHanders } from "./curation";
+import { ZeroAddress } from "ethers";
 
 let _assethubs: Set<string> | undefined;
 
@@ -29,16 +31,18 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
   await ctx.store.save(assetHub);
 }
 
-export async function handleManagerInitializedLog(ctx: DataHandlerContext<Store>, log: Log) {
-  ctx.log.info("Handling ManagerInitialized");
-  const logData = assethubManager.events.ManagerInitialized.decode(log);
+export async function handleManagerCurationUpdatedLog(ctx: DataHandlerContext<Store>, log: Log) {
+  ctx.log.info("Handling ManagerCurationUpdated");
+  const logData = assethubManager.events.CurationUpdated.decode(log);
   let manager = new HubManager({
     id: log.address,
-    hubCreatorNft: logData.creatorNFT,
-    globalModule: logData.globalModule,
+    curation: logData.curation,
     timestamp: BigInt(log.block.timestamp),
   })
   await ctx.store.save(manager);
+  if (manager.curation && manager.curation !== ZeroAddress) {
+    setCurationHanders(manager.curation);
+  }
 }
 
 export async function handleManagerHubCreatorNFTChangedLog(ctx: DataHandlerContext<Store>, log: Log) {

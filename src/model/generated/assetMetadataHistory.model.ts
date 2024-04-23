@@ -22,6 +22,6 @@ export class AssetMetadataHistory {
     @Column_("text", {nullable: true})
     contentUri!: string | undefined | null
 
-    @Column_("text", {nullable: true})
-    metadata!: string | undefined | null
+    @Column_("jsonb", {nullable: true})
+    metadata!: unknown | undefined | null
 }
