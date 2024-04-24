@@ -7,7 +7,7 @@ import { AssetMetaData, fetchMetadata } from "./asset_metadata";
 import { DataHandlerContext, Log } from "@subsquid/evm-processor";
 import { Store } from "@subsquid/typeorm-store";
 import * as assethub from '../abi/IAssetHubEvents'
-import { Asset, AssetHub, AssetMetadataHistory, Collector } from "../model";
+import { Asset, AssetHub, AssetMetadataHistory, Collector, AssetTag } from "../model";
 import { ZeroAddress, getAddress } from "ethers";
 import { Logger } from "@subsquid/logger";
 
@@ -107,13 +107,22 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
   if (asset.contentUri !== logData.data.contentURI) {
     asset.contentUri = logData.data.contentURI;
     await parseMetadata(ctx, asset, log.block.timestamp.toString());
-    const tags = (asset.metadata as AssetMetaData)?.tags?.map((t) => ({
-      id: t.toLowerCase() + asset.id,
-      name: t,
-      normalizedName: t.toLowerCase(),
-      asset: asset,
-    })) ?? [];
-    await ctx.store.save(tags);
+    const tags = (asset.metadata as AssetMetaData)?.tags
+    if (tags) {
+      const tagModels: AssetTag[] = []
+      new Map(tags.map((t) => [t.toLowerCase(), t])).forEach((t) => {
+        tagModels.push({
+          id: t.toLowerCase() + asset.id,
+          name: t,
+          normalizedName: t.toLowerCase(),
+          asset: asset,
+        })
+      })
+      if (tagModels.length > 0) {
+        ctx.log.info("Saving tags: " + tagModels.map((t) => t.name).join(", "))
+        await ctx.store.save(tagModels);
+      }
+    }
     await saveAssetMetadataHistroy(ctx, log.transaction?.hash ?? log.block.hash, asset, asset.timestamp);
     asset.lastUpdatedAt = BigInt(log.block.timestamp);
   }
