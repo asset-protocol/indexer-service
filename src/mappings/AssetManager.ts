@@ -4,7 +4,7 @@ import { Store } from "@subsquid/typeorm-store";
 import * as assethubManager from '../abi/LiteAssetHubManager';
 import { AssetHub, HubManager } from "../model";
 import { setCurationHanders } from "./curation";
-import { ZeroAddress } from "ethers";
+import { ZeroAddress, getAddress } from "ethers";
 
 let _assethubs: Set<string> | undefined;
 
@@ -14,7 +14,7 @@ export async function handleAssetHubDeployedLog(ctx: DataHandlerContext<Store>, 
 
   let assetHub = new AssetHub({
     id: logData.assetHub,
-    management: log.address,
+    management: getAddress(log.address),
     admin: logData.admin,
     name: logData.name,
     feeCollectModule: logData.data.feeCollectModule,
@@ -35,7 +35,7 @@ export async function handleManagerCurationUpdatedLog(ctx: DataHandlerContext<St
   ctx.log.info("Handling ManagerCurationUpdated");
   const logData = assethubManager.events.CurationUpdated.decode(log);
   let manager = new HubManager({
-    id: log.address,
+    id: getAddress(log.address),
     curation: logData.curation,
     timestamp: BigInt(log.block.timestamp),
   })
@@ -49,7 +49,7 @@ export async function handleManagerHubCreatorNFTChangedLog(ctx: DataHandlerConte
   ctx.log.info("Handling ManagerHubCreatorNFTChanged");
   const logData = assethubManager.events.HubCreatorNFTChanged.decode(log);
   let manager = new HubManager({
-    id: log.address,
+    id: getAddress(log.address),
     timestamp: BigInt(log.block.timestamp),
     hubCreatorNft: logData.creatorNFT
   })
@@ -60,7 +60,7 @@ export async function handleManagerGlobalModuleChangedLog(ctx: DataHandlerContex
   ctx.log.info("Handling ManagerGlobalModuleChanged");
   const logData = assethubManager.events.GlobalModuleChanged.decode(log);
   let manager = new HubManager({
-    id: log.address,
+    id: getAddress(log.address),
     timestamp: BigInt(log.block.timestamp),
     globalModule: logData.globalModule
   })
