@@ -107,7 +107,13 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
   if (asset.contentUri !== logData.data.contentURI) {
     asset.contentUri = logData.data.contentURI;
     await parseMetadata(ctx, asset, log.block.timestamp.toString());
-    await ctx.store.save(asset.tags);
+    const tags = (asset.metadata as AssetMetaData)?.tags?.map((t) => ({
+      id: t.toLowerCase() + asset.id,
+      name: t,
+      normalizedName: t.toLowerCase(),
+      asset: asset,
+    })) ?? [];
+    await ctx.store.save(tags);
     await saveAssetMetadataHistroy(ctx, log.transaction?.hash ?? log.block.hash, asset, asset.timestamp);
     asset.lastUpdatedAt = BigInt(log.block.timestamp);
   }
@@ -147,12 +153,6 @@ export async function parseMetadata(ctx: { log: Logger }, asset: Asset, timestam
     asset.description = metadata.description;
     asset.content = metadata.content;
     asset.properties = metadata.properties;
-    asset.tags = metadata.tags?.map((t) => ({
-      id: t.toLowerCase() + asset.id,
-      name: t,
-      normalizedName: t.toLowerCase(),
-      asset: asset,
-    })) ?? [];
     asset.metadata = metadata;
     asset.query1 = metadata.query1;
     asset.query2 = metadata.query2;
