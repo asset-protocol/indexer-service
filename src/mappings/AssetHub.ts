@@ -111,12 +111,12 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
     if (tags) {
       const tagModels: AssetTag[] = []
       new Map(tags.map((t) => [t.toLowerCase(), t])).forEach((t) => {
-        tagModels.push({
+        tagModels.push(new AssetTag({
           id: t.toLowerCase() + asset.id,
           name: t,
           normalizedName: t.toLowerCase(),
           asset: asset,
-        })
+        }))
       })
       if (tagModels.length > 0) {
         ctx.log.info("Saving tags: " + tagModels.map((t) => t.name).join(", "))
