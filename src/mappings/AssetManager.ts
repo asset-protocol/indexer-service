@@ -5,6 +5,7 @@ import * as assethubManager from '../abi/LiteAssetHubManager';
 import { AssetHub, HubManager } from "../model";
 import { setCurationHanders } from "./curation";
 import { ZeroAddress, getAddress } from "ethers";
+import { ASSETHUB_MANAGER } from "../config";
 
 let _assethubs: Set<string> | undefined;
 
@@ -73,4 +74,9 @@ export const getAssetHubSet = async (ctx: DataHandlerContext<Store>) => {
     _assethubs = new Set(data.map((d) => d.id.toLowerCase()))
   }
   return _assethubs;
+}
+
+export const getManager = async (ctx: DataHandlerContext<Store>) => {
+  const manager = await ctx.store.find(HubManager, { where: { id: ASSETHUB_MANAGER! } });
+  return manager[0];
 }
