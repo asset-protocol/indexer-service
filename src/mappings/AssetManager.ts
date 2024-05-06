@@ -41,7 +41,7 @@ export async function handleManagerCurationUpdatedLog(ctx: DataHandlerContext<St
   })
   await ctx.store.save(manager);
   if (manager.curation && manager.curation !== ZeroAddress) {
-    setCurationHanders(manager.curation);
+    setCurationHanders(manager.curation.toLowerCase());
   }
 }
 
