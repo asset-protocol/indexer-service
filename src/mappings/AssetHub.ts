@@ -123,7 +123,7 @@ export async function handleAssetUpdatedLog(ctx: DataHandlerContext<Store>, log:
         await ctx.store.save(tagModels);
       }
     }
-    await saveAssetMetadataHistroy(ctx, log.transaction?.hash ?? log.block.hash, asset, asset.timestamp);
+    await saveAssetMetadataHistroy(ctx, log.transaction?.hash ?? log.block.hash, asset, BigInt(log.block.timestamp));
     asset.lastUpdatedAt = BigInt(log.block.timestamp);
   }
   if (logData.data.collectModule !== INGORED_ADDRESSES) {
