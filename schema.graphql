@@ -125,6 +125,7 @@ type Curation @entity {
   id: ID! # curation address
   tokenURI: String
   publisher: String @index
+  status: Int
   hash: String
   timestamp: BigInt @index
   lastUpdatedAt: BigInt @index

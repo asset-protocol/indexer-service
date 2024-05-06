@@ -39,6 +39,7 @@ export async function handleCurationCreatedLog(ctx: DataHandlerContext<Store>, l
   curationModel.publisher = logData.publisher;
   curationModel.timestamp = BigInt(log.block.timestamp);
   curationModel.lastUpdatedAt = BigInt(log.block.timestamp);
+  curationModel.status = logData.status;
   curationModel.hash = log.transaction?.hash;
   await parseCurationMetadata(ctx, curationModel);
   await saveCurationTags(ctx, curationModel.id, curationModel.tags);

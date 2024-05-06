@@ -19,6 +19,9 @@ export class Curation {
     @Column_("text", {nullable: true})
     publisher!: string | undefined | null
 
+    @Column_("int4", {nullable: true})
+    status!: number | undefined | null
+
     @Column_("text", {nullable: true})
     hash!: string | undefined | null
 
