@@ -142,6 +142,9 @@ async function getOrCreateCuration(store: Store, id: bigint) {
 }
 
 async function saveCurationTags(ctx: DataHandlerContext<Store>, curationId: string, tags: CurationTag[]) {
+  if (!tags || tags.length === 0) {
+    return;
+  }
   const tagIds = tags.map(t => t.normalizedName + curationId);
   await ctx.store.remove(CurationTag, tagIds);
   await ctx.store.save(tags);
