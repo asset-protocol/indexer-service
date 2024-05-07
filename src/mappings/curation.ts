@@ -111,13 +111,13 @@ export async function HandleCurationTransferredLog(ctx: DataHandlerContext<Store
   await ctx.store.save(curationModel);
 }
 
-function toApprovalStatus(status: number): AssetApproveStatus {
-  switch (status) {
-    case 0:
+function toApprovalStatus(status: number | bigint): AssetApproveStatus {
+  switch (status.toString()) {
+    case "0":
       return AssetApproveStatus.Pending;
-    case 1:
+    case "1":
       return AssetApproveStatus.Approved;
-    case 2:
+    case "2":
       return AssetApproveStatus.Rejected;
     default:
       throw new Error(`Invalid approval status: ${status}, type: ${typeof status}`);
