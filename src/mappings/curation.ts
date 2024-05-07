@@ -120,7 +120,7 @@ function toApprovalStatus(status: number): AssetApproveStatus {
     case 2:
       return AssetApproveStatus.Rejected;
     default:
-      throw new Error(`Invalid approval status ${status}`);
+      throw new Error(`Invalid approval status: ${status}, type: ${typeof status}`);
   }
 }
 
