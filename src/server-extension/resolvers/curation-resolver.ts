@@ -11,7 +11,7 @@ export class CustomCurationResolver {
   async curationTagNames(
     @Arg("keyword", { nullable: true }) keyword: string,
     @Arg("limit", { nullable: true }) limit: number,
-  ): Promise<string[]> {
+  ): Promise<TagName[]> {
     const manager = await this.tx();
     const qb = manager
       .createQueryBuilder(CurationTag, "tag")
@@ -21,7 +21,6 @@ export class CustomCurationResolver {
       .addSelect("COUNT(tag.name)", "count")
       .orderBy("count", "DESC")
       .limit(limit !== undefined ? limit : 10);
-    const tags: TagName[] = await qb.execute();
-    return tags.map(t => t.name!);
+    return await qb.execute();
   }
 }

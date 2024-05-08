@@ -48,7 +48,7 @@ export class CustomAssetResolver {
   async assetTagNames(
     @Arg("keyword", { nullable: true }) keyword: string,
     @Arg("limit", { nullable: true }) limit: number,
-  ): Promise<string[]> {
+  ): Promise<TagName[]> {
     const manager = await this.tx();
     const qb = manager
       .createQueryBuilder(AssetTag, "tag")
@@ -58,7 +58,6 @@ export class CustomAssetResolver {
       .addSelect("COUNT(tag.name)", "count")
       .orderBy("count", "DESC")
       .limit(limit !== undefined ? limit : 10);
-    const tags: TagName[] = await qb.execute();
-    return tags.map(t => t.name!);
+    return await qb.execute();
   }
 }
