@@ -17,7 +17,7 @@ export class CustomCurationResolver {
       .createQueryBuilder(CurationTag, "tag")
       .where(keyword ? { normalizedName: Like(`%${keyword.toLowerCase()}%`) } : {})
       .groupBy("tag.name")
-      .select("tag.name")
+      .select("tag.name", "name")
       .addSelect("COUNT(tag.name)", "count")
       .orderBy("count", "DESC")
       .limit(limit !== undefined ? limit : 10);
