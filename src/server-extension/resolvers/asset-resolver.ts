@@ -1,7 +1,7 @@
 import { getAddress } from 'ethers'
 import { Arg, Query, Resolver } from 'type-graphql'
-import type { EntityManager } from 'typeorm'
-import { Asset } from '../../model'
+import { Like, type EntityManager, type FindManyOptions } from 'typeorm'
+import { Asset, AssetTag } from '../../model'
 import { parseMetadata } from '../../mappings/AssetHub'
 import { createLogger } from '@subsquid/logger'
 
@@ -30,5 +30,17 @@ export class CustomAssetResolver {
       LOG.error(`Error parsing metadata for asset ${id}: ${e.message}`)
       return false;
     }
+  }
+
+  @Query(() => Array<String>)
+  async assetTagNames(@Arg("keyword", { nullable: true }) keyword: string): Promise<string[]> {
+    const manager = await this.tx();
+    const qb = manager
+      .createQueryBuilder(AssetTag, "tag")
+      .where(keyword ? { normalizedName: Like(`%${keyword.toLowerCase()}%`) } : {})
+      .select(["tag.name"])
+      .distinct(true);
+    const tags = await qb.getMany();
+    return tags.map(t => t.name!);
   }
 }
