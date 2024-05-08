@@ -44,7 +44,7 @@ export class CustomAssetResolver {
     }
   }
 
-  @Query(() => Array<TagName>)
+  @Query(() => [TagName])
   async assetTagNames(
     @Arg("keyword", { nullable: true }) keyword: string,
     @Arg("limit", { nullable: true }) limit: number,

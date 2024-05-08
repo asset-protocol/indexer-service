@@ -7,7 +7,7 @@ import { TagName } from './asset-resolver';
 export class CustomCurationResolver {
   constructor(private tx: () => Promise<EntityManager>) { }
 
-  @Query(() => Array<TagName>)
+  @Query(() => [TagName])
   async curationTagNames(
     @Arg("keyword", { nullable: true }) keyword: string,
     @Arg("limit", { nullable: true }) limit: number,
