@@ -1,20 +1,27 @@
 import { Arg, Query, Resolver } from 'type-graphql'
 import { Like, type EntityManager } from 'typeorm'
 import { CurationTag } from '../../model'
+import { TagName } from './asset-resolver';
 
 @Resolver()
 export class CustomCurationResolver {
   constructor(private tx: () => Promise<EntityManager>) { }
 
-  @Query(() => Array<String>)
-  async curationTagNames(@Arg("keyword", { nullable: true }) keyword: string): Promise<string[]> {
+  @Query(() => Array<TagName>)
+  async curationTagNames(
+    @Arg("keyword", { nullable: true }) keyword: string,
+    @Arg("limit", { nullable: true }) limit: number,
+  ): Promise<string[]> {
     const manager = await this.tx();
     const qb = manager
       .createQueryBuilder(CurationTag, "tag")
       .where(keyword ? { normalizedName: Like(`%${keyword.toLowerCase()}%`) } : {})
-      .select(["tag.name"])
-      .distinct(true);
-    const tags = await qb.getMany();
+      .groupBy("tag.name")
+      .select("tag.name")
+      .addSelect("COUNT(tag.name)", "count")
+      .orderBy("count", "DESC")
+      .limit(limit !== undefined ? limit : 10);
+    const tags: TagName[] = await qb.execute();
     return tags.map(t => t.name!);
   }
 }

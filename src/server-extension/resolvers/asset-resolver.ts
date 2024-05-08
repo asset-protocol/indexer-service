@@ -1,9 +1,21 @@
 import { getAddress } from 'ethers'
-import { Arg, Query, Resolver } from 'type-graphql'
+import { Arg, Field, ObjectType, Query, Resolver } from 'type-graphql'
 import { Like, type EntityManager, type FindManyOptions } from 'typeorm'
 import { Asset, AssetTag } from '../../model'
 import { parseMetadata } from '../../mappings/AssetHub'
 import { createLogger } from '@subsquid/logger'
+
+@ObjectType()
+export class TagName {
+  @Field(() => Number, { nullable: false })
+  name!: string;
+  @Field(() => Number, { nullable: false })
+  count!: number;
+
+  constructor(props: Partial<TagName>) {
+    Object.assign(this, props);
+  }
+}
 
 @Resolver()
 export class CustomAssetResolver {
@@ -32,15 +44,21 @@ export class CustomAssetResolver {
     }
   }
 
-  @Query(() => Array<String>)
-  async assetTagNames(@Arg("keyword", { nullable: true }) keyword: string): Promise<string[]> {
+  @Query(() => Array<TagName>)
+  async assetTagNames(
+    @Arg("keyword", { nullable: true }) keyword: string,
+    @Arg("limit", { nullable: true }) limit: number,
+  ): Promise<string[]> {
     const manager = await this.tx();
     const qb = manager
       .createQueryBuilder(AssetTag, "tag")
       .where(keyword ? { normalizedName: Like(`%${keyword.toLowerCase()}%`) } : {})
-      .select(["tag.name"])
-      .distinct(true);
-    const tags = await qb.getMany();
+      .groupBy("tag.name")
+      .select("tag.name")
+      .addSelect("COUNT(tag.name)", "count")
+      .orderBy("count", "DESC")
+      .limit(limit !== undefined ? limit : 10);
+    const tags: TagName[] = await qb.execute();
     return tags.map(t => t.name!);
   }
 }
