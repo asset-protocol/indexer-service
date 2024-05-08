@@ -7,7 +7,7 @@ import { createLogger } from '@subsquid/logger'
 
 @ObjectType()
 export class TagName {
-  @Field(() => Number, { nullable: false })
+  @Field(() => String, { nullable: false })
   name!: string;
   @Field(() => Number, { nullable: false })
   count!: number;
