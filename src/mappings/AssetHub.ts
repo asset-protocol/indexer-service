@@ -22,9 +22,15 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
   const logData = assethub.events.AssetCreated.decode(log)
 
   const id = getAddress(log.address) + "-" + logData.assetId.toString();
+  const hub = await ctx.store.get(AssetHub, getAddress(log.address))
+  if (!hub) {
+    ctx.log.error("AssetHub not found: " + getAddress(log.address));
+    return;
+  }
+
   const asset = new Asset({
     id: id,
-    hub: getAddress(log.address),
+    hub: hub,
     assetId: logData.assetId,
     publisher: logData.publisher,
     collectNft: logData.collectNFT,

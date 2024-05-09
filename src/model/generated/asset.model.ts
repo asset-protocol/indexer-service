@@ -1,5 +1,6 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, OneToMany as OneToMany_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_, OneToMany as OneToMany_} from "typeorm"
 import * as marshal from "./marshal"
+import {AssetHub} from "./assetHub.model"
 import {AssetTag} from "./assetTag.model"
 import {AssetMetadataHistory} from "./assetMetadataHistory.model"
 import {Collector} from "./collector.model"
@@ -19,8 +20,8 @@ export class Asset {
     assetId!: bigint | undefined | null
 
     @Index_()
-    @Column_("text", {nullable: true})
-    hub!: string | undefined | null
+    @ManyToOne_(() => AssetHub, {nullable: true})
+    hub!: AssetHub | undefined | null
 
     @Index_()
     @Column_("text", {nullable: true})

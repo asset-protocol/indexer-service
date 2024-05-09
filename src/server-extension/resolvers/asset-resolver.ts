@@ -47,7 +47,7 @@ export class CustomAssetResolver {
   @Query(() => [TagName])
   async assetTagNames(
     @Arg("keyword", { nullable: true }) keyword: string,
-    @Arg("limit", { nullable: true }) limit: number,
+    @Arg("limit", { nullable: true, defaultValue: 10 }) limit: number,
   ): Promise<TagName[]> {
     const manager = await this.tx();
     const qb = manager
