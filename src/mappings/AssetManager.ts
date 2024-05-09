@@ -76,7 +76,12 @@ export const getAssetHubSet = async (ctx: DataHandlerContext<Store>) => {
   return _assethubs;
 }
 
+let manager: HubManager | undefined = undefined;
+
 export const getManager = async (ctx: DataHandlerContext<Store>) => {
-  const manager = await ctx.store.find(HubManager, { where: { id: ASSETHUB_MANAGER! } });
-  return manager[0];
+  if (!manager) {
+    const managers = await ctx.store.find(HubManager, { where: { id: ASSETHUB_MANAGER! } });
+    manager = managers[0];
+  }
+  return manager;
 }
