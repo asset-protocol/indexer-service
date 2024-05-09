@@ -30,7 +30,8 @@ export async function handleAssetCreatedAssetHubLog(ctx: DataHandlerContext<Stor
 
   const asset = new Asset({
     id: id,
-    hub: hub,
+    hub: hub.id,
+    hubName: hub.name,
     assetId: logData.assetId,
     publisher: logData.publisher,
     collectNft: logData.collectNFT,

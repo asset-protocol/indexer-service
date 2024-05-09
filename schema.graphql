@@ -12,7 +12,8 @@ type AssetTag @entity {
 type Asset @entity {
   id: ID! # hub Address+assetId
   assetId: BigInt @index
-  hub: AssetHub
+  hub: String @index
+  hubName: String
   publisher: String @index
   contentUri: String
   timestamp: BigInt @index
@@ -89,8 +90,6 @@ type AssetHub @entity {
   implementation: String
   version: String
   hash: String
-  
-  assets: [Asset!] @derivedFrom(field: "hub")
 }
 
 type HubManager @entity {
