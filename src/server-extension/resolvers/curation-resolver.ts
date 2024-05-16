@@ -1,9 +1,14 @@
-import { Arg, Query, Resolver } from 'type-graphql';
+import { Arg, Query, Resolver, registerEnumType } from 'type-graphql';
 import { In, Like, type EntityManager } from 'typeorm';
 import { CurationAsset, CurationTag } from '../../model';
 import { TagName } from './asset-resolver';
 import { getAssetId } from '../../mappings/AssetHub';
 import { AssetApproveStatus } from '../../mappings/curation';
+
+registerEnumType(AssetApproveStatus, {
+  name: 'AssetApproveStatus',
+  description: 'The approve status of the asset',
+});
 
 @Resolver()
 export class CustomCurationResolver {
