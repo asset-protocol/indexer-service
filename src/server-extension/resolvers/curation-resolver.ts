@@ -66,7 +66,7 @@ export class CustomCurationResolver {
       (dict, ca) => dict.set(ca.asset!.id, ca),
       new Map<string, CurationAsset>()
     );
-    const now = new Date().getTime();
+    const now = new Date().getTime() / 1000;
     assetIds.forEach((assetId, i) => {
       if (dict.has(assetId)) {
         const ca = dict.get(assetId)!;
