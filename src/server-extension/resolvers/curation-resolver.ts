@@ -52,6 +52,9 @@ export class CustomCurationResolver {
         curation: { id: curationId },
         asset: { id: In(assetIds) },
       },
+      relations: {
+        asset: true,
+      },
     });
     console.log('curationAssets', curationAssets);
     const res = ([] as AssetApproveStatus[]).fill(
