@@ -11,20 +11,20 @@ export const events = {
     ApprovalForAll: new LogEvent<([owner: string, operator: string, approved: boolean] & {owner: string, operator: string, approved: boolean})>(
         abi, '0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31'
     ),
-    AssetApproved: new LogEvent<([curationId: bigint, hub: string, assetId: bigint, status: number] & {curationId: bigint, hub: string, assetId: bigint, status: number})>(
-        abi, '0x14358ab97efbb386f246adc39ca9b9d4970da95a287cd56074331574c790dbc5'
+    AssetApproved: new LogEvent<([curationId: bigint, hub: string, assetId: bigint, status: number, expiry: bigint] & {curationId: bigint, hub: string, assetId: bigint, status: number, expiry: bigint})>(
+        abi, '0x1fb0c7251acce2a1dace1c301ccfe392248d86114d92c7694e5f7cc19d92e459'
     ),
-    AssetsAdded: new LogEvent<([curationId: bigint, assets: Array<([hub: string, assetId: bigint, order: bigint] & {hub: string, assetId: bigint, order: bigint})>] & {curationId: bigint, assets: Array<([hub: string, assetId: bigint, order: bigint] & {hub: string, assetId: bigint, order: bigint})>})>(
-        abi, '0xe982f881c52e71fee1270fc50c24987a8d47405cb9daadb0388ccb49a61c5141'
+    AssetsAdded: new LogEvent<([curationId: bigint, assets: Array<([hub: string, assetId: bigint] & {hub: string, assetId: bigint})>] & {curationId: bigint, assets: Array<([hub: string, assetId: bigint] & {hub: string, assetId: bigint})>})>(
+        abi, '0x3db5831adf38523273d8a34a7bb1339cf70dc975c5e0c4e36145bf10b08c290f'
     ),
     AssetsRemoved: new LogEvent<([curationId: bigint, hubs: Array<string>, assetIds: Array<bigint>] & {curationId: bigint, hubs: Array<string>, assetIds: Array<bigint>})>(
         abi, '0x11f56be51f0467d264f88c5d5757bb342af98f582293f3d19473db324f27b3b3'
     ),
-    CurationCreated: new LogEvent<([publisher: string, curationId: bigint, curationURI: string, status: number, assets: Array<([hub: string, assetId: bigint, order: bigint] & {hub: string, assetId: bigint, order: bigint})>] & {publisher: string, curationId: bigint, curationURI: string, status: number, assets: Array<([hub: string, assetId: bigint, order: bigint] & {hub: string, assetId: bigint, order: bigint})>})>(
-        abi, '0xd8039e413e3f94efdfc76b8a80c3180416e69825b1866fe3b2378570b6d10509'
+    CurationCreated: new LogEvent<([publisher: string, curationId: bigint, curationURI: string, status: number, expiry: bigint, assets: Array<([hub: string, assetId: bigint] & {hub: string, assetId: bigint})>] & {publisher: string, curationId: bigint, curationURI: string, status: number, expiry: bigint, assets: Array<([hub: string, assetId: bigint] & {hub: string, assetId: bigint})>})>(
+        abi, '0x6423ead465476007ef9f437c14107157001fb9029e582d5edb491185a381e050'
     ),
-    CurationUpdated: new LogEvent<([curationId: bigint, curationURI: string, status: number] & {curationId: bigint, curationURI: string, status: number})>(
-        abi, '0x8a98792bfaf4b24cfb73c1a1a044e31508e1279cc62924ec9009bcdde8a34bfa'
+    CurationUpdated: new LogEvent<([curationId: bigint, curationURI: string, status: number, expiry: bigint] & {curationId: bigint, curationURI: string, status: number, expiry: bigint})>(
+        abi, '0x3201c4e05c7d005ce0ab7c85f1814db45eda6c979d6d28c74a8fd70577730f0c'
     ),
     Initialized: new LogEvent<([version: bigint] & {version: bigint})>(
         abi, '0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2'
@@ -44,8 +44,8 @@ export const functions = {
     UPGRADE_INTERFACE_VERSION: new Func<[], {}, string>(
         abi, '0xad3cb1cc'
     ),
-    addAssets: new Func<[curationId: bigint, assets: Array<([hub: string, assetId: bigint, order: bigint] & {hub: string, assetId: bigint, order: bigint})>], {curationId: bigint, assets: Array<([hub: string, assetId: bigint, order: bigint] & {hub: string, assetId: bigint, order: bigint})>}, []>(
-        abi, '0x6f63aca6'
+    addAssets: new Func<[curationId: bigint, assets: Array<([hub: string, assetId: bigint] & {hub: string, assetId: bigint})>], {curationId: bigint, assets: Array<([hub: string, assetId: bigint] & {hub: string, assetId: bigint})>}, []>(
+        abi, '0x78894752'
     ),
     approve: new Func<[to: string, tokenId: bigint], {to: string, tokenId: bigint}, []>(
         abi, '0x095ea7b3'
@@ -53,16 +53,19 @@ export const functions = {
     approveAsset: new Func<[id: bigint, hub: string, assetId: bigint, status: number], {id: bigint, hub: string, assetId: bigint, status: number}, []>(
         abi, '0xd6e762ef'
     ),
-    approveAssetBatch: new Func<[id: bigint, hub: string, assetIds: Array<bigint>, status: Array<number>], {id: bigint, hub: string, assetIds: Array<bigint>, status: Array<number>}, []>(
-        abi, '0xdc5bc95f'
+    approveAssetBatch: new Func<[id: bigint, hubs: Array<string>, assetIds: Array<bigint>, status: Array<number>], {id: bigint, hubs: Array<string>, assetIds: Array<bigint>, status: Array<number>}, []>(
+        abi, '0x7235f552'
+    ),
+    assetsStatus: new Func<[curationId: bigint, hubs: Array<string>, assetIds: Array<bigint>], {curationId: bigint, hubs: Array<string>, assetIds: Array<bigint>}, Array<number>>(
+        abi, '0x2c108fb2'
     ),
     balanceOf: new Func<[owner: string], {owner: string}, bigint>(
         abi, '0x70a08231'
     ),
-    create: new Func<[curationURI: string, status: number, assets: Array<([hub: string, assetId: bigint, order: bigint] & {hub: string, assetId: bigint, order: bigint})>], {curationURI: string, status: number, assets: Array<([hub: string, assetId: bigint, order: bigint] & {hub: string, assetId: bigint, order: bigint})>}, bigint>(
-        abi, '0x1dcfd928'
+    create: new Func<[curationURI: string, status: number, expiry: bigint, assets: Array<([hub: string, assetId: bigint] & {hub: string, assetId: bigint})>], {curationURI: string, status: number, expiry: bigint, assets: Array<([hub: string, assetId: bigint] & {hub: string, assetId: bigint})>}, bigint>(
+        abi, '0x837a7b80'
     ),
-    curationData: new Func<[curationId: bigint], {curationId: bigint}, ([assets: Array<([hub: string, assetId: bigint, order: bigint, status: number] & {hub: string, assetId: bigint, order: bigint, status: number})>, tokenURI: string, status: number] & {assets: Array<([hub: string, assetId: bigint, order: bigint, status: number] & {hub: string, assetId: bigint, order: bigint, status: number})>, tokenURI: string, status: number})>(
+    curationData: new Func<[curationId: bigint], {curationId: bigint}, ([assets: Array<([hub: string, assetId: bigint, expiry: bigint, status: number] & {hub: string, assetId: bigint, expiry: bigint, status: number})>, tokenURI: string, status: number, expiry: bigint] & {assets: Array<([hub: string, assetId: bigint, expiry: bigint, status: number] & {hub: string, assetId: bigint, expiry: bigint, status: number})>, tokenURI: string, status: number, expiry: bigint})>(
         abi, '0x88aede7b'
     ),
     getApproved: new Func<[tokenId: bigint], {tokenId: bigint}, string>(
@@ -104,6 +107,9 @@ export const functions = {
     setCurationURI: new Func<[curationId: bigint, curationURI: string], {curationId: bigint, curationURI: string}, []>(
         abi, '0xfed65e80'
     ),
+    setExpiry: new Func<[curationId: bigint, expiry: bigint], {curationId: bigint, expiry: bigint}, []>(
+        abi, '0xfc284d11'
+    ),
     setStatus: new Func<[curationId: bigint, status: number], {curationId: bigint, status: number}, []>(
         abi, '0xd896dd64'
     ),
@@ -136,11 +142,15 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.UPGRADE_INTERFACE_VERSION, [])
     }
 
+    assetsStatus(curationId: bigint, hubs: Array<string>, assetIds: Array<bigint>): Promise<Array<number>> {
+        return this.eth_call(functions.assetsStatus, [curationId, hubs, assetIds])
+    }
+
     balanceOf(owner: string): Promise<bigint> {
         return this.eth_call(functions.balanceOf, [owner])
     }
 
-    curationData(curationId: bigint): Promise<([assets: Array<([hub: string, assetId: bigint, order: bigint, status: number] & {hub: string, assetId: bigint, order: bigint, status: number})>, tokenURI: string, status: number] & {assets: Array<([hub: string, assetId: bigint, order: bigint, status: number] & {hub: string, assetId: bigint, order: bigint, status: number})>, tokenURI: string, status: number})> {
+    curationData(curationId: bigint): Promise<([assets: Array<([hub: string, assetId: bigint, expiry: bigint, status: number] & {hub: string, assetId: bigint, expiry: bigint, status: number})>, tokenURI: string, status: number, expiry: bigint] & {assets: Array<([hub: string, assetId: bigint, expiry: bigint, status: number] & {hub: string, assetId: bigint, expiry: bigint, status: number})>, tokenURI: string, status: number, expiry: bigint})> {
         return this.eth_call(functions.curationData, [curationId])
     }
 

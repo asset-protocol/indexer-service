@@ -100,20 +100,15 @@ type HubManager @entity {
   curation: String
 }
 
-enum AssetApproveStatus {
-  Pending
-  Approved
-  Rejected
-}
-
 type CurationAsset @entity {
   id: ID!
   curation: Curation
   asset: Asset
-  order: BigInt
-  status: AssetApproveStatus
+  status: Int
+  expiry: BigInt
   timestamp: BigInt @index
   approveAt: BigInt
+  hash: String
 }
 type CurationTag @entity {
   id: ID!
@@ -127,6 +122,7 @@ type Curation @entity {
   tokenURI: String
   publisher: String @index
   status: Int
+  expiry: BigInt
   hash: String
   timestamp: BigInt @index
   lastUpdatedAt: BigInt @index

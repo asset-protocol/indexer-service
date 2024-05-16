@@ -143,7 +143,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "s",
+        "name": "account",
         "type": "address"
       }
     ],
@@ -284,6 +284,12 @@
         "internalType": "enum AssetApproveStatus",
         "name": "status",
         "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "expiry",
+        "type": "uint256"
       }
     ],
     "name": "AssetApproved",
@@ -308,11 +314,6 @@
           {
             "internalType": "uint256",
             "name": "assetId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "order",
             "type": "uint256"
           }
         ],
@@ -360,7 +361,7 @@
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "curationId",
         "type": "uint256"
@@ -378,6 +379,12 @@
         "type": "uint8"
       },
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "expiry",
+        "type": "uint256"
+      },
+      {
         "components": [
           {
             "internalType": "address",
@@ -387,11 +394,6 @@
           {
             "internalType": "uint256",
             "name": "assetId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "order",
             "type": "uint256"
           }
         ],
@@ -424,6 +426,12 @@
         "internalType": "uint8",
         "name": "status",
         "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "expiry",
+        "type": "uint256"
       }
     ],
     "name": "CurationUpdated",
@@ -530,11 +538,6 @@
             "internalType": "uint256",
             "name": "assetId",
             "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "order",
-            "type": "uint256"
           }
         ],
         "internalType": "struct CurationAsset[]",
@@ -601,9 +604,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "hub",
-        "type": "address"
+        "internalType": "address[]",
+        "name": "hubs",
+        "type": "address[]"
       },
       {
         "internalType": "uint256[]",
@@ -619,6 +622,35 @@
     "name": "approveAssetBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address[]",
+        "name": "hubs",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "assetIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "assetsStatus",
+    "outputs": [
+      {
+        "internalType": "enum AssetApproveStatus[]",
+        "name": "",
+        "type": "uint8[]"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -653,6 +685,11 @@
         "type": "uint8"
       },
       {
+        "internalType": "uint256",
+        "name": "expiry",
+        "type": "uint256"
+      },
+      {
         "components": [
           {
             "internalType": "address",
@@ -662,11 +699,6 @@
           {
             "internalType": "uint256",
             "name": "assetId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "order",
             "type": "uint256"
           }
         ],
@@ -712,7 +744,7 @@
               },
               {
                 "internalType": "uint256",
-                "name": "order",
+                "name": "expiry",
                 "type": "uint256"
               },
               {
@@ -734,6 +766,11 @@
             "internalType": "uint8",
             "name": "status",
             "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "expiry",
+            "type": "uint256"
           }
         ],
         "internalType": "struct CurationData",
@@ -981,6 +1018,24 @@
       }
     ],
     "name": "setCurationURI",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "curationId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "expiry",
+        "type": "uint64"
+      }
+    ],
+    "name": "setExpiry",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

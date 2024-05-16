@@ -22,6 +22,9 @@ export class Curation {
     @Column_("int4", {nullable: true})
     status!: number | undefined | null
 
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    expiry!: bigint | undefined | null
+
     @Column_("text", {nullable: true})
     hash!: string | undefined | null
 

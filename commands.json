@@ -63,9 +63,9 @@
         "description": "Start the GraphQL API server with caching and limits",
         "cmd": ["squid-graphql-server",
           "--dumb-cache", "in-memory",
-          "--dumb-cache-ttl", "1000",
-          "--dumb-cache-size", "100",
-          "--dumb-cache-max-age", "1000" ]
+          "--dumb-cache-ttl", "5000",
+          "--dumb-cache-size", "500",
+          "--dumb-cache-max-age", "5000" ]
       },
       "check-updates": {
         "cmd": ["npx", "--yes", "npm-check-updates", "--filter=/subsquid/", "--upgrade"],

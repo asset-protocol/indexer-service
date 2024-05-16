@@ -132,7 +132,7 @@ export const ABI_JSON = [
         "inputs": [
             {
                 "type": "address",
-                "name": "s"
+                "name": "account"
             }
         ]
     },
@@ -259,6 +259,11 @@ export const ABI_JSON = [
                 "type": "uint8",
                 "name": "status",
                 "indexed": false
+            },
+            {
+                "type": "uint256",
+                "name": "expiry",
+                "indexed": false
             }
         ]
     },
@@ -283,10 +288,6 @@ export const ABI_JSON = [
                     {
                         "type": "uint256",
                         "name": "assetId"
-                    },
-                    {
-                        "type": "uint256",
-                        "name": "order"
                     }
                 ]
             }
@@ -325,7 +326,7 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "curationId",
-                "indexed": false
+                "indexed": true
             },
             {
                 "type": "string",
@@ -335,6 +336,11 @@ export const ABI_JSON = [
             {
                 "type": "uint8",
                 "name": "status",
+                "indexed": false
+            },
+            {
+                "type": "uint256",
+                "name": "expiry",
                 "indexed": false
             },
             {
@@ -348,10 +354,6 @@ export const ABI_JSON = [
                     {
                         "type": "uint256",
                         "name": "assetId"
-                    },
-                    {
-                        "type": "uint256",
-                        "name": "order"
                     }
                 ]
             }
@@ -375,6 +377,11 @@ export const ABI_JSON = [
             {
                 "type": "uint8",
                 "name": "status",
+                "indexed": false
+            },
+            {
+                "type": "uint256",
+                "name": "expiry",
                 "indexed": false
             }
         ]
@@ -477,10 +484,6 @@ export const ABI_JSON = [
                     {
                         "type": "uint256",
                         "name": "assetId"
-                    },
-                    {
-                        "type": "uint256",
-                        "name": "order"
                     }
                 ]
             }
@@ -540,8 +543,8 @@ export const ABI_JSON = [
                 "name": "id"
             },
             {
-                "type": "address",
-                "name": "hub"
+                "type": "address[]",
+                "name": "hubs"
             },
             {
                 "type": "uint256[]",
@@ -553,6 +556,33 @@ export const ABI_JSON = [
             }
         ],
         "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "assetsStatus",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "curationId"
+            },
+            {
+                "type": "address[]",
+                "name": "hubs"
+            },
+            {
+                "type": "uint256[]",
+                "name": "assetIds"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "uint8[]",
+                "name": ""
+            }
+        ]
     },
     {
         "type": "function",
@@ -589,6 +619,10 @@ export const ABI_JSON = [
                 "name": "status"
             },
             {
+                "type": "uint256",
+                "name": "expiry"
+            },
+            {
                 "type": "tuple[]",
                 "name": "assets",
                 "components": [
@@ -599,10 +633,6 @@ export const ABI_JSON = [
                     {
                         "type": "uint256",
                         "name": "assetId"
-                    },
-                    {
-                        "type": "uint256",
-                        "name": "order"
                     }
                 ]
             }
@@ -645,7 +675,7 @@ export const ABI_JSON = [
                             },
                             {
                                 "type": "uint256",
-                                "name": "order"
+                                "name": "expiry"
                             },
                             {
                                 "type": "uint8",
@@ -660,6 +690,10 @@ export const ABI_JSON = [
                     {
                         "type": "uint8",
                         "name": "status"
+                    },
+                    {
+                        "type": "uint256",
+                        "name": "expiry"
                     }
                 ]
             }
@@ -894,6 +928,23 @@ export const ABI_JSON = [
             {
                 "type": "string",
                 "name": "curationURI"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "setExpiry",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "curationId"
+            },
+            {
+                "type": "uint64",
+                "name": "expiry"
             }
         ],
         "outputs": []

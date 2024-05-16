@@ -2,7 +2,6 @@ import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, M
 import * as marshal from "./marshal"
 import {Curation} from "./curation.model"
 import {Asset} from "./asset.model"
-import {AssetApproveStatus} from "./_assetApproveStatus"
 
 @Entity_()
 export class CurationAsset {
@@ -21,11 +20,11 @@ export class CurationAsset {
     @ManyToOne_(() => Asset, {nullable: true})
     asset!: Asset | undefined | null
 
-    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
-    order!: bigint | undefined | null
+    @Column_("int4", {nullable: true})
+    status!: number | undefined | null
 
-    @Column_("varchar", {length: 8, nullable: true})
-    status!: AssetApproveStatus | undefined | null
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    expiry!: bigint | undefined | null
 
     @Index_()
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
@@ -33,4 +32,7 @@ export class CurationAsset {
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
     approveAt!: bigint | undefined | null
+
+    @Column_("text", {nullable: true})
+    hash!: string | undefined | null
 }
