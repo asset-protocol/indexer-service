@@ -77,6 +77,9 @@ export const functions = {
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
     ),
+    manager: new Func<[], {}, string>(
+        abi, '0x481c6a75'
+    ),
     name: new Func<[], {}, string>(
         abi, '0x06fdde03'
     ),
@@ -160,6 +163,10 @@ export class Contract extends ContractBase {
 
     isApprovedForAll(owner: string, operator: string): Promise<boolean> {
         return this.eth_call(functions.isApprovedForAll, [owner, operator])
+    }
+
+    manager(): Promise<string> {
+        return this.eth_call(functions.manager, [])
     }
 
     name(): Promise<string> {

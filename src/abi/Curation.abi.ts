@@ -326,7 +326,7 @@ export const ABI_JSON = [
             {
                 "type": "uint256",
                 "name": "curationId",
-                "indexed": true
+                "indexed": false
             },
             {
                 "type": "string",
@@ -758,6 +758,20 @@ export const ABI_JSON = [
         "outputs": [
             {
                 "type": "bool",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "manager",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "address",
                 "name": ""
             }
         ]
