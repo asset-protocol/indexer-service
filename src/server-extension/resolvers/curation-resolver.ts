@@ -8,11 +8,13 @@ import { AssetApproveStatus } from '../../mappings/curation';
 registerEnumType(AssetApproveStatus, {
   name: 'AssetApproveStatus',
   description: 'The approve status of the asset',
+  valuesConfig: {
+  }
 });
 
 @Resolver()
 export class CustomCurationResolver {
-  constructor(private tx: () => Promise<EntityManager>) {}
+  constructor(private tx: () => Promise<EntityManager>) { }
 
   @Query(() => [TagName])
   async curationTagNames(
@@ -33,7 +35,7 @@ export class CustomCurationResolver {
     return await qb.execute();
   }
 
-  @Query(() => [AssetApproveStatus])
+  @Query(() => [Number])
   async curationAssetStatus(
     @Arg('curationId', { nullable: false }) curationId: string,
     @Arg('hubs', () => [String], { nullable: false }) hubs: string[],
@@ -57,7 +59,7 @@ export class CustomCurationResolver {
       },
     });
     console.log('curationAssets', curationAssets);
-    const res = ([] as AssetApproveStatus[]).fill(
+    const res = ([] as number[]).fill(
       AssetApproveStatus.Approving,
       0,
       assets.length
@@ -76,7 +78,7 @@ export class CustomCurationResolver {
           ca.expiry !== 0n &&
           ca.expiry < now
         ) {
-          res[i] = AssetApproveStatus.Expired;
+          res[i] = Number(AssetApproveStatus.Expired);
         } else {
           res[i] = ca.status!;
         }
