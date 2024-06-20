@@ -51,6 +51,9 @@ export async function handleAssetHubDeployedLog(
 
   const hubSet = await getAssetHubSet(ctx);
   hubSet.add(logData.assetHub.toLowerCase());
+
+  const metadata = await fetchMetadata(ctx, logData.data.contractURI);
+  assetHub.metadata = metadata;
   await ctx.store.save(assetHub);
 }
 
