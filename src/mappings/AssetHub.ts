@@ -68,8 +68,7 @@ export async function handleAssetCreatedAssetHubLog(
     getAddress(log.address),
     logData.assetId
   );
-  asset.hub = hub.id;
-  asset.hubName = hub.name;
+  asset.hub = hub;
   asset.assetId = logData.assetId;
   asset.publisher = logData.publisher;
   asset.collectNft = logData.collectNFT;
@@ -240,7 +239,7 @@ async function getAsset(
 ) {
   let asset = await ctx.store.get(Asset, {
     where: {
-      hub: hub,
+      hub: { id: hub },
       assetId: assetId,
     },
   });
@@ -258,14 +257,13 @@ export async function getOrCreaeAsset(
 ) {
   let asset = await ctx.store.get(Asset, {
     where: {
-      hub: hub,
+      hub: { id: hub },
       assetId: assetId,
     },
   });
   if (!asset) {
     asset = new Asset({
       id: generateId(),
-      hub: hub,
       assetId: assetId,
       bizId: getAssetBizId(hub, assetId),
     });

@@ -1,10 +1,11 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, OneToMany as OneToMany_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, OneToMany as OneToMany_, ManyToOne as ManyToOne_} from "typeorm"
 import * as marshal from "./marshal"
 import {AssetTag} from "./assetTag.model"
 import {AssetMetadataHistory} from "./assetMetadataHistory.model"
 import {AttributeItem} from "./_attributeItem"
 import {Collector} from "./collector.model"
 import {CurationAsset} from "./curationAsset.model"
+import {AssetHub} from "./assetHub.model"
 
 @Entity_()
 export class Asset {
@@ -21,12 +22,6 @@ export class Asset {
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     assetId!: bigint
-
-    @Column_("text", {nullable: false})
-    hub!: string
-
-    @Column_("text", {nullable: true})
-    hubName!: string | undefined | null
 
     @Index_()
     @Column_("text", {nullable: true})
@@ -104,4 +99,8 @@ export class Asset {
 
     @OneToMany_(() => CurationAsset, e => e.asset)
     curations!: CurationAsset[]
+
+    @Index_()
+    @ManyToOne_(() => AssetHub, {nullable: true})
+    hub!: AssetHub | undefined | null
 }

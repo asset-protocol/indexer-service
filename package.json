@@ -25,6 +25,7 @@
     "@subsquid/evm-typegen": "^3.3.0",
     "@subsquid/typeorm-codegen": "^1.3.3",
     "@types/node": "^20.12.7",
+    "rimraf": "^5.0.7",
     "typescript": "latest"
   }
 }

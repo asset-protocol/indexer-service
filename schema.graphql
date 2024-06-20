@@ -10,11 +10,9 @@ type AssetTag @entity {
 }
 
 type Asset @entity {
-  id: ID! # hub
+  id: ID! #
   bizId: String! @index @unique # 业务Id
   assetId: BigInt!
-  hub: String!
-  hubName: String
   publisher: String @index
   contentUri: String
   timestamp: BigInt @index
@@ -46,6 +44,7 @@ type Asset @entity {
   gatedModuleInitData: String
 
   curations: [CurationAsset!] @derivedFrom(field: "asset")
+  hub: AssetHub
 }
 
 type AssetMetadataHistory @entity {
