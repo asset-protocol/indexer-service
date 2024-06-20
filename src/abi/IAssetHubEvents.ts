@@ -35,6 +35,15 @@ export const events = {
     Collected: new LogEvent<([assetId: bigint, collector: string, publisher: string, collectNFT: string, collectNFTTokenId: bigint, collectModule: string, collectModuleData: string, timestamp: bigint] & {assetId: bigint, collector: string, publisher: string, collectNFT: string, collectNFTTokenId: bigint, collectModule: string, collectModuleData: string, timestamp: bigint})>(
         abi, '0x91ae5801229a238c4043a863d39f603be3b5040ca1e81bfe0859ba810a570010'
     ),
+    ContractURIUpdated: new LogEvent<[]>(
+        abi, '0xa5d4097edda6d87cb9329af83fb3712ef77eeb13738ffe43cc35a4ce305ad962'
+    ),
+    InfoURIChanged: new LogEvent<([uri: string] & {uri: string})>(
+        abi, '0xe74b49e1a5380bf0c1f3c644643bacdff09aace1dd038c4ecd68e0e900d3f70d'
+    ),
+    IsOpenChanged: new LogEvent<([isOpen: boolean] & {isOpen: boolean})>(
+        abi, '0x2863fe5152fcc5d81fc1b4e7f66389baf5c7ca420a123d567bbbc7afd59ba1f9'
+    ),
     MetadataUpdate: new LogEvent<([_tokenId: bigint] & {_tokenId: bigint})>(
         abi, '0xf8e1a15aba9398e019f0b49df1a4fde98ee17ae345cb5f6b5e2c27f5033e8ce7'
     ),
@@ -50,11 +59,32 @@ export const functions = {
     approve: new Func<[to: string, tokenId: bigint], {to: string, tokenId: bigint}, []>(
         abi, '0x095ea7b3'
     ),
+    assetPublisher: new Func<[assetId: bigint], {assetId: bigint}, string>(
+        abi, '0xa36cb050'
+    ),
     balanceOf: new Func<[owner: string], {owner: string}, bigint>(
         abi, '0x70a08231'
     ),
+    collect: new Func<[assetId: bigint, data: string], {assetId: bigint, data: string}, bigint>(
+        abi, '0x89439b1c'
+    ),
+    contractURI: new Func<[], {}, string>(
+        abi, '0xe8a3d485'
+    ),
+    create: new Func<[data: ([publisher: string, contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string] & {publisher: string, contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string})], {data: ([publisher: string, contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string] & {publisher: string, contentURI: string, assetCreateModuleData: string, collectModule: string, collectModuleInitData: string, gatedModule: string, gatedModuleInitData: string})}, bigint>(
+        abi, '0x2e4c36a6'
+    ),
+    emitCollectNFTTransferEvent: new Func<[publiser: string, assetId: bigint, tokenId: bigint, from: string, to: string], {publiser: string, assetId: bigint, tokenId: bigint, from: string, to: string}, []>(
+        abi, '0x431f174d'
+    ),
     getApproved: new Func<[tokenId: bigint], {tokenId: bigint}, string>(
         abi, '0x081812fc'
+    ),
+    hubOwner: new Func<[], {}, string>(
+        abi, '0x9c7eb413'
+    ),
+    initialize: new Func<[name: string, manager: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>, contractURI: string], {name: string, manager: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>, contractURI: string}, []>(
+        abi, '0x9833031c'
     ),
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
@@ -81,12 +111,24 @@ export const functions = {
 
 export class Contract extends ContractBase {
 
+    assetPublisher(assetId: bigint): Promise<string> {
+        return this.eth_call(functions.assetPublisher, [assetId])
+    }
+
     balanceOf(owner: string): Promise<bigint> {
         return this.eth_call(functions.balanceOf, [owner])
     }
 
+    contractURI(): Promise<string> {
+        return this.eth_call(functions.contractURI, [])
+    }
+
     getApproved(tokenId: bigint): Promise<string> {
         return this.eth_call(functions.getApproved, [tokenId])
+    }
+
+    hubOwner(): Promise<string> {
+        return this.eth_call(functions.hubOwner, [])
     }
 
     isApprovedForAll(owner: string, operator: string): Promise<boolean> {

@@ -2,6 +2,7 @@ import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, I
 import * as marshal from "./marshal"
 import {CurationAsset} from "./curationAsset.model"
 import {CurationTag} from "./curationTag.model"
+import {AttributeItem} from "./_attributeItem"
 
 @Entity_()
 export class Curation {
@@ -51,11 +52,17 @@ export class Curation {
     @Column_("text", {nullable: true})
     bannerImage!: string | undefined | null
 
+    @Column_("text", {nullable: true})
+    externalUrl!: string | undefined | null
+
+    @Column_("text", {nullable: true})
+    backgroundColor!: string | undefined | null
+
     @OneToMany_(() => CurationTag, e => e.curation)
     tags!: CurationTag[]
 
-    @Column_("jsonb", {nullable: true})
-    properties!: unknown | undefined | null
+    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.map((val: any) => val == null ? undefined : val.toJSON()), from: obj => obj == null ? undefined : marshal.fromList(obj, val => val == null ? undefined : new AttributeItem(undefined, val))}, nullable: true})
+    attributes!: (AttributeItem | undefined | null)[] | undefined | null
 
     @Column_("jsonb", {nullable: true})
     metadata!: unknown | undefined | null

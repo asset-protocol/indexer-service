@@ -10,7 +10,7 @@ export type AssetMetaData = {
   tags?: string[];
   query1?: string;
   query2?: string;
-  properties?: unknown;
+  attributes?: unknown;
   timestamp?: string;
 }
 

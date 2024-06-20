@@ -175,10 +175,15 @@
             "internalType": "address",
             "name": "nftGatedModule",
             "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "contractURI",
+            "type": "string"
           }
         ],
         "indexed": false,
-        "internalType": "struct LiteHubInfo",
+        "internalType": "struct AssetHubInfo",
         "name": "data",
         "type": "tuple"
       }
@@ -236,6 +241,51 @@
       }
     ],
     "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "assetHubImpl",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenCreateModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collectNFT",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenCollectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "nftGatedModule",
+            "type": "address"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct MangerInitData",
+        "name": "modules",
+        "type": "tuple"
+      }
+    ],
+    "name": "ModulesInitialized",
     "type": "event"
   },
   {
@@ -346,9 +396,14 @@
             "internalType": "address",
             "name": "nftGatedModule",
             "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "contractURI",
+            "type": "string"
           }
         ],
-        "internalType": "struct LiteHubInfo",
+        "internalType": "struct AssetHubInfo",
         "name": "",
         "type": "tuple"
       }
@@ -387,11 +442,40 @@
             "internalType": "address",
             "name": "nftGatedModule",
             "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "contractURI",
+            "type": "string"
           }
         ],
-        "internalType": "struct LiteHubInfo",
+        "internalType": "struct AssetHubInfo",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "canCreateHub",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -441,6 +525,11 @@
             "internalType": "address",
             "name": "createModule",
             "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "contractURI",
+            "type": "string"
           }
         ],
         "internalType": "struct HubCreateData",
@@ -467,6 +556,65 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "hasNamedHub",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "hubDefaultModules",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tokenCreateModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collectNFT",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenCollectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "nftGatedModule",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct HubManagerBase.HubModulesStorage",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",

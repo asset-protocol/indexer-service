@@ -20,6 +20,10 @@ export class AssetHub {
     @Column_("text", {nullable: true})
     name!: string | undefined | null
 
+    @Index_()
+    @Column_("bool", {nullable: true})
+    isOpen!: boolean | undefined | null
+
     @Column_("text", {nullable: true})
     tokenCollectModule!: string | undefined | null
 
@@ -44,4 +48,7 @@ export class AssetHub {
 
     @Column_("text", {nullable: true})
     hash!: string | undefined | null
+
+    @Column_("jsonb", {nullable: true})
+    metadata!: unknown | undefined | null
 }

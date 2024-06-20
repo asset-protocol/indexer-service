@@ -10,9 +10,10 @@ type AssetTag @entity {
 }
 
 type Asset @entity {
-  id: ID! # hub Address+assetId
-  assetId: BigInt @index
-  hub: String @index
+  id: ID! # hub
+  bizId: String! @index @unique # 业务Id
+  assetId: BigInt!
+  hub: String!
   hubName: String
   publisher: String @index
   contentUri: String
@@ -28,10 +29,10 @@ type Asset @entity {
   image: String
   description: String
   tags: [AssetTag!] @derivedFrom(field: "asset")
-  properties: JSON
   metadata: JSON
   content: String
   metadataHistories: [AssetMetadataHistory!] @derivedFrom(field: "asset")
+  attributes: [AttributeItem!]
 
   # collect
   collectModule: String
@@ -82,6 +83,7 @@ type AssetHub @entity {
   management: String
   admin: String
   name: String @index(unique: true)
+  isOpen: Boolean @index
   tokenCollectModule: String
   feeCollectModule: String
   nftGatedModule: String
@@ -90,18 +92,28 @@ type AssetHub @entity {
   implementation: String
   version: String
   hash: String
+  metadata: JSON
+}
+
+type ModulesInfo {
+  assetHubImpl: String
+  tokenCreateModule: String
+  collectNFT: String
+  feeCollectModule: String
+  tokenCollectModule: String
+  nftGatedModule: String
 }
 
 type HubManager @entity {
-  id: ID! # manager address
+  id: ID!
   timestamp: BigInt
   globalModule: String
   hubCreatorNft: String
   curation: String
+  moudles: ModulesInfo
 }
 
 type CurationAsset @entity {
-  id: ID!
   curation: Curation
   asset: Asset
   status: Int
@@ -110,11 +122,18 @@ type CurationAsset @entity {
   approveAt: BigInt
   hash: String
 }
+
 type CurationTag @entity {
   id: ID!
   curation: Curation
   name: String
   normalizedName: String
+}
+
+type AttributeItem {
+  traitType: String
+  displayType: String
+  value: String
 }
 
 type Curation @entity {
@@ -133,7 +152,9 @@ type Curation @entity {
   description: String
   image: String
   bannerImage: String
+  externalUrl: String
+  backgroundColor: String
   tags: [CurationTag!] @derivedFrom(field: "curation")
-  properties: JSON
+  attributes: [AttributeItem]
   metadata: JSON
 }

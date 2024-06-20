@@ -324,11 +324,41 @@ export const ABI_JSON = [
     {
         "type": "event",
         "anonymous": false,
+        "name": "ContractURIUpdated",
+        "inputs": []
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "InfoURIChanged",
+        "inputs": [
+            {
+                "type": "string",
+                "name": "uri",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
         "name": "Initialized",
         "inputs": [
             {
                 "type": "uint64",
                 "name": "version",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "IsOpenChanged",
+        "inputs": [
+            {
+                "type": "bool",
+                "name": "isOpen",
                 "indexed": false
             }
         ]
@@ -594,6 +624,20 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "contractURI",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "string",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
         "name": "count",
         "constant": true,
         "stateMutability": "view",
@@ -779,6 +823,10 @@ export const ABI_JSON = [
             {
                 "type": "address[]",
                 "name": "whitelistedCollectModules"
+            },
+            {
+                "type": "string",
+                "name": "contractURI"
             }
         ],
         "outputs": []
@@ -971,6 +1019,19 @@ export const ABI_JSON = [
     },
     {
         "type": "function",
+        "name": "setContractURI",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "string",
+                "name": "uri"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
         "name": "setCreateAssetModule",
         "constant": false,
         "payable": false,
@@ -978,6 +1039,19 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": "assetModule"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "setIsOpen",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "bool",
+                "name": "isOpen"
             }
         ],
         "outputs": []

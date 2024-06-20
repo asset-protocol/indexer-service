@@ -2,19 +2,18 @@ import { Arg, Query, Resolver, registerEnumType } from 'type-graphql';
 import { In, Like, type EntityManager } from 'typeorm';
 import { CurationAsset, CurationTag } from '../../model';
 import { TagName } from './asset-resolver';
-import { getAssetId } from '../../mappings/AssetHub';
+import { getAssetBizId } from '../../mappings/AssetHub';
 import { AssetApproveStatus } from '../../mappings/curation';
 
 registerEnumType(AssetApproveStatus, {
   name: 'AssetApproveStatus',
   description: 'The approve status of the asset',
-  valuesConfig: {
-  }
+  valuesConfig: {},
 });
 
 @Resolver()
 export class CustomCurationResolver {
-  constructor(private tx: () => Promise<EntityManager>) { }
+  constructor(private tx: () => Promise<EntityManager>) {}
 
   @Query(() => [TagName])
   async curationTagNames(
@@ -47,12 +46,12 @@ export class CustomCurationResolver {
     if (hubs.length != assets.length) {
       throw new Error('hubs and assets must have the same length');
     }
-    const assetIds = hubs.map((h, i) => getAssetId(h, BigInt(assets[i])));
+    const assetIds = hubs.map((h, i) => getAssetBizId(h, BigInt(assets[i])));
     const manager = await this.tx();
     const curationAssets = await manager.find(CurationAsset, {
       where: {
         curation: { id: curationId },
-        asset: { id: In(assetIds) },
+        asset: { bizId: In(assetIds) },
       },
       relations: {
         asset: true,
@@ -65,7 +64,7 @@ export class CustomCurationResolver {
       assets.length
     );
     const dict = curationAssets.reduce(
-      (dict, ca) => dict.set(ca.asset!.id, ca),
+      (dict, ca) => dict.set(ca.asset!.bizId, ca),
       new Map<string, CurationAsset>()
     );
     const now = new Date().getTime() / 1000;

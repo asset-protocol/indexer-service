@@ -1,5 +1,6 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_} from "typeorm"
 import * as marshal from "./marshal"
+import {ModulesInfo} from "./_modulesInfo"
 
 @Entity_()
 export class HubManager {
@@ -21,4 +22,7 @@ export class HubManager {
 
     @Column_("text", {nullable: true})
     curation!: string | undefined | null
+
+    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.toJSON(), from: obj => obj == null ? undefined : new ModulesInfo(undefined, obj)}, nullable: true})
+    moudles!: ModulesInfo | undefined | null
 }

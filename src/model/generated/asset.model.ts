@@ -2,6 +2,7 @@ import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, I
 import * as marshal from "./marshal"
 import {AssetTag} from "./assetTag.model"
 import {AssetMetadataHistory} from "./assetMetadataHistory.model"
+import {AttributeItem} from "./_attributeItem"
 import {Collector} from "./collector.model"
 import {CurationAsset} from "./curationAsset.model"
 
@@ -14,13 +15,15 @@ export class Asset {
     @PrimaryColumn_()
     id!: string
 
-    @Index_()
-    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
-    assetId!: bigint | undefined | null
+    @Index_({unique: true})
+    @Column_("text", {nullable: false})
+    bizId!: string
 
-    @Index_()
-    @Column_("text", {nullable: true})
-    hub!: string | undefined | null
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    assetId!: bigint
+
+    @Column_("text", {nullable: false})
+    hub!: string
 
     @Column_("text", {nullable: true})
     hubName!: string | undefined | null
@@ -67,9 +70,6 @@ export class Asset {
     tags!: AssetTag[]
 
     @Column_("jsonb", {nullable: true})
-    properties!: unknown | undefined | null
-
-    @Column_("jsonb", {nullable: true})
     metadata!: unknown | undefined | null
 
     @Column_("text", {nullable: true})
@@ -77,6 +77,9 @@ export class Asset {
 
     @OneToMany_(() => AssetMetadataHistory, e => e.asset)
     metadataHistories!: AssetMetadataHistory[]
+
+    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.map((val: any) => val.toJSON()), from: obj => obj == null ? undefined : marshal.fromList(obj, val => new AttributeItem(undefined, marshal.nonNull(val)))}, nullable: true})
+    attributes!: (AttributeItem)[] | undefined | null
 
     @Column_("text", {nullable: true})
     collectModule!: string | undefined | null

@@ -356,6 +356,25 @@
   },
   {
     "anonymous": false,
+    "inputs": [],
+    "name": "ContractURIUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "uri",
+        "type": "string"
+      }
+    ],
+    "name": "InfoURIChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [
       {
         "indexed": false,
@@ -365,6 +384,19 @@
       }
     ],
     "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isOpen",
+        "type": "bool"
+      }
+    ],
+    "name": "IsOpenChanged",
     "type": "event"
   },
   {
@@ -638,6 +670,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "contractURI",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -834,6 +879,11 @@
         "internalType": "address[]",
         "name": "whitelistedCollectModules",
         "type": "address[]"
+      },
+      {
+        "internalType": "string",
+        "name": "contractURI",
+        "type": "string"
       }
     ],
     "name": "initialize",
@@ -1033,12 +1083,38 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "uri",
+        "type": "string"
+      }
+    ],
+    "name": "setContractURI",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "assetModule",
         "type": "address"
       }
     ],
     "name": "setCreateAssetModule",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "isOpen",
+        "type": "bool"
+      }
+    ],
+    "name": "setIsOpen",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

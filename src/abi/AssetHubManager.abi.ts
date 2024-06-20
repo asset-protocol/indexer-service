@@ -164,6 +164,10 @@ export const ABI_JSON = [
                     {
                         "type": "address",
                         "name": "nftGatedModule"
+                    },
+                    {
+                        "type": "string",
+                        "name": "contractURI"
                     }
                 ]
             }
@@ -214,6 +218,44 @@ export const ABI_JSON = [
                 "type": "uint64",
                 "name": "version",
                 "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "ModulesInitialized",
+        "inputs": [
+            {
+                "type": "tuple",
+                "name": "modules",
+                "indexed": false,
+                "components": [
+                    {
+                        "type": "address",
+                        "name": "assetHubImpl"
+                    },
+                    {
+                        "type": "address",
+                        "name": "tokenCreateModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "collectNFT"
+                    },
+                    {
+                        "type": "address",
+                        "name": "feeCollectModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "tokenCollectModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "nftGatedModule"
+                    }
+                ]
             }
         ]
     },
@@ -323,6 +365,10 @@ export const ABI_JSON = [
                     {
                         "type": "address",
                         "name": "nftGatedModule"
+                    },
+                    {
+                        "type": "string",
+                        "name": "contractURI"
                     }
                 ]
             }
@@ -360,8 +406,35 @@ export const ABI_JSON = [
                     {
                         "type": "address",
                         "name": "nftGatedModule"
+                    },
+                    {
+                        "type": "string",
+                        "name": "contractURI"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "canCreateHub",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "account"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "bool",
+                "name": ""
+            },
+            {
+                "type": "string",
+                "name": ""
             }
         ]
     },
@@ -414,6 +487,10 @@ export const ABI_JSON = [
                     {
                         "type": "address",
                         "name": "createModule"
+                    },
+                    {
+                        "type": "string",
+                        "name": "contractURI"
                     }
                 ]
             }
@@ -436,6 +513,61 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "hasNamedHub",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "string",
+                "name": "name"
+            }
+        ],
+        "outputs": [
+            {
+                "type": "bool",
+                "name": ""
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "hubDefaultModules",
+        "constant": true,
+        "stateMutability": "view",
+        "payable": false,
+        "inputs": [],
+        "outputs": [
+            {
+                "type": "tuple",
+                "name": "",
+                "components": [
+                    {
+                        "type": "address",
+                        "name": "tokenCreateModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "collectNFT"
+                    },
+                    {
+                        "type": "address",
+                        "name": "feeCollectModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "tokenCollectModule"
+                    },
+                    {
+                        "type": "address",
+                        "name": "nftGatedModule"
+                    }
+                ]
             }
         ]
     },

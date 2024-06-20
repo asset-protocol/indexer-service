@@ -1,12 +1,12 @@
 import * as ethers from 'ethers'
 import {LogEvent, Func, ContractBase} from './abi.support'
-import {ABI_JSON} from './LiteAssetHubManager.abi'
+import {ABI_JSON} from './AssetHubManager.abi'
 
 export const abi = new ethers.Interface(ABI_JSON);
 
 export const events = {
-    AssetHubDeployed: new LogEvent<([admin: string, name: string, assetHub: string, data: ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string})] & {admin: string, name: string, assetHub: string, data: ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string})})>(
-        abi, '0x3592cd8e5fa76253b0426ee2cfc473c3a520b82cdefa746f920e0c99f67de94a'
+    AssetHubDeployed: new LogEvent<([admin: string, name: string, assetHub: string, data: ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string})] & {admin: string, name: string, assetHub: string, data: ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string})})>(
+        abi, '0x5fb2844e7b3bcf1567e1b08aef7d37a5e2491fc82da6df98894e2afaf95adbfc'
     ),
     CurationUpdated: new LogEvent<([curation: string] & {curation: string})>(
         abi, '0x359c14567168d51ea26824bfb64c5a45425da6f136dcc10e75c241493a4fbf4e'
@@ -19,6 +19,9 @@ export const events = {
     ),
     Initialized: new LogEvent<([version: bigint] & {version: bigint})>(
         abi, '0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2'
+    ),
+    ModulesInitialized: new LogEvent<([modules: ([assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string] & {assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string})] & {modules: ([assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string] & {assetHubImpl: string, tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string})})>(
+        abi, '0x5ca64f09741014d9954b09e92034a79818632f949eec67e46c57fcbffb041179'
     ),
     MultipleUpgraded: new LogEvent<([index: bigint, implementation: string] & {index: bigint, implementation: string})>(
         abi, '0x64c8f86d8c97b441906cadbcaf6e07314af95bd0049f7f3356f7703af91c5a6f'
@@ -38,11 +41,14 @@ export const functions = {
     assetHubImpl: new Func<[], {}, string>(
         abi, '0x5c863b2a'
     ),
-    assetHubInfo: new Func<[hub: string], {hub: string}, ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string})>(
+    assetHubInfo: new Func<[hub: string], {hub: string}, ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string})>(
         abi, '0x12ca933f'
     ),
-    assetHubInfoByName: new Func<[name: string], {name: string}, ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string})>(
+    assetHubInfoByName: new Func<[name: string], {name: string}, ([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string})>(
         abi, '0x5cad390e'
+    ),
+    canCreateHub: new Func<[account: string], {account: string}, [_: boolean, _: string]>(
+        abi, '0xf1add516'
     ),
     creatorNFT: new Func<[], {}, string>(
         abi, '0x4f6d3f23'
@@ -50,11 +56,17 @@ export const functions = {
     curation: new Func<[], {}, string>(
         abi, '0xe16b6d5d'
     ),
-    deploy: new Func<[data: ([admin: string, name: string, createModule: string] & {admin: string, name: string, createModule: string})], {data: ([admin: string, name: string, createModule: string] & {admin: string, name: string, createModule: string})}, string>(
-        abi, '0x793350c0'
+    deploy: new Func<[data: ([admin: string, name: string, createModule: string, contractURI: string] & {admin: string, name: string, createModule: string, contractURI: string})], {data: ([admin: string, name: string, createModule: string, contractURI: string] & {admin: string, name: string, createModule: string, contractURI: string})}, string>(
+        abi, '0x9a665ff3'
     ),
     globalModule: new Func<[], {}, string>(
         abi, '0x0c7fc3ed'
+    ),
+    hasNamedHub: new Func<[name: string], {name: string}, boolean>(
+        abi, '0x4c660908'
+    ),
+    hubDefaultModules: new Func<[], {}, ([tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string] & {tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string})>(
+        abi, '0x915a7b9c'
     ),
     implementation: new Func<[index: bigint], {index: bigint}, string>(
         abi, '0xac9a0b26'
@@ -104,12 +116,16 @@ export class Contract extends ContractBase {
         return this.eth_call(functions.assetHubImpl, [])
     }
 
-    assetHubInfo(hub: string): Promise<([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string})> {
+    assetHubInfo(hub: string): Promise<([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string})> {
         return this.eth_call(functions.assetHubInfo, [hub])
     }
 
-    assetHubInfoByName(name: string): Promise<([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string})> {
+    assetHubInfoByName(name: string): Promise<([createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string] & {createModule: string, tokenCollectModule: string, feeCollectModule: string, nftGatedModule: string, contractURI: string})> {
         return this.eth_call(functions.assetHubInfoByName, [name])
+    }
+
+    canCreateHub(account: string): Promise<[_: boolean, _: string]> {
+        return this.eth_call(functions.canCreateHub, [account])
     }
 
     creatorNFT(): Promise<string> {
@@ -122,6 +138,14 @@ export class Contract extends ContractBase {
 
     globalModule(): Promise<string> {
         return this.eth_call(functions.globalModule, [])
+    }
+
+    hasNamedHub(name: string): Promise<boolean> {
+        return this.eth_call(functions.hasNamedHub, [name])
+    }
+
+    hubDefaultModules(): Promise<([tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string] & {tokenCreateModule: string, collectNFT: string, feeCollectModule: string, tokenCollectModule: string, nftGatedModule: string})> {
+        return this.eth_call(functions.hubDefaultModules, [])
     }
 
     implementation(index: bigint): Promise<string> {

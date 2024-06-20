@@ -20,8 +20,17 @@ export const events = {
     CollectNFTTransfered: new LogEvent<([publiser: string, assetId: bigint, collectNFTTokenId: bigint, from: string, to: string, timestamp: bigint] & {publiser: string, assetId: bigint, collectNFTTokenId: bigint, from: string, to: string, timestamp: bigint})>(
         abi, '0xdf5dd6ccf51c23566bff8768aa77c7600aeee6a155c1547a6dae8b444cbbfe41'
     ),
+    ContractURIUpdated: new LogEvent<[]>(
+        abi, '0xa5d4097edda6d87cb9329af83fb3712ef77eeb13738ffe43cc35a4ce305ad962'
+    ),
+    InfoURIChanged: new LogEvent<([uri: string] & {uri: string})>(
+        abi, '0xe74b49e1a5380bf0c1f3c644643bacdff09aace1dd038c4ecd68e0e900d3f70d'
+    ),
     Initialized: new LogEvent<([version: bigint] & {version: bigint})>(
         abi, '0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2'
+    ),
+    IsOpenChanged: new LogEvent<([isOpen: boolean] & {isOpen: boolean})>(
+        abi, '0x2863fe5152fcc5d81fc1b4e7f66389baf5c7ca420a123d567bbbc7afd59ba1f9'
     ),
     MetadataUpdate: new LogEvent<([_tokenId: bigint] & {_tokenId: bigint})>(
         abi, '0xf8e1a15aba9398e019f0b49df1a4fde98ee17ae345cb5f6b5e2c27f5033e8ce7'
@@ -71,6 +80,9 @@ export const functions = {
     collectModuleWhitelisted: new Func<[followModule: string], {followModule: string}, boolean>(
         abi, '0xf8b954db'
     ),
+    contractURI: new Func<[], {}, string>(
+        abi, '0xe8a3d485'
+    ),
     count: new Func<[publisher: string], {publisher: string}, bigint>(
         abi, '0x05d85eda'
     ),
@@ -92,8 +104,8 @@ export const functions = {
     hubOwner: new Func<[], {}, string>(
         abi, '0x9c7eb413'
     ),
-    initialize: new Func<[name: string, manager: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>], {name: string, manager: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>}, []>(
-        abi, '0x9f838107'
+    initialize: new Func<[name: string, manager: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>, contractURI: string], {name: string, manager: string, admin: string, collectNFT: string, createAssetModule: string, whitelistedCollectModules: Array<string>, contractURI: string}, []>(
+        abi, '0x9833031c'
     ),
     isApprovedForAll: new Func<[owner: string, operator: string], {owner: string, operator: string}, boolean>(
         abi, '0xe985e9c5'
@@ -128,8 +140,14 @@ export const functions = {
     setCollectModuleWhitelist: new Func<[collectModule: string, whitelist: boolean], {collectModule: string, whitelist: boolean}, []>(
         abi, '0x298a96d3'
     ),
+    setContractURI: new Func<[uri: string], {uri: string}, []>(
+        abi, '0x938e3d7b'
+    ),
     setCreateAssetModule: new Func<[assetModule: string], {assetModule: string}, []>(
         abi, '0x670e431b'
+    ),
+    setIsOpen: new Func<[isOpen: boolean], {isOpen: boolean}, []>(
+        abi, '0x085a10cf'
     ),
     supportsInterface: new Func<[interfaceId: string], {interfaceId: string}, boolean>(
         abi, '0x01ffc9a7'
@@ -188,6 +206,10 @@ export class Contract extends ContractBase {
 
     collectModuleWhitelisted(followModule: string): Promise<boolean> {
         return this.eth_call(functions.collectModuleWhitelisted, [followModule])
+    }
+
+    contractURI(): Promise<string> {
+        return this.eth_call(functions.contractURI, [])
     }
 
     count(publisher: string): Promise<bigint> {

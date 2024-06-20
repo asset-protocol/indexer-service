@@ -3,7 +3,7 @@ import { Store } from '@subsquid/typeorm-store';
 import { events } from '../abi/Curation';
 import { Asset, Curation, CurationAsset, CurationTag } from '../model';
 import { fetchMetadata } from './asset_metadata';
-import { getAssetId } from './AssetHub';
+import { getAssetBizId } from './AssetHub';
 import { In } from 'typeorm';
 import { handlers } from '.';
 
@@ -67,12 +67,14 @@ export async function handleCurationCreatedLog(
   curationModel.hash = log.transaction?.hash;
   await parseCurationMetadata(ctx, curationModel);
   await saveCurationTags(ctx, curationModel.id, curationModel.tags);
-  const assetIds = logData.assets.map((a) => getAssetId(a.hub, a.assetId));
-  const assets = await ctx.store.find(Asset, { where: { id: In(assetIds) } });
-  const assetMap = new Map(assets.map((a) => [a.id, a]));
+  const assetIds = logData.assets.map((a) => getAssetBizId(a.hub, a.assetId));
+  const assets = await ctx.store.find(Asset, {
+    where: { bizId: In(assetIds) },
+  });
+  const assetMap = new Map(assets.map((a) => [a.bizId, a]));
   curationModel.assets = logData.assets.map((a) => ({
-    id: getAssetId(a.hub, a.assetId) + curationModel.id,
-    asset: assetMap.get(getAssetId(a.hub, a.assetId)),
+    id: getCurationAssetId(logData.curationId, a.hub, a.assetId),
+    asset: assetMap.get(getAssetBizId(a.hub, a.assetId)),
     timestamp: BigInt(log.block.timestamp),
     approveAt: BigInt(0),
     expiry: null,
@@ -99,13 +101,15 @@ export async function handleCurationAssetAddedLog(
     ctx.log.warn('Curation not found for CurationAssetAdded log');
     return;
   }
-  const assetIds = logData.assets.map((a) => getAssetId(a.hub, a.assetId));
-  const assets = await ctx.store.find(Asset, { where: { id: In(assetIds) } });
-  const assetMap = new Map(assets.map((a) => [a.id, a]));
+  const assetIds = logData.assets.map((a) => getAssetBizId(a.hub, a.assetId));
+  const assets = await ctx.store.find(Asset, {
+    where: { bizId: In(assetIds) },
+  });
+  const assetMap = new Map(assets.map((a) => [a.bizId, a]));
   for (const a of logData.assets) {
     const curationAsset = new CurationAsset({
       id: getCurationAssetId(logData.curationId, a.hub, a.assetId),
-      asset: assetMap.get(getAssetId(a.hub, a.assetId)),
+      asset: assetMap.get(getAssetBizId(a.hub, a.assetId)),
       timestamp: BigInt(log.block.timestamp),
       curation: curationModel,
       status: AssetApproveStatus.Approving,
@@ -162,7 +166,7 @@ function getCurationId(tokenId: bigint) {
 }
 
 function getCurationAssetId(curationId: bigint, hub: string, assetId: bigint) {
-  return getAssetId(hub, assetId) + getCurationId(curationId);
+  return getAssetBizId(hub, assetId) + getCurationId(curationId);
 }
 
 async function getOrCreateCuration(store: Store, id: bigint) {
