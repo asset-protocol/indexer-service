@@ -192,8 +192,12 @@ async function saveCurationTags(
   await ctx.store.save(tags);
 }
 
-type CurationMetadata = Omit<Curation, 'id' | 'assets' | 'tags'> & {
+type CurationMetadata = Omit<
+  Curation,
+  'id' | 'assets' | 'tags' | 'externalUrl'
+> & {
   tags?: string[];
+  external_url?: string;
 };
 
 async function parseCurationMetadata(
@@ -210,6 +214,7 @@ async function parseCurationMetadata(
     curationModel.description = metadata.description;
     curationModel.image = metadata.image;
     curationModel.bannerImage = metadata.bannerImage;
+    curationModel.externalUrl = metadata.external_url;
     curationModel.tags =
       metadata.tags?.map((t) => ({
         id: t.toLowerCase() + curationModel.id,
