@@ -1,5 +1,6 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, OneToMany as OneToMany_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, ManyToOne as ManyToOne_, Index as Index_, OneToMany as OneToMany_} from "typeorm"
 import * as marshal from "./marshal"
+import {AssetHub} from "./assetHub.model"
 import {CurationAsset} from "./curationAsset.model"
 import {CurationTag} from "./curationTag.model"
 import {AttributeItem} from "./_attributeItem"
@@ -14,11 +15,17 @@ export class Curation {
     id!: string
 
     @Column_("text", {nullable: true})
-    tokenURI!: string | undefined | null
+    contract!: string | undefined | null
 
     @Index_()
+    @ManyToOne_(() => AssetHub, {nullable: true})
+    hub!: AssetHub | undefined | null
+
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    tokenId!: bigint | undefined | null
+
     @Column_("text", {nullable: true})
-    publisher!: string | undefined | null
+    tokenURI!: string | undefined | null
 
     @Column_("int4", {nullable: true})
     status!: number | undefined | null

@@ -137,8 +137,10 @@ type AttributeItem {
 
 type Curation @entity {
   id: ID! # curation address
+  contract: String
+  hub: AssetHub
+  tokenId: BigInt
   tokenURI: String
-  publisher: String @index
   status: Int
   expiry: BigInt
   hash: String

@@ -1,11 +1,18 @@
 import { DataHandlerContext, Log } from '@subsquid/evm-processor';
 import { Store } from '@subsquid/typeorm-store';
 import { events } from '../abi/Curation';
-import { Asset, Curation, CurationAsset, CurationTag } from '../model';
+import {
+  Asset,
+  AssetHub,
+  Curation,
+  CurationAsset,
+  CurationTag,
+} from '../model';
 import { fetchMetadata } from './asset_metadata';
 import { getAssetBizId } from './AssetHub';
 import { In } from 'typeorm';
 import { handlers } from '.';
+import { getAddress } from 'ethers';
 
 export enum AssetApproveStatus {
   Approving = 0,
@@ -36,6 +43,7 @@ export async function handleCurationUpdatedLog(
   const logData = events.CurationUpdated.decode(log);
   const curationModel = await getOrCreateCuration(
     ctx.store,
+    log.address,
     logData.curationId
   );
   if (logData.curationURI && curationModel.tokenURI !== logData.curationURI) {
@@ -56,15 +64,21 @@ export async function handleCurationCreatedLog(
   const logData = events.CurationCreated.decode(log);
   const curationModel = await getOrCreateCuration(
     ctx.store,
+    log.address,
     logData.curationId
   );
   curationModel.tokenURI = logData.curationURI;
-  curationModel.publisher = logData.publisher;
   curationModel.timestamp = BigInt(log.block.timestamp);
   curationModel.lastUpdatedAt = BigInt(log.block.timestamp);
   curationModel.status = logData.status;
   curationModel.expiry = logData.expiry;
   curationModel.hash = log.transaction?.hash;
+  const hub = await ctx.store.get(AssetHub, getAddress(logData.publisher));
+  if (!hub) {
+    ctx.log.error('AssetHub not found for CurationCreated log');
+    return;
+  }
+  curationModel.hub = hub;
   await parseCurationMetadata(ctx, curationModel);
   await saveCurationTags(ctx, curationModel.id, curationModel.tags);
   const assetIds = logData.assets.map((a) => getAssetBizId(a.hub, a.assetId));
@@ -73,7 +87,7 @@ export async function handleCurationCreatedLog(
   });
   const assetMap = new Map(assets.map((a) => [a.bizId, a]));
   curationModel.assets = logData.assets.map((a) => ({
-    id: getCurationAssetId(logData.curationId, a.hub, a.assetId),
+    id: getCurationAssetId(log.address, logData.curationId, a.hub, a.assetId),
     asset: assetMap.get(getAssetBizId(a.hub, a.assetId)),
     timestamp: BigInt(log.block.timestamp),
     approveAt: BigInt(0),
@@ -95,6 +109,7 @@ export async function handleCurationAssetAddedLog(
   const curationAssets: CurationAsset[] = [];
   const curationModel = await getOrCreateCuration(
     ctx.store,
+    log.address,
     logData.curationId
   );
   if (!curationModel) {
@@ -108,7 +123,7 @@ export async function handleCurationAssetAddedLog(
   const assetMap = new Map(assets.map((a) => [a.bizId, a]));
   for (const a of logData.assets) {
     const curationAsset = new CurationAsset({
-      id: getCurationAssetId(logData.curationId, a.hub, a.assetId),
+      id: getCurationAssetId(log.address, logData.curationId, a.hub, a.assetId),
       asset: assetMap.get(getAssetBizId(a.hub, a.assetId)),
       timestamp: BigInt(log.block.timestamp),
       curation: curationModel,
@@ -127,7 +142,7 @@ export async function handleCurationAssetRemovedLog(
   ctx.log.info('Handling CurationAssetRemoved');
   const logData = events.AssetsRemoved.decode(log);
   const assetIds = logData.assetIds.map((a, i) =>
-    getCurationAssetId(logData.curationId, logData.hubs[i], a)
+    getCurationAssetId(log.address, logData.curationId, logData.hubs[i], a)
   );
   await ctx.store.remove(CurationAsset, assetIds);
 }
@@ -140,7 +155,12 @@ export async function handleCurationAssetApprovedLog(
   const logData = events.AssetApproved.decode(log);
   const curationAsset = await ctx.store.get(
     CurationAsset,
-    getCurationAssetId(logData.curationId, logData.hub, logData.assetId)
+    getCurationAssetId(
+      log.address,
+      logData.curationId,
+      logData.hub,
+      logData.assetId
+    )
   );
   if (curationAsset) {
     curationAsset.status = logData.status;
@@ -156,25 +176,40 @@ export async function HandleCurationTransferredLog(
 ) {
   ctx.log.info('Handling CurationTransferred');
   const logData = events.Transfer.decode(log);
-  const curationModel = await getOrCreateCuration(ctx.store, logData.tokenId);
-  curationModel.publisher = logData.to;
+  const curationModel = await getOrCreateCuration(
+    ctx.store,
+    log.address,
+    logData.tokenId
+  );
+  const hub = await ctx.store.get(AssetHub, getAddress(logData.to));
+  curationModel.hub = hub;
   await ctx.store.save(curationModel);
 }
 
-function getCurationId(tokenId: bigint) {
+function getCurationId(contract: string, tokenId: bigint) {
   return tokenId.toString();
 }
 
-function getCurationAssetId(curationId: bigint, hub: string, assetId: bigint) {
-  return getAssetBizId(hub, assetId) + getCurationId(curationId);
+function getCurationAssetId(
+  contract: string,
+  curationId: bigint,
+  hub: string,
+  assetId: bigint
+) {
+  return getAssetBizId(hub, assetId) + getCurationId(contract, curationId);
 }
 
-async function getOrCreateCuration(store: Store, id: bigint) {
-  const curationId = getCurationId(id);
+async function getOrCreateCuration(
+  store: Store,
+  contract: string,
+  tokenId: bigint
+) {
+  const curationId = getCurationId(contract, tokenId);
   let curation = await store.get(Curation, curationId);
   if (!curation) {
     curation = new Curation();
     curation.id = curationId;
+    curation.contract = contract;
   }
   return curation;
 }
