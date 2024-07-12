@@ -1,5 +1,5 @@
-module.exports = class Data1720742663544 {
-    name = 'Data1720742663544'
+module.exports = class Data1720752018572 {
+    name = 'Data1720752018572'
 
     async up(db) {
         await db.query(`CREATE TABLE "asset_metadata_history" ("id" character varying NOT NULL, "timestamp" numeric, "content_uri" text, "metadata" jsonb, "asset_id" character varying, CONSTRAINT "PK_94cab17983a7cc063b3c9ffb88b" PRIMARY KEY ("id"))`)

@@ -187,7 +187,7 @@ export async function HandleCurationTransferredLog(
 }
 
 function getCurationId(contract: string, tokenId: bigint) {
-  return tokenId.toString();
+  return `${contract}_${tokenId.toString()}`;
 }
 
 function getCurationAssetId(
@@ -209,6 +209,7 @@ async function getOrCreateCuration(
   if (!curation) {
     curation = new Curation();
     curation.id = curationId;
+    curation.tokenId = tokenId;
     curation.contract = contract;
   }
   return curation;
