@@ -210,6 +210,7 @@ async function getOrCreateCuration(
   if (!curation) {
     curation = new Curation();
     curation.id = generateId();
+    curation.bizId = curationId;
     curation.tokenId = tokenId;
     curation.contract = getAddress(contract);
   }
