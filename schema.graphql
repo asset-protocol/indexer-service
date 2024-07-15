@@ -137,6 +137,7 @@ type AttributeItem {
 
 type Curation @entity {
   id: ID! # curation address
+  bizId: String! @index(unique: true)
   contract: String
   hub: AssetHub
   tokenId: BigInt

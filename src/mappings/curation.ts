@@ -13,6 +13,7 @@ import { getAssetBizId } from './AssetHub';
 import { In } from 'typeorm';
 import { handlers } from '.';
 import { getAddress } from 'ethers';
+import { generateId } from '../common/id';
 
 export enum AssetApproveStatus {
   Approving = 0,
@@ -186,7 +187,7 @@ export async function HandleCurationTransferredLog(
   await ctx.store.save(curationModel);
 }
 
-function getCurationId(contract: string, tokenId: bigint) {
+function getCurationBizId(contract: string, tokenId: bigint) {
   return `${getAddress(contract)}_${tokenId.toString()}`;
 }
 
@@ -196,7 +197,7 @@ function getCurationAssetId(
   hub: string,
   assetId: bigint
 ) {
-  return getAssetBizId(hub, assetId) + getCurationId(contract, curationId);
+  return getAssetBizId(hub, assetId) + getCurationBizId(contract, curationId);
 }
 
 async function getOrCreateCuration(
@@ -204,11 +205,11 @@ async function getOrCreateCuration(
   contract: string,
   tokenId: bigint
 ) {
-  const curationId = getCurationId(contract, tokenId);
-  let curation = await store.get(Curation, curationId);
+  const curationId = getCurationBizId(contract, tokenId);
+  let curation = await store.get(Curation, { where: { bizId: curationId } });
   if (!curation) {
     curation = new Curation();
-    curation.id = curationId;
+    curation.id = generateId();
     curation.tokenId = tokenId;
     curation.contract = getAddress(contract);
   }
