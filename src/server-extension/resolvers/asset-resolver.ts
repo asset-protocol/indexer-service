@@ -48,10 +48,10 @@ export class CustomAssetResolver {
         if (!asset) {
           return false;
         }
-        const ac = new assethubAbi.Contract(blockContext, contract);
-        const tokenURI = await ac.tokenURI(BigInt(tokenId));
-        asset.contentUri = tokenURI;
-        LOG.info(`Refreshing metadata for asset ${id}: ${tokenURI}`);
+        // const ac = new assethubAbi.Contract(blockContext, contract);
+        // const tokenURI = await ac.tokenURI(BigInt(tokenId));
+        // asset.contentUri = tokenURI;
+        LOG.info(`Refreshing metadata for asset ${id}: ${asset.contentUri}`);
         await parseMetadata(
           { log: LOG },
           asset,
@@ -68,9 +68,9 @@ export class CustomAssetResolver {
         if (!curation) {
           return false;
         }
-        const ac = new cruationAbi.Contract(blockContext, contract);
-        const URI = await ac.tokenURI(BigInt(tokenId));
-        curation.tokenURI = URI;
+        // const ac = new cruationAbi.Contract(blockContext, contract);
+        // const URI = await ac.tokenURI(BigInt(tokenId));
+        // curation.tokenURI = URI;
         await parseCurationMetadata({ log: LOG }, curation);
         await manager.save(curation);
         await manager.save(curation.tags);
@@ -82,10 +82,10 @@ export class CustomAssetResolver {
         if (!hub) {
           return false;
         }
-        const ac = new assethubAbi.Contract(blockContext, contract);
-        const contractURI = await ac.contractURI();
-        hub.contractUri = contractURI;
-        if (contractURI) {
+        // const ac = new assethubAbi.Contract(blockContext, contract);
+        // const contractURI = await ac.contractURI();
+        // hub.contractUri = contractURI;
+        if (hub.contractUri) {
           const metadata = await fetchMetadata({ log: LOG }, hub.contractUri);
           hub.metadata = metadata;
         }
