@@ -25,6 +25,9 @@ export class AssetHub {
     isOpen!: boolean | undefined | null
 
     @Column_("text", {nullable: true})
+    contractUri!: string | undefined | null
+
+    @Column_("text", {nullable: true})
     tokenCollectModule!: string | undefined | null
 
     @Column_("text", {nullable: true})

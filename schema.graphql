@@ -83,6 +83,7 @@ type AssetHub @entity {
   admin: String
   name: String @index(unique: true)
   isOpen: Boolean @index
+  contractUri: String
   tokenCollectModule: String
   feeCollectModule: String
   nftGatedModule: String

@@ -1,13 +1,17 @@
-import { Contract, getAddress } from 'ethers';
+import { getAddress } from 'ethers';
+import * as assethubAbi from '../../abi/AssetHub';
+import * as cruationAbi from '../../abi/Curation';
 import { Arg, Field, ObjectType, Query, Resolver } from 'type-graphql';
 import { Like, type EntityManager, type FindManyOptions } from 'typeorm';
-import { Asset, AssetTag, Curation } from '../../model';
+import { Asset, AssetHub, AssetTag, Curation } from '../../model';
 import { parseMetadata } from '../../mappings/AssetHub';
 import { createLogger } from '@subsquid/logger';
 import {
   getCurationBizId,
   parseCurationMetadata,
 } from '../../mappings/curation';
+import { fetchMetadata } from '../../mappings/asset_metadata';
+import { blockContext } from '../../common/context';
 
 @ObjectType()
 export class TagName {
@@ -27,9 +31,13 @@ export class CustomAssetResolver {
 
   @Query(() => Boolean)
   async refreshMetatData(
-    @Arg('tokenId', { nullable: false }) tokenId: string,
+    @Arg('type', {
+      nullable: false,
+      description: 'type: asset | curation | assethub',
+    })
+    type: string,
     @Arg('contract', { nullable: false }) contract: string,
-    @Arg('type', { nullable: false,description:"type: asset | curation" }) type: string
+    @Arg('tokenId', { nullable: true }) tokenId: string
   ): Promise<Boolean> {
     const manager = await this.tx();
     const LOG = createLogger('sqd:graphql-server:custom-asset-resolver');
@@ -40,6 +48,10 @@ export class CustomAssetResolver {
         if (!asset) {
           return false;
         }
+        const ac = new assethubAbi.Contract(blockContext, contract);
+        const tokenURI = await ac.tokenURI(BigInt(tokenId));
+        asset.contentUri = tokenURI;
+        LOG.info(`Refreshing metadata for asset ${id}: ${tokenURI}`);
         await parseMetadata(
           { log: LOG },
           asset,
@@ -56,10 +68,28 @@ export class CustomAssetResolver {
         if (!curation) {
           return false;
         }
+        const ac = new cruationAbi.Contract(blockContext, contract);
+        const URI = await ac.tokenURI(BigInt(tokenId));
+        curation.tokenURI = URI;
         await parseCurationMetadata({ log: LOG }, curation);
         await manager.save(curation);
         await manager.save(curation.tags);
         return true;
+      } else if (type === 'assethub') {
+        const hub = await manager.findOne(AssetHub, {
+          where: { id: contract },
+        });
+        if (!hub) {
+          return false;
+        }
+        const ac = new assethubAbi.Contract(blockContext, contract);
+        const contractURI = await ac.contractURI();
+        hub.contractUri = contractURI;
+        if (contractURI) {
+          const metadata = await fetchMetadata({ log: LOG }, hub.contractUri);
+          hub.metadata = metadata;
+        }
+        await manager.save(hub);
       }
       return false;
     } catch (e: any) {

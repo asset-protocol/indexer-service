@@ -7,6 +7,7 @@ import { ZeroAddress, getAddress } from 'ethers';
 import { ASSETHUB_MANAGER } from '../config';
 import { fetchMetadata } from './asset_metadata';
 
+
 let _assethubs: Set<string> | undefined;
 
 export async function handleManagerModulesInitializedLog(
@@ -35,7 +36,6 @@ export async function handleAssetHubDeployedLog(
 ) {
   ctx.log.info('Handling AssetHubDeployed');
   const logData = assethubManager.events.AssetHubDeployed.decode(log);
-
   let assetHub = new AssetHub({
     id: logData.assetHub,
     management: getAddress(log.address),
@@ -46,9 +46,10 @@ export async function handleAssetHubDeployedLog(
     nftGatedModule: logData.data.nftGatedModule,
     createAssetModule: logData.data.createModule,
     timestamp: BigInt(log.block.timestamp),
+    contractUri: logData.data.contractURI,
     hash: log.transaction?.hash,
   });
-
+  
   const hubSet = await getAssetHubSet(ctx);
   hubSet.add(logData.assetHub.toLowerCase());
 
