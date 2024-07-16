@@ -14,6 +14,7 @@ import { In } from 'typeorm';
 import { handlers } from '.';
 import { getAddress } from 'ethers';
 import { generateId } from '../common/id';
+import { Logger } from '@subsquid/logger';
 
 export enum AssetApproveStatus {
   Approving = 0,
@@ -76,7 +77,9 @@ export async function handleCurationCreatedLog(
   curationModel.hash = log.transaction?.hash;
   const hub = await ctx.store.get(AssetHub, getAddress(logData.publisher));
   if (!hub) {
-    ctx.log.error('AssetHub not found for CurationCreated log');
+    ctx.log.error(
+      'AssetHub not found for CurationCreated log: ' + logData.publisher
+    );
     return;
   }
   curationModel.hub = hub;
@@ -187,7 +190,7 @@ export async function HandleCurationTransferredLog(
   await ctx.store.save(curationModel);
 }
 
-function getCurationBizId(contract: string, tokenId: bigint) {
+export function getCurationBizId(contract: string, tokenId: bigint) {
   return `${getAddress(contract)}_${tokenId.toString()}`;
 }
 
@@ -238,8 +241,8 @@ type CurationMetadata = Omit<
   external_url?: string;
 };
 
-async function parseCurationMetadata(
-  ctx: DataHandlerContext<Store>,
+export async function parseCurationMetadata(
+  ctx: { log: Logger },
   curationModel: Curation
 ) {
   if (!curationModel.tokenURI) return;
